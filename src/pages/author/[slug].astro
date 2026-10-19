@@ -1,0 +1,14 @@
+---
+import { getBylineBySlug, getEntriesByByline, decodeSlug } from "emdash";
+import Base from "../../layouts/Base.astro";
+
+const slug = decodeSlug(Astro.params.slug);
+const byline = slug ? await getBylineBySlug(slug) : null;
+if (!byline) return Astro.rewrite("/404");
+const posts = await getEntriesByByline("posts", byline.id, { orderBy: { published_at: "desc" }, limit: 20 });
+---
+
+<Base title={`${byline.displayName} の投稿`}>
+	<h1>{byline.displayName}</h1>
+	<ul>{posts.map((p) => <li><a href={`/${p.id}/`}>{p.data.title}</a></li>)}</ul>
+</Base>

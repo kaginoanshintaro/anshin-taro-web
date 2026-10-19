@@ -1,0 +1,42 @@
+---
+// WordPress と同じ URL を出す受け口。
+//   /<slug>/          固定ページ（親なし）→ なければ投稿
+//   /<親>/<slug>/     親ページを持つ固定ページ（parent_slug で照合）
+import { getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../layouts/Base.astro";
+import { resolveStarterSiteIdentity } from "../utils/site-identity";
+
+let segments: string[] = [];
+try {
+	segments = (Astro.params.path ?? "").split("/").filter(Boolean).map((s) => decodeURIComponent(s));
+} catch {
+	return Astro.rewrite("/404");
+}
+if (segments.length === 0 || segments.length > 2) return Astro.rewrite("/404");
+
+const slug = segments[segments.length - 1];
+const parent = segments.length === 2 ? segments[0] : "";
+
+let collection: "pages" | "posts" = "pages";
+let { entry, cacheHint } = await getEmDashEntry("pages", slug);
+if (entry && (entry.data.parent_slug ?? "") !== parent) entry = null;
+if (!entry && !parent) {
+	collection = "posts";
+	({ entry, cacheHint } = await getEmDashEntry("posts", slug));
+}
+if (!entry) return Astro.rewrite("/404");
+
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+const { siteTitle } = resolveStarterSiteIdentity(await getSiteSettings());
+const seo = getSeoMeta(entry, { siteTitle, siteUrl: Astro.url.origin, path: Astro.url.pathname });
+const categories = entry.data.terms?.category ?? [];
+---
+
+<Base title={seo.title} pageTitle={seo.ogTitle} description={seo.description} canonical={seo.canonical} content={{ collection, id: entry.data.id, slug }}>
+	<article data-collection={collection}>
+		<h1 {...entry.edit.title}>{entry.data.title}</h1>
+		{categories.map((c) => <a href={`/category/${c.slug}/`}>{c.label}</a>)}
+		<PortableText value={entry.data.content} />
+	</article>
+</Base>
