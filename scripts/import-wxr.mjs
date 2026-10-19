@@ -8,6 +8,8 @@
 //   1. wp:post_name のパーセントエンコードを先に戻す（そのままだと日本語スラッグが 404）
 //   2. 投稿者を EmDash のユーザーに結び付ける（30件ごとに別の投稿者が作られるのを防ぐ）
 //   3. 親を持つ固定ページに parent_slug を設定する（wp:post_parent は取り込まれない）
+//   4. 投稿・固定ページ・画像以外の item を外す（Contact Form 7 のフォームが持つ _locale=ja を
+//      EmDash が多言語設定と読み、カテゴリー名がスラッグのままの "ja" 版が増えるため）
 // ログインは開発用のバイパスを使うので、localhost でしか動かない。
 import { execFileSync } from "node:child_process";
 import fs from "node:fs";
@@ -30,7 +32,10 @@ const xml = fs
 		} catch {
 			return m;
 		}
-	});
+	})
+	.replace(/<item>[\s\S]*?<\/item>\s*/g, (item) =>
+		/<wp:post_type><!\[CDATA\[(post|page|attachment)\]\]><\/wp:post_type>/.test(item) ? item : "",
+	);
 
 function tag(item, name) {
 	const m = item.match(new RegExp(`<wp:${name}>(?:<!\\[CDATA\\[)?(.*?)(?:\\]\\]>)?</wp:${name}>`, "s"));
