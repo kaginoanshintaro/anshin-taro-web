@@ -9,6 +9,9 @@ const { entries: posts, cacheHint } = await getEmDashCollection("posts", {
 });
 if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
 
+// ファーストビューの大きな画像。今は今のサイトの背景イラスト（background_pic.jpg）で試している
+const fvImage = "/images/top/fv-background_pic.jpg";
+
 const dateFormat = new Intl.DateTimeFormat("ja-JP", {
 	year: "numeric",
 	month: "2-digit",
@@ -40,15 +43,20 @@ const services = [
 ---
 
 <Base title={site.name} description={site.tagline}>
-	<section class="hero">
-		<div class="wrap">
-			<p class="hero-lead">いつ、いかなる時も 佐藤 が参ります</p>
-			<h1 class="hero-title">一人社長の鍵屋さんです</h1>
-			<img class="hero-image" src="/images/top/storefront.jpg" alt="カギの安心太郎の店舗と代表の佐藤" width="1200" height="675" />
+	<section class="fv" style={`--fv-image: url(${fvImage})`}>
+		<div class="fv-inner">
+			<img class="fv-logo" src="/images/top/logo.png" alt={site.name} width="600" height="240" />
+			<p class="fv-lead">いつ、いかなる時も 佐藤 が参ります</p>
+			<h1 class="fv-title">一人社長の鍵屋さんです</h1>
+			<a class="btn btn-large" href={site.tel.href}>{site.tel.label}</a>
 		</div>
+		<a class="fv-scroll" href="#intro" aria-label="下へスクロール">scroll</a>
+		<svg class="fv-wave" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true">
+			<path d="M0,48 C240,88 480,8 720,40 C960,72 1200,24 1440,52 L1440,80 L0,80 Z" />
+		</svg>
 	</section>
 
-	<section class="section">
+	<section class="section" id="intro">
 		<div class="wrap intro">
 			<img class="intro-photo is-round" src="/images/top/sato.png" alt="代表の佐藤" width="320" height="320" loading="lazy" />
 			<div>
@@ -124,17 +132,39 @@ const services = [
 </Base>
 
 <style>
-	.hero { background: var(--bg-soft); padding: 48px 0; text-align: center; }
-	.hero-lead { margin: 0; font-size: 1.1rem; color: var(--accent-dark); font-weight: bold; }
-	.hero-title { margin: 8px 0 0; font-size: 2.2rem; }
-	.hero-image { display: block; margin: 24px auto 0; max-width: 860px; width: 100%; border-radius: 8px; }
+	.fv {
+		position: relative;
+		display: grid;
+		place-items: center;
+		min-height: 100svh;
+		padding: 48px 16px 120px;
+		background: var(--fv-image) center / cover no-repeat;
+		text-align: center;
+	}
+	.fv::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgb(251 247 241 / 0.25), rgb(251 247 241 / 0.55)); }
+	.fv-inner {
+		position: relative;
+		max-width: 560px;
+		padding: 40px 32px;
+		background: rgb(251 247 241 / 0.92);
+		border-radius: 48% 52% 46% 54% / 12% 14% 12% 14%;
+		box-shadow: 0 20px 60px rgb(61 53 48 / 0.15);
+	}
+	.fv-logo { width: 280px; }
+	.fv-lead { margin: 16px 0 0; color: var(--accent); font-weight: bold; }
+	.fv-title { margin: 4px 0 24px; font-size: 2.2rem; line-height: 1.4; }
+	.fv-scroll { position: absolute; left: 50%; bottom: 72px; transform: translateX(-50%); color: var(--text); font-size: 0.75rem; letter-spacing: 0.2em; text-decoration: none; }
+	.fv-scroll::after { content: ""; display: block; width: 1px; height: 32px; margin: 4px auto 0; background: var(--text); }
+	.fv-wave { position: absolute; left: 0; right: 0; bottom: -1px; width: 100%; height: 64px; fill: var(--bg); }
 
 	.intro { display: flex; align-items: center; gap: 32px; max-width: 900px; }
 	.intro + .intro { margin-top: 40px; }
 	.intro.is-reverse { flex-direction: row-reverse; }
 	.intro-photo { flex: none; width: 200px; }
 	.intro-photo.is-round { border-radius: 50%; }
-	.intro-title { margin: 0 0 8px; font-size: 1.4rem; color: var(--accent-dark); }
+	/* 白地のイラストを生成りの地色になじませる */
+	.intro-photo:not(.is-round), .area-image { mix-blend-mode: multiply; }
+	.intro-title { margin: 0 0 8px; font-size: 1.4rem; color: var(--accent); }
 	.intro p { margin: 0 0 8px; }
 
 	.section { padding: 48px 0 0; }
@@ -142,8 +172,8 @@ const services = [
 	.section-title::after { content: ""; display: block; width: 48px; height: 3px; margin: 8px auto 0; background: var(--accent); }
 
 	.cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; list-style: none; margin: 0; padding: 0; }
-	.card { display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: 8px; padding: 16px; }
-	.card-image { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 4px; }
+	.card { display: flex; flex-direction: column; background: #fff; border-radius: var(--radius); padding: 16px; box-shadow: 0 8px 24px rgb(61 53 48 / 0.06); }
+	.card-image { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 14px; }
 	.card h3 { margin: 16px 0 8px; font-size: 1.15rem; }
 	.card p { flex: 1; margin: 0 0 16px; font-size: 0.92rem; }
 
@@ -152,7 +182,7 @@ const services = [
 	.btn-large { font-size: 1.6rem; padding: 12px 40px; }
 
 	.cta { text-align: center; }
-	.cta .wrap { background: var(--bg-soft); border-radius: 8px; padding: 32px 16px; }
+	.cta .wrap { background: var(--accent-soft); border-radius: 40px; padding: 40px 16px; }
 	.cta-lead { margin: 0 0 16px; font-weight: bold; font-size: 1.15rem; }
 
 	.news { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
@@ -166,7 +196,9 @@ const services = [
 	.area-image { display: block; margin: 0 auto 16px; max-width: 480px; width: 100%; }
 
 	@media (max-width: 768px) {
-		.hero-title { font-size: 1.6rem; }
+		.fv-inner { padding: 32px 20px; }
+		.fv-logo { width: 200px; }
+		.fv-title { font-size: 1.6rem; }
 		.cards { grid-template-columns: 1fr; }
 		.intro, .intro.is-reverse { flex-direction: column; text-align: left; }
 		.intro-photo { width: 160px; }
