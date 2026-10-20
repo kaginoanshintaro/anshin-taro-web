@@ -45,10 +45,10 @@ const services = [
 <Base title={site.name} description={site.tagline}>
 	<!-- 背景の写真は固定したまま、上に重ねた文字だけがスクロールで流れていく -->
 	<div class="stage">
-		<div class="stage-bg" style={`--fv-image: url(${fvImage})`} aria-hidden="true"></div>
+		<div class="stage-bg" style={`--stage-image: url(${fvImage})`} aria-hidden="true"></div>
 
 		<section class="stage-block fv">
-			<div class="haze">
+			<div class="stage-content">
 				<img class="fv-logo" src="/images/top/logo.png" alt={site.name} width="600" height="240" />
 				<p class="fv-lead">いつ、いかなる時も 佐藤 が参ります</p>
 				<h1 class="fv-title">一人社長の鍵屋さんです</h1>
@@ -56,21 +56,21 @@ const services = [
 		</section>
 
 		<section class="stage-block">
-			<figure class="haze greeting-photo">
+			<figure class="stage-content greeting-photo">
 				<img src="/images/top/sato.png" alt="代表の佐藤" width="320" height="320" loading="lazy" />
 				<figcaption>／私が佐藤です＼</figcaption>
 			</figure>
 		</section>
 
 		<section class="stage-block">
-			<div class="haze greeting-text">
+			<div class="stage-content greeting-text">
 				<p>弊社では従業員を置かず代表の私、佐藤が直接電話応対から作業までを一手に担います。<br />依頼が集中する場合は少々お待ちいただくこともございますが、その分仲介手数料などの余計なコストが発生せず<br />お客様一人ひとりに向けた丁寧で柔軟なサービスを提供できることが弊社の強みです。</p>
 				<p>お客様が “安心して依頼できる” 信頼のおける会社を目指し、日々努力を重ねております。<br />お客様の立場に立ったサービスを心掛け、皆様にとって最良のパートナーであり続けることをお約束いたします。</p>
 			</div>
 		</section>
 
 		<section class="stage-block">
-			<div class="haze characters">
+			<div class="stage-content characters">
 				<div class="character">
 					<img src="/images/top/anshin-taro-thumbsup.png" alt="安心太郎ちゃん" width="400" height="596" loading="lazy" />
 					<h2>安心太郎ちゃん</h2>
@@ -87,59 +87,63 @@ const services = [
 		</section>
 	</div>
 
-	<section class="section">
-		<div class="wrap">
-			<h2 class="section-title">サービス紹介</h2>
-			<ul class="cards">
-				{
-					services.map((s) => (
-						<li class="card">
-							<img class="card-image" src={s.image} alt="" loading="lazy" />
-							<h3>{s.title}</h3>
-							<p>{s.text}</p>
-							<a class="btn" href={s.href}>さらに詳しく</a>
-						</li>
-					))
-				}
-			</ul>
-		</div>
-	</section>
+	<!-- 2人の紹介より下は、別の固定背景に切り替わる（背景画像は佐藤さんが用意中。それまでは画像なし） -->
+	<div class="stage">
+		<div class="stage-bg" aria-hidden="true"></div>
+		<section class="section">
+			<div class="wrap">
+				<h2 class="section-title">サービス紹介</h2>
+				<ul class="cards">
+					{
+						services.map((s) => (
+							<li class="card">
+								<img class="card-image" src={s.image} alt="" loading="lazy" />
+								<h3>{s.title}</h3>
+								<p>{s.text}</p>
+								<a class="btn" href={s.href}>さらに詳しく</a>
+							</li>
+						))
+					}
+				</ul>
+			</div>
+		</section>
 
-	<section class="section cta">
-		<div class="wrap">
-			<p class="cta-lead">電話で見積もりOK！佐藤が電話に出ます</p>
-			<a class="btn btn-large" href={site.tel.href}>{site.tel.label}</a>
-		</div>
-	</section>
+		<section class="section cta">
+			<div class="wrap">
+				<p class="cta-lead">電話で見積もりOK！佐藤が電話に出ます</p>
+				<a class="btn btn-large" href={site.tel.href}>{site.tel.label}</a>
+			</div>
+		</section>
 
-	<section class="section">
-		<div class="wrap">
-			<h2 class="section-title">NEWS</h2>
-			<ul class="news">
-				{
-					posts.map((post) => (
-						<li>
-							{post.data.publishedAt && (
-								<time datetime={post.data.publishedAt.toISOString()}>
-									{dateFormat.format(post.data.publishedAt)}
-								</time>
-							)}
-							<a href={`/${post.id}/`}>{post.data.title}</a>
-						</li>
-					))
-				}
-			</ul>
-			<p class="more"><a href="/news/">もっと見る</a></p>
-		</div>
-	</section>
+		<section class="section">
+			<div class="wrap">
+				<h2 class="section-title">NEWS</h2>
+				<ul class="news">
+					{
+						posts.map((post) => (
+							<li>
+								{post.data.publishedAt && (
+									<time datetime={post.data.publishedAt.toISOString()}>
+										{dateFormat.format(post.data.publishedAt)}
+									</time>
+								)}
+								<a href={`/${post.id}/`}>{post.data.title}</a>
+							</li>
+						))
+					}
+				</ul>
+				<p class="more"><a href="/news/">もっと見る</a></p>
+			</div>
+		</section>
 
-	<section class="section area">
-		<div class="wrap">
-			<h2 class="section-title">対応エリア</h2>
-			<img class="area-image" src="/images/top/area.png" alt="大分県内どこでも出張" width="800" height="500" loading="lazy" />
-			<p>{site.areas}</p>
-		</div>
-	</section>
+		<section class="section area">
+			<div class="wrap">
+				<h2 class="section-title">対応エリア</h2>
+				<img class="area-image" src="/images/top/area.png" alt="大分県内どこでも出張" width="800" height="500" loading="lazy" />
+				<p>{site.areas}</p>
+			</div>
+		</section>
+	</div>
 </Base>
 
 <style>
@@ -153,8 +157,12 @@ const services = [
 		position: sticky;
 		top: 0;
 		height: 100svh;
-		background: var(--fv-image) center / cover no-repeat;
+		/* 写真の上でも文字が読めるよう、写真全体に白を重ねて明るくする */
+		background: linear-gradient(rgb(255 255 255 / 0.55), rgb(255 255 255 / 0.55)), var(--stage-image, none) center / cover no-repeat, var(--bg);
 	}
+	.stage-bg + * { margin-top: -100svh; }
+	/* sticky の背景より手前に描かれるよう、中身にも position を付ける */
+	.stage > :not(.stage-bg) { position: relative; }
 	.stage-block {
 		position: relative;
 		display: grid;
@@ -163,14 +171,8 @@ const services = [
 		padding: 48px 16px;
 		text-align: center;
 	}
-	.stage-bg + .stage-block { margin-top: -100svh; }
 	.stage-block + .stage-block { min-height: 80svh; }
-	/* 写真の上でも文字が読めるよう、文字の後ろを生成り色でうっすら明るくする */
-	.haze {
-		margin: 0;
-		padding: 64px 96px;
-		background: radial-gradient(farthest-side, rgb(251 247 241 / 0.94) 65%, rgb(251 247 241 / 0));
-	}
+	.stage-content { margin: 0; padding: 64px 96px; }
 	.fv-logo { width: 520px; }
 	.fv-lead { margin: 24px 0 0; font-size: 1.4rem; font-weight: bold; }
 	.fv-title { margin: 4px 0 0; font-size: 2.8rem; line-height: 1.4; }
@@ -221,7 +223,7 @@ const services = [
 		.fv-logo { width: 240px; }
 		.fv-title { font-size: 1.8rem; }
 		.greeting-text br { display: none; }
-		.haze, .greeting-text, .characters { padding: 48px 24px; }
+		.stage-content, .greeting-text, .characters { padding: 48px 24px; }
 		.characters { flex-direction: column; }
 		.cards { grid-template-columns: 1fr; }
 		.news li { flex-direction: column; gap: 0; }
