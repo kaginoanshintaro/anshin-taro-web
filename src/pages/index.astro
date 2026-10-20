@@ -1,50 +1,177 @@
 ---
-import { getEmDashCollection, getSiteSettings } from "emdash";
-import { Image } from "emdash/ui";
+import { getEmDashCollection } from "emdash";
 import Base from "../layouts/Base.astro";
-import { resolveStarterSiteIdentity } from "../utils/site-identity";
+import { site } from "../site";
 
 const { entries: posts, cacheHint } = await getEmDashCollection("posts", {
 	orderBy: { published_at: "desc" },
-	limit: 10,
+	limit: 5,
 });
-const { siteTitle, siteTagline } = resolveStarterSiteIdentity(
-	await getSiteSettings(),
-);
 if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+
+const dateFormat = new Intl.DateTimeFormat("ja-JP", {
+	year: "numeric",
+	month: "2-digit",
+	day: "2-digit",
+	timeZone: "Asia/Tokyo",
+});
+
+// 文章は今の WordPress のトップ（固定ページ HOME）から写したもの
+const services = [
+	{
+		title: "カギの開錠",
+		href: "/lock-opening/",
+		image: "/images/top/service-lock-opening.jpg",
+		text: "デスクやロッカー、南京錠などの簡易錠から他店では断られる事も多い防犯性の高い鍵、電子錠やカードキーなども高い技術力で非破壊開錠いたします。金庫、自動車、スーツケースなどあらゆるカギに対応します。",
+	},
+	{
+		title: "カギの修理・交換・取付",
+		href: "/repair/",
+		image: "/images/top/service-repair.jpg",
+		text: "鍵の修理交換や錠前のお取り付けを承ります。ドアの建て付けの調整やドアクローザーの交換、スマートロックや電子錠の取付、インターホンや防犯カメラなどの防犯機器もご相談ください。",
+	},
+	{
+		title: "カギの作成",
+		href: "/duplicate/",
+		// 今のトップの写真（DSC09937）は素材フォルダになかったので仮の写真
+		image: "/images/top/service-duplicate.jpg",
+		text: "合鍵の作成を承ります。出張作成も可能です。防犯性の高いディンプルキーやウェーブキーなどの特殊キーはもちろん、自動車やバイクのイモビライザーキーの鍵作成、鍵を無くしてしまった場合の鍵なし鍵作成はおまかせください。",
+	},
+];
 ---
 
-<Base title={siteTitle} description={siteTagline}>
-	<h1>Recent Posts</h1>
+<Base title={site.name} description={site.tagline}>
+	<section class="hero">
+		<div class="wrap">
+			<p class="hero-lead">いつ、いかなる時も 佐藤 が参ります</p>
+			<h1 class="hero-title">一人社長の鍵屋さんです</h1>
+			<img class="hero-image" src="/images/top/storefront.jpg" alt="カギの安心太郎の店舗と代表の佐藤" width="1200" height="675" />
+		</div>
+	</section>
 
-	{
-		posts.length === 0 ? (
-			<p>
-				No posts yet. <a href="/_emdash/admin/content/posts/new">Create one</a>.
-			</p>
-		) : (
-			<ul>
-				{posts.map((post) => (
-					<li>
-						<a href={`/${post.id}/`}>
-							{post.data.featured_image && (
-								<div {...post.edit.featured_image}><Image image={post.data.featured_image} /></div>
-							)}
-							<h2 {...post.edit.title}>{post.data.title}</h2>
-						</a>
-						{post.data.excerpt && <p {...post.edit.excerpt}>{post.data.excerpt}</p>}
-						{post.data.publishedAt && (
-							<time datetime={post.data.publishedAt.toISOString()}>
-								{post.data.publishedAt.toLocaleDateString("en-US", {
-									year: "numeric",
-									month: "long",
-									day: "numeric",
-								})}
-							</time>
-						)}
-					</li>
-				))}
+	<section class="section">
+		<div class="wrap intro">
+			<img class="intro-photo is-round" src="/images/top/sato.png" alt="代表の佐藤" width="320" height="320" loading="lazy" />
+			<div>
+				<h2 class="intro-title">／私が佐藤です＼</h2>
+				<p>弊社では従業員を置かず代表の私、佐藤が直接電話応対から作業までを一手に担います。</p>
+				<p>依頼が集中する場合は少々お待ちいただくこともございますが、その分仲介手数料などの余計なコストが発生せず、お客様一人ひとりに向けた丁寧で柔軟なサービスを提供できることが弊社の強みです。</p>
+				<p>お客様が “安心して依頼できる” 信頼のおける会社を目指し、日々努力を重ねております。お客様の立場に立ったサービスを心掛け、皆様にとって最良のパートナーであり続けることをお約束いたします。</p>
+			</div>
+		</div>
+		<div class="wrap intro is-reverse">
+			<img class="intro-photo" src="/images/top/anshin-taro-thumbsup.png" alt="安心太郎ちゃん" width="400" height="596" loading="lazy" />
+			<div>
+				<h2 class="intro-title">安心太郎ちゃん</h2>
+				<p>マスコットキャラクターのAIエージェント、安心太郎ちゃん。暮らしの安心と安全を守るため、佐藤とともに活躍しています。よろしくね！</p>
+				<p>ホームページをブックマークすると安心太郎ちゃんの顔がアイコンになるよ！ためしてみてね〜♪</p>
+			</div>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="wrap">
+			<h2 class="section-title">サービス紹介</h2>
+			<ul class="cards">
+				{
+					services.map((s) => (
+						<li class="card">
+							<img class="card-image" src={s.image} alt="" loading="lazy" />
+							<h3>{s.title}</h3>
+							<p>{s.text}</p>
+							<a class="btn" href={s.href}>さらに詳しく</a>
+						</li>
+					))
+				}
 			</ul>
-		)
-	}
+		</div>
+	</section>
+
+	<section class="section cta">
+		<div class="wrap">
+			<p class="cta-lead">電話で見積もりOK！佐藤が電話に出ます</p>
+			<a class="btn btn-large" href={site.tel.href}>{site.tel.label}</a>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="wrap">
+			<h2 class="section-title">NEWS</h2>
+			<ul class="news">
+				{
+					posts.map((post) => (
+						<li>
+							{post.data.publishedAt && (
+								<time datetime={post.data.publishedAt.toISOString()}>
+									{dateFormat.format(post.data.publishedAt)}
+								</time>
+							)}
+							<a href={`/${post.id}/`}>{post.data.title}</a>
+						</li>
+					))
+				}
+			</ul>
+			<p class="more"><a href="/news/">もっと見る</a></p>
+		</div>
+	</section>
+
+	<section class="section area">
+		<div class="wrap">
+			<h2 class="section-title">対応エリア</h2>
+			<img class="area-image" src="/images/top/area.png" alt="大分県内どこでも出張" width="800" height="500" loading="lazy" />
+			<p>{site.areas}</p>
+		</div>
+	</section>
 </Base>
+
+<style>
+	.hero { background: var(--bg-soft); padding: 48px 0; text-align: center; }
+	.hero-lead { margin: 0; font-size: 1.1rem; color: var(--accent-dark); font-weight: bold; }
+	.hero-title { margin: 8px 0 0; font-size: 2.2rem; }
+	.hero-image { display: block; margin: 24px auto 0; max-width: 860px; width: 100%; border-radius: 8px; }
+
+	.intro { display: flex; align-items: center; gap: 32px; max-width: 900px; }
+	.intro + .intro { margin-top: 40px; }
+	.intro.is-reverse { flex-direction: row-reverse; }
+	.intro-photo { flex: none; width: 200px; }
+	.intro-photo.is-round { border-radius: 50%; }
+	.intro-title { margin: 0 0 8px; font-size: 1.4rem; color: var(--accent-dark); }
+	.intro p { margin: 0 0 8px; }
+
+	.section { padding: 48px 0 0; }
+	.section-title { text-align: center; font-size: 1.6rem; margin: 0 0 24px; }
+	.section-title::after { content: ""; display: block; width: 48px; height: 3px; margin: 8px auto 0; background: var(--accent); }
+
+	.cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; list-style: none; margin: 0; padding: 0; }
+	.card { display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: 8px; padding: 16px; }
+	.card-image { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 4px; }
+	.card h3 { margin: 16px 0 8px; font-size: 1.15rem; }
+	.card p { flex: 1; margin: 0 0 16px; font-size: 0.92rem; }
+
+	.btn { display: inline-block; align-self: center; padding: 10px 28px; border-radius: 80px; background: var(--accent); color: #fff; font-weight: bold; text-decoration: none; }
+	.btn:hover { background: var(--accent-dark); }
+	.btn-large { font-size: 1.6rem; padding: 12px 40px; }
+
+	.cta { text-align: center; }
+	.cta .wrap { background: var(--bg-soft); border-radius: 8px; padding: 32px 16px; }
+	.cta-lead { margin: 0 0 16px; font-weight: bold; font-size: 1.15rem; }
+
+	.news { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+	.news li { display: flex; gap: 16px; padding: 12px 4px; border-bottom: 1px solid var(--line); }
+	.news time { flex: none; color: var(--muted); font-size: 0.9rem; }
+	.news a { color: var(--text); text-decoration: none; }
+	.news a:hover { color: var(--accent-dark); text-decoration: underline; }
+	.more { text-align: right; }
+
+	.area p { max-width: 860px; margin: 0 auto; }
+	.area-image { display: block; margin: 0 auto 16px; max-width: 480px; width: 100%; }
+
+	@media (max-width: 768px) {
+		.hero-title { font-size: 1.6rem; }
+		.cards { grid-template-columns: 1fr; }
+		.intro, .intro.is-reverse { flex-direction: column; text-align: left; }
+		.intro-photo { width: 160px; }
+		.news li { flex-direction: column; gap: 0; }
+		.btn-large { font-size: 1.3rem; padding: 12px 28px; }
+	}
+</style>
