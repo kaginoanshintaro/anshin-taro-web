@@ -3,6 +3,8 @@ import { getSiteSettingsWithCacheHint } from "emdash";
 import { EmDashHead, EmDashBodyStart, EmDashBodyEnd } from "emdash/ui";
 import { createPublicPageContext } from "emdash/page";
 import { site, footerNav } from "../site";
+import "@fontsource/shippori-mincho/400.css";
+import "@fontsource/shippori-mincho/700.css";
 
 interface Props {
 	title: string;
@@ -89,7 +91,8 @@ const pageCtx = createPublicPageContext({
 		margin: 0;
 		color: var(--text);
 		background: var(--bg);
-		font-family: "Hiragino Maru Gothic ProN", "Hiragino Sans", "Noto Sans JP", "BIZ UDPGothic", Meiryo, sans-serif;
+		/* 本文も見出しも明朝体（しっぽり明朝、佐藤さんの指示で明朝に） */
+		font-family: "Shippori Mincho", "Hiragino Mincho ProN", "Yu Mincho", serif;
 		line-height: 1.9;
 		letter-spacing: 0.04em;
 	}
