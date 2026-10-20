@@ -43,24 +43,25 @@ const services = [
 ---
 
 <Base title={site.name} description={site.tagline}>
-	<section class="fv" style={`--fv-image: url(${fvImage})`}>
-		<div class="fv-inner">
-			<img class="fv-logo" src="/images/top/logo.png" alt={site.name} width="600" height="240" />
-			<p class="fv-lead">いつ、いかなる時も 佐藤 が参ります</p>
-			<h1 class="fv-title">一人社長の鍵屋さんです</h1>
+	<section class="fv" style={`--fv-image: url(${fvImage})`} aria-label="カギの安心太郎"></section>
+
+	<section class="greeting">
+		<div class="wrap">
+			<img class="greeting-logo" src="/images/top/logo.png" alt={site.name} width="600" height="240" />
+			<h1 class="greeting-lead">いつ、いかなる時も 佐藤 が参ります</h1>
+			<p class="greeting-sub">一人社長の鍵屋さんです</p>
+			<figure class="greeting-photo">
+				<img src="/images/top/sato.png" alt="代表の佐藤" width="320" height="320" loading="lazy" />
+				<figcaption>／私が佐藤です＼</figcaption>
+			</figure>
+			<div class="greeting-text">
+				<p>弊社では従業員を置かず代表の私、佐藤が直接電話応対から作業までを一手に担います。<br />依頼が集中する場合は少々お待ちいただくこともございますが、その分仲介手数料などの余計なコストが発生せず<br />お客様一人ひとりに向けた丁寧で柔軟なサービスを提供できることが弊社の強みです。</p>
+				<p>お客様が “安心して依頼できる” 信頼のおける会社を目指し、日々努力を重ねております。<br />お客様の立場に立ったサービスを心掛け、皆様にとって最良のパートナーであり続けることをお約束いたします。</p>
+			</div>
 		</div>
 	</section>
 
-	<section class="section" id="intro">
-		<div class="wrap intro">
-			<img class="intro-photo is-round" src="/images/top/sato.png" alt="代表の佐藤" width="320" height="320" loading="lazy" />
-			<div>
-				<h2 class="intro-title">／私が佐藤です＼</h2>
-				<p>弊社では従業員を置かず代表の私、佐藤が直接電話応対から作業までを一手に担います。</p>
-				<p>依頼が集中する場合は少々お待ちいただくこともございますが、その分仲介手数料などの余計なコストが発生せず、お客様一人ひとりに向けた丁寧で柔軟なサービスを提供できることが弊社の強みです。</p>
-				<p>お客様が “安心して依頼できる” 信頼のおける会社を目指し、日々努力を重ねております。お客様の立場に立ったサービスを心掛け、皆様にとって最良のパートナーであり続けることをお約束いたします。</p>
-			</div>
-		</div>
+	<section class="section">
 		<div class="wrap intro is-reverse">
 			<img class="intro-photo" src="/images/top/anshin-taro-thumbsup.png" alt="安心太郎ちゃん" width="400" height="596" loading="lazy" />
 			<div>
@@ -127,22 +128,23 @@ const services = [
 </Base>
 
 <style>
-	/* 今の WordPress のトップと同じく、全幅の画像にロゴと2行の文を重ねる */
+	/* 今の WordPress のトップと同じく、ファーストビューは全幅の写真だけ（1440px 幅で高さ 720px） */
 	.fv {
-		position: relative;
-		display: grid;
-		place-items: center;
-		min-height: 100svh;
-		padding: 48px 16px;
+		height: 50vw;
+		max-height: 100svh;
 		background: var(--fv-image) center / cover no-repeat;
-		text-align: center;
 	}
-	/* 写真の上でも文字が読めるよう、中央だけ生成り色でうっすら明るくする */
-	.fv::before { content: ""; position: absolute; inset: 0; background: radial-gradient(ellipse 45% 40% at 50% 50%, rgb(251 247 241 / 0.85), rgb(251 247 241 / 0)); }
-	.fv-inner { position: relative; }
-	.fv-logo { width: 520px; }
-	.fv-lead { margin: 24px 0 0; font-size: 1.3rem; font-weight: bold; color: var(--text); }
-	.fv-title { margin: 4px 0 0; font-size: 2.6rem; line-height: 1.4; }
+
+	/* ファーストビューの下: 大きなロゴ、2行、代表の写真、あいさつ文（本番と同じ並び） */
+	.greeting { padding: 64px 0 40px; text-align: center; }
+	.greeting-logo { width: 830px; }
+	.greeting-lead { margin: 90px 0 0; font-size: 1.6rem; line-height: 1.5; }
+	.greeting-sub { margin: 4px 0 0; }
+	.greeting-photo { margin: 24px auto 0; }
+	.greeting-photo img { width: 210px; border-radius: 50%; }
+	.greeting-photo figcaption { font-size: 0.8rem; color: var(--muted); }
+	.greeting-text { margin-top: 96px; }
+	.greeting-text p { margin: 0 0 1.9em; }
 
 	.intro { display: flex; align-items: center; gap: 32px; max-width: 900px; }
 	.intro + .intro { margin-top: 40px; }
@@ -183,8 +185,9 @@ const services = [
 	.area-image { display: block; margin: 0 auto 16px; max-width: 480px; width: 100%; }
 
 	@media (max-width: 768px) {
-		.fv-logo { width: 240px; }
-		.fv-title { font-size: 1.6rem; }
+		.greeting-logo { width: 280px; }
+		.greeting-lead { margin-top: 48px; font-size: 1.3rem; }
+		.greeting-text br { display: none; }
 		.cards { grid-template-columns: 1fr; }
 		.intro, .intro.is-reverse { flex-direction: column; text-align: left; }
 		.intro-photo { width: 160px; }
