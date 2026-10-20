@@ -9,8 +9,8 @@ const { entries: posts, cacheHint } = await getEmDashCollection("posts", {
 });
 if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
 
-// ファーストビューの大きな画像。今は今のサイトの背景イラスト（background_pic.jpg）で試している
-const fvImage = "/images/top/fv-background_pic.jpg";
+// ファーストビューの大きな画像（佐藤さん指定: シリンダー.jpg）
+const fvImage = "/images/top/fv-cylinder.jpg";
 
 const dateFormat = new Intl.DateTimeFormat("ja-JP", {
 	year: "numeric",
@@ -48,12 +48,7 @@ const services = [
 			<img class="fv-logo" src="/images/top/logo.png" alt={site.name} width="600" height="240" />
 			<p class="fv-lead">いつ、いかなる時も 佐藤 が参ります</p>
 			<h1 class="fv-title">一人社長の鍵屋さんです</h1>
-			<a class="btn btn-large" href={site.tel.href}>{site.tel.label}</a>
 		</div>
-		<a class="fv-scroll" href="#intro" aria-label="下へスクロール">scroll</a>
-		<svg class="fv-wave" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true">
-			<path d="M0,48 C240,88 480,8 720,40 C960,72 1200,24 1440,52 L1440,80 L0,80 Z" />
-		</svg>
 	</section>
 
 	<section class="section" id="intro">
@@ -132,30 +127,22 @@ const services = [
 </Base>
 
 <style>
+	/* 今の WordPress のトップと同じく、全幅の画像にロゴと2行の文を重ねる */
 	.fv {
 		position: relative;
 		display: grid;
 		place-items: center;
 		min-height: 100svh;
-		padding: 48px 16px 120px;
+		padding: 48px 16px;
 		background: var(--fv-image) center / cover no-repeat;
 		text-align: center;
 	}
-	.fv::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgb(251 247 241 / 0.25), rgb(251 247 241 / 0.55)); }
-	.fv-inner {
-		position: relative;
-		max-width: 560px;
-		padding: 40px 32px;
-		background: rgb(251 247 241 / 0.92);
-		border-radius: 48% 52% 46% 54% / 12% 14% 12% 14%;
-		box-shadow: 0 20px 60px rgb(61 53 48 / 0.15);
-	}
-	.fv-logo { width: 280px; }
-	.fv-lead { margin: 16px 0 0; color: var(--accent); font-weight: bold; }
-	.fv-title { margin: 4px 0 24px; font-size: 2.2rem; line-height: 1.4; }
-	.fv-scroll { position: absolute; left: 50%; bottom: 72px; transform: translateX(-50%); color: var(--text); font-size: 0.75rem; letter-spacing: 0.2em; text-decoration: none; }
-	.fv-scroll::after { content: ""; display: block; width: 1px; height: 32px; margin: 4px auto 0; background: var(--text); }
-	.fv-wave { position: absolute; left: 0; right: 0; bottom: -1px; width: 100%; height: 64px; fill: var(--bg); }
+	/* 写真の上でも文字が読めるよう、中央だけ生成り色でうっすら明るくする */
+	.fv::before { content: ""; position: absolute; inset: 0; background: radial-gradient(ellipse 45% 40% at 50% 50%, rgb(251 247 241 / 0.85), rgb(251 247 241 / 0)); }
+	.fv-inner { position: relative; }
+	.fv-logo { width: 520px; }
+	.fv-lead { margin: 24px 0 0; font-size: 1.3rem; font-weight: bold; color: var(--text); }
+	.fv-title { margin: 4px 0 0; font-size: 2.6rem; line-height: 1.4; }
 
 	.intro { display: flex; align-items: center; gap: 32px; max-width: 900px; }
 	.intro + .intro { margin-top: 40px; }
@@ -196,8 +183,7 @@ const services = [
 	.area-image { display: block; margin: 0 auto 16px; max-width: 480px; width: 100%; }
 
 	@media (max-width: 768px) {
-		.fv-inner { padding: 32px 20px; }
-		.fv-logo { width: 200px; }
+		.fv-logo { width: 240px; }
 		.fv-title { font-size: 1.6rem; }
 		.cards { grid-template-columns: 1fr; }
 		.intro, .intro.is-reverse { flex-direction: column; text-align: left; }
