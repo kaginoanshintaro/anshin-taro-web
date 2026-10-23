@@ -72,19 +72,39 @@ const pageCtx = createPublicPageContext({
 
 <style is:global>
 	:root {
-		/* 会社のイメージカラー（佐藤さん指定） */
-		--accent: #d85d0f;
-		--accent-dark: #b04a0a;
-		--accent-soft: #f6e3d3;
-		/* 生成りの紙のような地色と、黒ではなく焦げ茶の文字でやわらかく見せる */
-		--bg: #fbf7f1;
-		--bg-alt: #f3ece2;
-		--text: #3d3530;
-		--muted: #6f655d;
-		--line: #e6ddd2;
+		/*
+		 * カラーテーマ（2026-10-23 佐藤さんのコンセプト）
+		 * メイン: オレンジ（佐藤さん指定 #D85D0F）／サブ: 木製のドアのブラウン／その他: 錠前のグレースケール
+		 * 文字色と背景の組み合わせのコントラスト比は emdash-migration/color-palette.md
+		 */
+		--color-orange: #d85d0f;
+		--color-orange-dark: #b04a0a; /* 小さい文字のリンク・ボタンのホバー */
+		--color-orange-soft: #f6e3d3; /* メインの淡い色。電話の案内などの面 */
+		--color-brown: #6b4429; /* 見出し */
+		--color-brown-dark: #4a2e1c; /* フッターの面 */
+		--color-brown-light: #a9774f; /* 飾りの線。文字には使わない */
+		--gray-900: #262626; /* 本文 */
+		--gray-700: #4d4d4d; /* 補足の文 */
+		--gray-500: #6b6b6b; /* 日付・キャプション */
+		--gray-300: #bdbdbd; /* アイコン・使えないボタン */
+		--gray-200: #dcdcdc; /* 区切り線 */
+		--gray-100: #f2f2f2; /* 面の背景 */
+		--white: #ffffff; /* カード */
+		--color-cream: #fbf7f1; /* ページの地色（佐藤さん指定でクリーム色） */
+
+		--accent: var(--color-orange);
+		--accent-dark: var(--color-orange-dark);
+		--accent-soft: var(--color-orange-soft);
+		--bg: var(--color-cream);
+		--bg-alt: var(--gray-100);
+		--text: var(--gray-900);
+		--muted: var(--gray-500);
+		--line: var(--gray-200);
+		--heading: var(--color-brown);
 		--radius: 20px;
 		--wrap: 1080px;
 	}
+
 	*, *::before, *::after { box-sizing: border-box; }
 	html { scroll-behavior: smooth; }
 	body {
@@ -102,9 +122,9 @@ const pageCtx = createPublicPageContext({
 
 	main { min-height: 50vh; }
 
-	.site-footer { margin-top: 80px; padding: 48px 0 40px; background: #4a3f37; color: #e9e1d8; font-size: 0.9rem; border-radius: 48px 48px 0 0; }
-	.site-footer a { color: #fff; }
-	.footer-name { font-weight: bold; font-size: 1.1rem; color: #fff; }
+	.site-footer { margin-top: 80px; padding: 48px 0 40px; background: var(--color-brown-dark); color: var(--gray-200); font-size: 0.9rem; border-radius: 48px 48px 0 0; }
+	.site-footer a { color: var(--white); }
+	.footer-name { font-weight: bold; font-size: 1.1rem; color: var(--white); }
 	.footer-nav { display: flex; flex-wrap: wrap; gap: 8px 24px; list-style: none; padding: 0; }
-	.copyright { margin-top: 24px; color: #b9ada2; font-size: 0.8rem; }
+	.copyright { margin-top: 24px; color: var(--gray-300); font-size: 0.8rem; }
 </style>
