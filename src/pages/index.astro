@@ -43,153 +43,128 @@ const services = [
 ---
 
 <Base title={site.name} description={site.tagline}>
-	<!-- 背景の写真は固定したまま、上に重ねた文字だけがスクロールで流れていく -->
-	<div class="stage">
-		<div class="stage-bg" style={`--stage-image: url(${fvImage})`} aria-hidden="true"></div>
+	<!-- ここから2人の紹介までは、今の WordPress のトップと同じ並びと大きさ（佐藤さんの指示で本番に戻した） -->
+	<section class="fv" style={`--fv-image: url(${fvImage})`} aria-label={site.name}></section>
 
-		<section class="stage-block fv">
-			<div class="stage-content">
-				<img class="fv-logo" src="/images/top/logo.png" alt={site.name} width="600" height="240" />
-				<p class="fv-lead">いつ、いかなる時も 佐藤 が参ります</p>
-				<h1 class="fv-title">一人社長の鍵屋さんです</h1>
-			</div>
-		</section>
-
-		<section class="stage-block">
-			<figure class="stage-content greeting-photo">
+	<section class="greeting">
+		<div class="wrap">
+			<img class="greeting-logo" src="/images/top/logo.png" alt={site.name} width="600" height="240" />
+			<h1 class="greeting-lead">いつ、いかなる時も 佐藤 が参ります</h1>
+			<p class="greeting-sub">一人社長の鍵屋さんです</p>
+			<figure class="greeting-photo">
 				<img src="/images/top/sato.png" alt="代表の佐藤" width="320" height="320" loading="lazy" />
 				<figcaption>／私が佐藤です＼</figcaption>
 			</figure>
-		</section>
-
-		<section class="stage-block">
-			<div class="stage-content greeting-text">
+			<div class="greeting-text">
 				<p>弊社では従業員を置かず代表の私、佐藤が直接電話応対から作業までを一手に担います。<br />依頼が集中する場合は少々お待ちいただくこともございますが、その分仲介手数料などの余計なコストが発生せず<br />お客様一人ひとりに向けた丁寧で柔軟なサービスを提供できることが弊社の強みです。</p>
 				<p>お客様が “安心して依頼できる” 信頼のおける会社を目指し、日々努力を重ねております。<br />お客様の立場に立ったサービスを心掛け、皆様にとって最良のパートナーであり続けることをお約束いたします。</p>
 			</div>
-		</section>
+		</div>
+	</section>
 
-		<section class="stage-block">
-			<div class="stage-content characters">
-				<div class="character">
-					<img src="/images/top/anshin-taro-thumbsup.png" alt="安心太郎ちゃん" width="400" height="596" loading="lazy" />
-					<h2>安心太郎ちゃん</h2>
-					<p>マスコットキャラクターのAIエージェント、安心太郎ちゃん。暮らしの安心と安全を守るため、佐藤とともに活躍しています。よろしくね！</p>
-					<p>ホームページをブックマークすると安心太郎ちゃんの顔がアイコンになるよ！ためしてみてね〜♪</p>
-				</div>
-				<div class="character">
-					<img src="/images/top/kagi-baby.png" alt="ベビちゃん" width="400" height="400" loading="lazy" />
-					<h2>ベビちゃん</h2>
-					<!-- 紹介文は佐藤さんからもらうまで仮置き -->
-					<p class="placeholder">（ベビちゃんの紹介文が入ります）</p>
-				</div>
+	<section class="characters">
+		<div class="character">
+			<img src="/images/top/anshin-taro-thumbsup.png" alt="安心太郎ちゃん" width="400" height="596" loading="lazy" />
+			<div>
+				<h2><span class="character-name">安心太郎</span>ちゃん</h2>
+				<p><strong>マスコットキャラクター</strong>のAIエージェント、安心太郎ちゃん。<br />暮らしの安心と安全を守るため、佐藤とともに活躍しています。よろしくね！</p>
+				<p>ホームページを<strong>ブックマーク</strong>すると安心太郎ちゃんの顔が<strong>アイコンになるよ！</strong><br />ためしてみてね〜♪</p>
 			</div>
-		</section>
-	</div>
+		</div>
+		<!-- ベビちゃんは本番にないので、太郎ちゃんと同じ形で下に足している。紹介文は佐藤さんからもらうまで仮置き -->
+		<div class="character">
+			<img src="/images/top/kagi-baby.png" alt="ベビちゃん" width="400" height="400" loading="lazy" />
+			<div>
+				<h2><span class="character-name">ベビ</span>ちゃん</h2>
+				<p class="placeholder">（ベビちゃんの紹介文が入ります）</p>
+			</div>
+		</div>
+	</section>
 
-	<!-- 2人の紹介より下は、別の固定背景に切り替わる（背景画像は佐藤さんが用意中。それまでは画像なし） -->
-	<div class="stage">
-		<div class="stage-bg" aria-hidden="true"></div>
-		<section class="section">
-			<div class="wrap">
-				<h2 class="section-title">サービス紹介</h2>
-				<ul class="cards">
-					{
-						services.map((s) => (
-							<li class="card">
-								<img class="card-image" src={s.image} alt="" loading="lazy" />
-								<h3>{s.title}</h3>
-								<p>{s.text}</p>
-								<a class="btn" href={s.href}>さらに詳しく</a>
-							</li>
-						))
-					}
-				</ul>
-			</div>
-		</section>
+	<section class="section">
+		<div class="wrap">
+			<h2 class="section-title">サービス紹介</h2>
+			<ul class="cards">
+				{
+					services.map((s) => (
+						<li class="card">
+							<img class="card-image" src={s.image} alt="" loading="lazy" />
+							<h3>{s.title}</h3>
+							<p>{s.text}</p>
+							<a class="btn" href={s.href}>さらに詳しく</a>
+						</li>
+					))
+				}
+			</ul>
+		</div>
+	</section>
 
-		<section class="section cta">
-			<div class="wrap">
-				<p class="cta-lead">電話で見積もりOK！佐藤が電話に出ます</p>
-				<a class="btn btn-large" href={site.tel.href}>{site.tel.label}</a>
-			</div>
-		</section>
+	<section class="section cta">
+		<div class="wrap">
+			<p class="cta-lead">電話で見積もりOK！佐藤が電話に出ます</p>
+			<a class="btn btn-large" href={site.tel.href}>{site.tel.label}</a>
+		</div>
+	</section>
 
-		<section class="section">
-			<div class="wrap">
-				<h2 class="section-title">NEWS</h2>
-				<ul class="news">
-					{
-						posts.map((post) => (
-							<li>
-								{post.data.publishedAt && (
-									<time datetime={post.data.publishedAt.toISOString()}>
-										{dateFormat.format(post.data.publishedAt)}
-									</time>
-								)}
-								<a href={`/${post.id}/`}>{post.data.title}</a>
-							</li>
-						))
-					}
-				</ul>
-				<p class="more"><a href="/news/">もっと見る</a></p>
-			</div>
-		</section>
+	<section class="section">
+		<div class="wrap">
+			<h2 class="section-title">NEWS</h2>
+			<ul class="news">
+				{
+					posts.map((post) => (
+						<li>
+							{post.data.publishedAt && (
+								<time datetime={post.data.publishedAt.toISOString()}>
+									{dateFormat.format(post.data.publishedAt)}
+								</time>
+							)}
+							<a href={`/${post.id}/`}>{post.data.title}</a>
+						</li>
+					))
+				}
+			</ul>
+			<p class="more"><a href="/news/">もっと見る</a></p>
+		</div>
+	</section>
 
-		<section class="section area">
-			<div class="wrap">
-				<h2 class="section-title">対応エリア</h2>
-				<img class="area-image" src="/images/top/area.png" alt="大分県内どこでも出張" width="800" height="500" loading="lazy" />
-				<p>{site.areas}</p>
-			</div>
-		</section>
-	</div>
+	<section class="section area">
+		<div class="wrap">
+			<h2 class="section-title">対応エリア</h2>
+			<img class="area-image" src="/images/top/area.png" alt="大分県内どこでも出張" width="800" height="500" loading="lazy" />
+			<p>{site.areas}</p>
+		</div>
+	</section>
 </Base>
 
 <style>
-	/*
-	 * 固定背景: .stage-bg を sticky で画面に貼り付け、最初のブロックを高さぶん上へずらして重ねる
-	 * （background-attachment: fixed はスマホの Safari で効かないため）。負のマージンを .stage-bg 側に
-	 * 付けると、背景が .stage の終わりを越えて下のセクションに重なる
-	 */
-	.stage { position: relative; }
-	.stage-bg {
-		position: sticky;
-		top: 0;
-		height: 100svh;
-		/* 写真の上でも文字が読めるよう、写真全体に白を重ねて明るくする */
-		background: linear-gradient(rgb(255 255 255 / 0.55), rgb(255 255 255 / 0.55)), var(--stage-image, none) center / cover no-repeat, var(--bg);
+	/* 今の WordPress のトップと同じく、ファーストビューは全幅の写真だけ（1440px 幅で高さ 720px） */
+	.fv {
+		height: 50vw;
+		max-height: 100svh;
+		background: var(--fv-image) center / cover no-repeat;
 	}
-	.stage-bg + * { margin-top: -100svh; }
-	/* sticky の背景より手前に描かれるよう、中身にも position を付ける */
-	.stage > :not(.stage-bg) { position: relative; }
-	.stage-block {
-		position: relative;
-		display: grid;
-		place-items: center;
-		min-height: 100svh;
-		padding: 48px 16px;
-		text-align: center;
-	}
-	.stage-block + .stage-block { min-height: 80svh; }
-	.stage-content { margin: 0; padding: 64px 96px; }
-	.fv-logo { width: 520px; }
-	.fv-lead { margin: 24px 0 0; font-size: 1.4rem; font-weight: bold; }
-	.fv-title { margin: 4px 0 0; font-size: 2.8rem; line-height: 1.4; }
 
-	.greeting-photo img { width: 240px; border-radius: 50%; }
-	.greeting-photo figcaption { margin-top: 8px; font-size: 1.1rem; }
-	.greeting-text { max-width: 1200px; padding: 96px 140px; }
+	/* ファーストビューの下: 大きなロゴ、2行、代表の写真、あいさつ文（本番と同じ並び） */
+	.greeting { padding: 64px 0 40px; text-align: center; }
+	.greeting-logo { width: 830px; }
+	.greeting-lead { margin: 90px 0 0; font-size: 1.6rem; line-height: 1.5; }
+	.greeting-sub { margin: 4px 0 0; }
+	.greeting-photo { margin: 24px auto 0; }
+	.greeting-photo img { width: 210px; border-radius: 50%; }
+	.greeting-photo figcaption { font-size: 0.8rem; color: var(--muted); }
+	.greeting-text { margin-top: 96px; }
 	.greeting-text p { margin: 0 0 1.9em; }
-	.greeting-text p:last-child { margin-bottom: 0; }
 
-	.characters { display: flex; gap: 48px; max-width: 960px; padding: 80px 120px; }
-	.character { flex: 1; }
-	/* 白地のイラストをモヤの色になじませる */
-	.character img { height: 280px; width: auto; mix-blend-mode: multiply; }
-	.character h2 { margin: 16px 0 8px; font-size: 1.4rem; color: var(--accent); }
-	.character p { margin: 0 0 8px; text-align: left; }
-	.character .placeholder { text-align: center; color: var(--muted); }
+	/* 本番の「画像 20%・文 80%」の横並び */
+	.characters { max-width: 900px; margin: 0 auto; padding: 40px 16px 0; }
+	.character { display: grid; grid-template-columns: 20% auto; align-items: center; gap: 24px; }
+	.character + .character { margin-top: 48px; }
+	/* 白地のイラストを地色になじませる */
+	.character img { width: 100%; height: auto; mix-blend-mode: multiply; }
+	.character h2 { margin: 0 0 1.2em; font-size: 1.25rem; }
+	.character-name { font-size: 1.5rem; }
+	.character p { margin: 0 0 1.4em; }
+	.character .placeholder { color: var(--muted); }
 
 	.section { padding: 48px 0 0; }
 	.section-title { text-align: center; font-size: 1.6rem; margin: 0 0 24px; }
@@ -220,11 +195,9 @@ const services = [
 	.area-image { display: block; margin: 0 auto 16px; max-width: 480px; width: 100%; mix-blend-mode: multiply; }
 
 	@media (max-width: 768px) {
-		.fv-logo { width: 240px; }
-		.fv-title { font-size: 1.8rem; }
+		.greeting-logo { width: 280px; }
+		.greeting-lead { margin-top: 48px; font-size: 1.3rem; }
 		.greeting-text br { display: none; }
-		.stage-content, .greeting-text, .characters { padding: 48px 24px; }
-		.characters { flex-direction: column; }
 		.cards { grid-template-columns: 1fr; }
 		.news li { flex-direction: column; gap: 0; }
 		.btn-large { font-size: 1.3rem; padding: 12px 28px; }
