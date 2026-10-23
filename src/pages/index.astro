@@ -64,19 +64,10 @@ const services = [
 
 	<section class="characters">
 		<div class="character">
-			<img src="/images/top/anshin-taro-thumbsup.png" alt="安心太郎ちゃん" width="400" height="596" loading="lazy" />
+			<img src="/images/top/anshin-taro-and-baby.png" alt="安心太郎ちゃんとカギベイビー" width="600" height="600" loading="lazy" />
 			<div>
-				<h2><span class="character-name">安心太郎</span>ちゃん</h2>
-				<p><strong>マスコットキャラクター</strong>のAIエージェント、安心太郎ちゃん。<br />暮らしの安心と安全を守るため、佐藤とともに活躍しています。よろしくね！</p>
-				<p>ホームページを<strong>ブックマーク</strong>すると安心太郎ちゃんの顔が<strong>アイコンになるよ！</strong><br />ためしてみてね〜♪</p>
-			</div>
-		</div>
-		<!-- ベビちゃんは本番にないので、太郎ちゃんと同じ形で下に足している。紹介文は佐藤さんからもらうまで仮置き -->
-		<div class="character">
-			<img src="/images/top/kagi-baby.png" alt="ベビちゃん" width="400" height="400" loading="lazy" />
-			<div>
-				<h2><span class="character-name">ベビ</span>ちゃん</h2>
-				<p class="placeholder">（ベビちゃんの紹介文が入ります）</p>
+				<h2><span class="character-name">安心太郎</span>ちゃん＆<span class="character-name">カギベイビー</span></h2>
+				<p>カギの安心太郎株式会社のマスコットキャラクター、AIエージェントの安心太郎ちゃんとカギベイビーです。<br />暮らしの安心と安全を守るため、佐藤と共に活躍しています。よろしくね！<br />ホームページをブックマークすると、安心太郎ちゃんの顔がアイコンになるよ。試してみてね！</p>
 			</div>
 		</div>
 	</section>
@@ -155,16 +146,13 @@ const services = [
 	.greeting-text { margin-top: 96px; }
 	.greeting-text p { margin: 0 0 1.9em; }
 
-	/* 本番の「画像 20%・文 80%」の横並び */
-	.characters { max-width: 900px; margin: 0 auto; padding: 40px 16px 0; }
-	.character { display: grid; grid-template-columns: 20% auto; align-items: center; gap: 24px; }
-	.character + .character { margin-top: 48px; }
-	/* 白地のイラストを地色になじませる */
-	.character img { width: 100%; height: auto; mix-blend-mode: multiply; }
+	/* 本番と同じ画像と文の横並び。2人の画像は本番の 20% より広めにしている。画像の白い背景は透明にしてあるので地色のクリーム色が見える */
+	.characters { max-width: 1200px; margin: 0 auto; padding: 40px 16px 0; }
+	.character { display: grid; grid-template-columns: 300px auto; align-items: center; gap: 24px; }
+	.character img { width: 100%; height: auto; }
 	.character h2 { margin: 0 0 1.2em; font-size: 1.25rem; }
 	.character-name { font-size: 1.5rem; }
 	.character p { margin: 0 0 1.4em; }
-	.character .placeholder { color: var(--muted); }
 
 	.section { padding: 48px 0 0; }
 	.section-title { text-align: center; font-size: 1.6rem; margin: 0 0 24px; }
