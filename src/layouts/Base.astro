@@ -1,9 +1,10 @@
 ---
-import { getMenuWithCacheHint, getSiteSettingsWithCacheHint } from "emdash";
+import { getSiteSettingsWithCacheHint } from "emdash";
 import { EmDashHead, EmDashBodyStart, EmDashBodyEnd } from "emdash/ui";
 import { createPublicPageContext } from "emdash/page";
-import LiveSearch from "emdash/ui/search";
-import { resolveStarterSiteIdentity } from "../utils/site-identity";
+import { site, footerNav } from "../site";
+import "@fontsource/shippori-mincho/400.css";
+import "@fontsource/shippori-mincho/700.css";
 
 interface Props {
 	title: string;
@@ -17,25 +18,11 @@ interface Props {
 
 const { title, pageTitle, description, image, canonical, content } =
 	Astro.props;
-const [settingsResult, menuResult] = await Promise.all([
-	getSiteSettingsWithCacheHint(),
-	getMenuWithCacheHint("primary"),
-]);
-if (Astro.cache?.enabled) {
-	Astro.cache.set(settingsResult.cacheHint);
-	Astro.cache.set(menuResult.cacheHint);
-}
+const settingsResult = await getSiteSettingsWithCacheHint();
+if (Astro.cache?.enabled) Astro.cache.set(settingsResult.cacheHint);
 
-const { siteTitle, siteTagline, siteLogo } = resolveStarterSiteIdentity(
-	settingsResult.data,
-);
-const titleIncludesSiteName =
-	title === siteTitle ||
-	title.endsWith(` | ${siteTitle}`) ||
-	title.endsWith(` — ${siteTitle}`);
-const fullTitle = titleIncludesSiteName ? title : `${title} — ${siteTitle}`;
-const pageDescription = description ?? siteTagline;
-const menu = menuResult.data;
+const fullTitle = title === site.name ? title : `${title} | ${site.name}`;
+const pageDescription = description ?? site.tagline;
 
 const pageCtx = createPublicPageContext({
 	Astro,
@@ -47,12 +34,12 @@ const pageCtx = createPublicPageContext({
 	canonical,
 	image,
 	content,
-	siteName: siteTitle,
+	siteName: site.name,
 });
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="ja">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -62,40 +49,82 @@ const pageCtx = createPublicPageContext({
 	<body>
 		<EmDashBodyStart page={pageCtx} />
 
-		<header>
-			<nav>
-				<a href="/">
-					{
-						siteLogo ? (
-							<img
-								src={siteLogo.url}
-								alt={siteLogo.alt || siteTitle}
-								style="height:48px;width:auto;margin:-8px 0;display:block;"
-							/>
-						) : (
-							siteTitle
-						)
-					}
-				</a>
-				{
-					menu?.items.map((item) => (
-						<a
-							href={item.url}
-							target={item.target}
-							rel={item.target === "_blank" ? "noopener noreferrer" : undefined}
-						>
-							{item.label}
-						</a>
-					))
-				}
-				<LiveSearch placeholder="Search..." collections={["posts", "pages"]} />
-			</nav>
-		</header>
-
+		<!-- ヘッダーは後で付ける（佐藤さんの指示、2026-10-20） -->
 		<main>
 			<slot />
 		</main>
 
+		<footer class="site-footer">
+			<div class="wrap">
+				<p class="footer-name">{site.name}</p>
+				<p>{site.address}</p>
+				<p>TEL <a href={site.tel.href}>{site.tel.label}</a></p>
+				<ul class="footer-nav">
+					{footerNav.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+				</ul>
+				<p class="copyright">© {site.name}</p>
+			</div>
+		</footer>
+
 		<EmDashBodyEnd page={pageCtx} />
 	</body>
 </html>
+
+<style is:global>
+	:root {
+		/*
+		 * カラーテーマ（2026-10-23 佐藤さんのコンセプト）
+		 * メイン: オレンジ（佐藤さん指定 #D85D0F）／サブ: 木製のドアのブラウン／その他: 錠前のグレースケール
+		 * 文字色と背景の組み合わせのコントラスト比は emdash-migration/color-palette.md
+		 */
+		--color-orange: #d85d0f;
+		--color-orange-dark: #b04a0a; /* 小さい文字のリンク・ボタンのホバー */
+		--color-orange-soft: #f6e3d3; /* メインの淡い色。電話の案内などの面 */
+		--color-brown: #6b4429; /* 見出し */
+		--color-brown-dark: #4a2e1c; /* フッターの面 */
+		--color-brown-light: #a9774f; /* 飾りの線。文字には使わない */
+		--gray-900: #262626; /* 本文 */
+		--gray-700: #4d4d4d; /* 補足の文 */
+		--gray-500: #6b6b6b; /* 日付・キャプション */
+		--gray-300: #bdbdbd; /* アイコン・使えないボタン */
+		--gray-200: #dcdcdc; /* 区切り線 */
+		--gray-100: #f2f2f2; /* 面の背景 */
+		--white: #ffffff; /* カード */
+		--color-cream: #fbf7f1; /* ページの地色（佐藤さん指定でクリーム色） */
+
+		--accent: var(--color-orange);
+		--accent-dark: var(--color-orange-dark);
+		--accent-soft: var(--color-orange-soft);
+		--bg: var(--color-cream);
+		--bg-alt: var(--gray-100);
+		--text: var(--gray-900);
+		--muted: var(--gray-500);
+		--line: var(--gray-200);
+		--heading: var(--color-brown);
+		--radius: 20px;
+		--wrap: 1080px;
+	}
+
+	*, *::before, *::after { box-sizing: border-box; }
+	html { scroll-behavior: smooth; }
+	body {
+		margin: 0;
+		color: var(--text);
+		background: var(--bg);
+		/* 本文も見出しも明朝体（しっぽり明朝、佐藤さんの指示で明朝に） */
+		font-family: "Shippori Mincho", "Hiragino Mincho ProN", "Yu Mincho", serif;
+		line-height: 1.9;
+		letter-spacing: 0.04em;
+	}
+	img { max-width: 100%; height: auto; }
+	a { color: var(--accent-dark); }
+	.wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 16px; }
+
+	main { min-height: 50vh; }
+
+	.site-footer { margin-top: 80px; padding: 48px 0 40px; background: var(--color-brown-dark); color: var(--gray-200); font-size: 0.9rem; border-radius: 48px 48px 0 0; }
+	.site-footer a { color: var(--white); }
+	.footer-name { font-weight: bold; font-size: 1.1rem; color: var(--white); }
+	.footer-nav { display: flex; flex-wrap: wrap; gap: 8px 24px; list-style: none; padding: 0; }
+	.copyright { margin-top: 24px; color: var(--gray-300); font-size: 0.8rem; }
+</style>

@@ -1,50 +1,194 @@
 ---
-import { getEmDashCollection, getSiteSettings } from "emdash";
-import { Image } from "emdash/ui";
+import { getEmDashCollection } from "emdash";
 import Base from "../layouts/Base.astro";
-import { resolveStarterSiteIdentity } from "../utils/site-identity";
+import { site } from "../site";
 
 const { entries: posts, cacheHint } = await getEmDashCollection("posts", {
 	orderBy: { published_at: "desc" },
-	limit: 10,
+	limit: 5,
 });
-const { siteTitle, siteTagline } = resolveStarterSiteIdentity(
-	await getSiteSettings(),
-);
 if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+
+// ファーストビューの大きな画像（佐藤さん指定: シリンダー.jpg）
+const fvImage = "/images/top/fv-cylinder.jpg";
+
+const dateFormat = new Intl.DateTimeFormat("ja-JP", {
+	year: "numeric",
+	month: "2-digit",
+	day: "2-digit",
+	timeZone: "Asia/Tokyo",
+});
+
+// 文章は今の WordPress のトップ（固定ページ HOME）から写したもの
+const services = [
+	{
+		title: "カギの開錠",
+		href: "/lock-opening/",
+		image: "/images/top/service-lock-opening.jpg",
+		text: "デスクやロッカー、南京錠などの簡易錠から他店では断られる事も多い防犯性の高い鍵、電子錠やカードキーなども高い技術力で非破壊開錠いたします。金庫、自動車、スーツケースなどあらゆるカギに対応します。",
+	},
+	{
+		title: "カギの修理・交換・取付",
+		href: "/repair/",
+		image: "/images/top/service-repair.jpg",
+		text: "鍵の修理交換や錠前のお取り付けを承ります。ドアの建て付けの調整やドアクローザーの交換、スマートロックや電子錠の取付、インターホンや防犯カメラなどの防犯機器もご相談ください。",
+	},
+	{
+		title: "カギの作成",
+		href: "/duplicate/",
+		image: "/images/top/service-duplicate.jpg",
+		text: "合鍵の作成を承ります。出張作成も可能です。防犯性の高いディンプルキーやウェーブキーなどの特殊キーはもちろん、自動車やバイクのイモビライザーキーの鍵作成、鍵を無くしてしまった場合の鍵なし鍵作成はおまかせください。",
+	},
+];
 ---
 
-<Base title={siteTitle} description={siteTagline}>
-	<h1>Recent Posts</h1>
+<Base title={site.name} description={site.tagline}>
+	<!-- ここから2人の紹介までは、今の WordPress のトップと同じ並びと大きさ（佐藤さんの指示で本番に戻した） -->
+	<section class="fv" style={`--fv-image: url(${fvImage})`} aria-label={site.name}></section>
 
-	{
-		posts.length === 0 ? (
-			<p>
-				No posts yet. <a href="/_emdash/admin/content/posts/new">Create one</a>.
-			</p>
-		) : (
-			<ul>
-				{posts.map((post) => (
-					<li>
-						<a href={`/${post.id}/`}>
-							{post.data.featured_image && (
-								<div {...post.edit.featured_image}><Image image={post.data.featured_image} /></div>
-							)}
-							<h2 {...post.edit.title}>{post.data.title}</h2>
-						</a>
-						{post.data.excerpt && <p {...post.edit.excerpt}>{post.data.excerpt}</p>}
-						{post.data.publishedAt && (
-							<time datetime={post.data.publishedAt.toISOString()}>
-								{post.data.publishedAt.toLocaleDateString("en-US", {
-									year: "numeric",
-									month: "long",
-									day: "numeric",
-								})}
-							</time>
-						)}
-					</li>
-				))}
+	<section class="greeting">
+		<div class="wrap">
+			<img class="greeting-logo" src="/images/top/logo.png" alt={site.name} width="600" height="240" />
+			<h1 class="greeting-lead">いつ、いかなる時も 佐藤 が参ります</h1>
+			<p class="greeting-sub">一人社長の鍵屋さんです</p>
+			<figure class="greeting-photo">
+				<img src="/images/top/sato.png" alt="代表の佐藤" width="320" height="320" loading="lazy" />
+				<figcaption>／私が佐藤です＼</figcaption>
+			</figure>
+			<div class="greeting-text">
+				<p>弊社では従業員を置かず代表の私、佐藤が直接電話応対から作業までを一手に担います。<br />依頼が集中する場合は少々お待ちいただくこともございますが、その分仲介手数料などの余計なコストが発生せず<br />お客様一人ひとりに向けた丁寧で柔軟なサービスを提供できることが弊社の強みです。</p>
+				<p>お客様が “安心して依頼できる” 信頼のおける会社を目指し、日々努力を重ねております。<br />お客様の立場に立ったサービスを心掛け、皆様にとって最良のパートナーであり続けることをお約束いたします。</p>
+			</div>
+		</div>
+	</section>
+
+	<section class="characters">
+		<div class="character">
+			<img src="/images/top/anshin-taro-and-baby.png" alt="安心太郎ちゃんとカギベイビー" width="600" height="600" loading="lazy" />
+			<div>
+				<h2><span class="character-name">安心太郎</span>ちゃん＆<span class="character-name">カギベイビー</span></h2>
+				<p>カギの安心太郎株式会社のマスコットキャラクター、AIエージェントの安心太郎ちゃんとカギベイビーです。<br />暮らしの安心と安全を守るため、佐藤と共に活躍しています。よろしくね！<br />ホームページをブックマークすると、安心太郎ちゃんの顔がアイコンになるよ。試してみてね！</p>
+			</div>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="wrap">
+			<h2 class="section-title">サービス紹介</h2>
+			<ul class="cards">
+				{
+					services.map((s) => (
+						<li class="card">
+							<img class="card-image" src={s.image} alt="" loading="lazy" />
+							<h3>{s.title}</h3>
+							<p>{s.text}</p>
+							<a class="btn" href={s.href}>さらに詳しく</a>
+						</li>
+					))
+				}
 			</ul>
-		)
-	}
+		</div>
+	</section>
+
+	<section class="section cta">
+		<div class="wrap">
+			<p class="cta-lead">電話で見積もりOK！佐藤が電話に出ます</p>
+			<a class="btn btn-large" href={site.tel.href}>{site.tel.label}</a>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="wrap">
+			<h2 class="section-title">NEWS</h2>
+			<ul class="news">
+				{
+					posts.map((post) => (
+						<li>
+							{post.data.publishedAt && (
+								<time datetime={post.data.publishedAt.toISOString()}>
+									{dateFormat.format(post.data.publishedAt)}
+								</time>
+							)}
+							<a href={`/${post.id}/`}>{post.data.title}</a>
+						</li>
+					))
+				}
+			</ul>
+			<p class="more"><a href="/news/">もっと見る</a></p>
+		</div>
+	</section>
+
+	<section class="section area">
+		<div class="wrap">
+			<h2 class="section-title">対応エリア</h2>
+			<img class="area-image" src="/images/top/area.png" alt="大分県内どこでも出張" width="800" height="500" loading="lazy" />
+			<p>{site.areas}</p>
+		</div>
+	</section>
 </Base>
+
+<style>
+	/* 今の WordPress のトップと同じく、ファーストビューは全幅の写真だけ（1440px 幅で高さ 720px） */
+	.fv {
+		height: 50vw;
+		max-height: 100svh;
+		background: var(--fv-image) center / cover no-repeat;
+	}
+
+	/* ファーストビューの下: 大きなロゴ、2行、代表の写真、あいさつ文（本番と同じ並び） */
+	.greeting { padding: 64px 0 40px; text-align: center; }
+	.greeting-logo { width: 830px; }
+	.greeting-lead { margin: 90px 0 0; font-size: 1.6rem; line-height: 1.5; }
+	.greeting-sub { margin: 4px 0 0; }
+	.greeting-photo { margin: 24px auto 0; }
+	.greeting-photo img { width: 210px; border-radius: 50%; }
+	.greeting-photo figcaption { font-size: 0.8rem; color: var(--muted); }
+	.greeting-text { margin-top: 96px; }
+	.greeting-text p { margin: 0 0 1.9em; }
+
+	/* 本番と同じ画像と文の横並び。2人の画像は本番の 20% より広めにしている。画像の白い背景は透明にしてあるので地色のクリーム色が見える */
+	.characters { max-width: 1200px; margin: 0 auto; padding: 40px 16px 0; }
+	.character { display: grid; grid-template-columns: 300px auto; align-items: center; gap: 24px; }
+	.character img { width: 100%; height: auto; }
+	.character h2 { margin: 0 0 1.2em; font-size: 1.25rem; color: var(--heading); }
+	.character-name { font-size: 1.5rem; }
+	.character p { margin: 0 0 1.4em; }
+
+	.section { padding: 48px 0 0; }
+	.section-title { text-align: center; font-size: 1.6rem; margin: 0 0 24px; color: var(--heading); }
+	.section-title::after { content: ""; display: block; width: 48px; height: 3px; margin: 8px auto 0; background: var(--accent); }
+
+	.cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; list-style: none; margin: 0; padding: 0; }
+	.card { display: flex; flex-direction: column; background: var(--white); border-radius: var(--radius); padding: 16px; box-shadow: 0 8px 24px rgb(38 38 38 / 0.06); }
+	.card-image { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 14px; }
+	.card h3 { margin: 16px 0 8px; font-size: 1.15rem; }
+	.card p { flex: 1; margin: 0 0 16px; font-size: 0.92rem; }
+
+	/* 白文字とオレンジのコントラスト比は 3.82 なので、太字 18.7px 以上（大きい文字の基準 3:1）にする */
+	.btn { display: inline-block; align-self: center; padding: 10px 28px; font-size: 1.2rem; border-radius: 80px; background: var(--accent); color: var(--white); font-weight: bold; text-decoration: none; }
+	.btn:hover { background: var(--accent-dark); }
+	.btn-large { font-size: 1.6rem; padding: 12px 40px; }
+
+	.cta { text-align: center; }
+	.cta .wrap { background: var(--accent-soft); border-radius: 40px; padding: 40px 16px; }
+	.cta-lead { margin: 0 0 16px; font-weight: bold; font-size: 1.15rem; }
+
+	.news { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+	.news li { display: flex; gap: 16px; padding: 12px 4px; border-bottom: 1px solid var(--line); }
+	.news time { flex: none; color: var(--muted); font-size: 0.9rem; }
+	.news a { color: var(--text); text-decoration: none; }
+	.news a:hover { color: var(--accent-dark); text-decoration: underline; }
+	.more { text-align: right; }
+
+	.area p { max-width: 860px; margin: 0 auto; }
+	.area-image { display: block; margin: 0 auto 16px; max-width: 480px; width: 100%; mix-blend-mode: multiply; }
+
+	@media (max-width: 768px) {
+		.greeting-logo { width: 280px; }
+		.greeting-lead { margin-top: 48px; font-size: 1.3rem; }
+		.greeting-text br { display: none; }
+		.cards { grid-template-columns: 1fr; }
+		.news li { flex-direction: column; gap: 0; }
+		.btn-large { font-size: 1.3rem; padding: 12px 28px; }
+	}
+</style>
