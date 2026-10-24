@@ -26,4 +26,8 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
+      # D1 のデータベース更新。指紋はテスト用 D1（anshin-taro-web）のもの。
+      - run: >-
+          npx emdash migrate --from-config --wrangler-config=wrangler.jsonc
+          --expected-target-fingerprint=bb4b75e6a77a58a592788c14833593ee7574be0be9ceaf78035e28e1dbbb83d8
       - run: npx wrangler deploy
