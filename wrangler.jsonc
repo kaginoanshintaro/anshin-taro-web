@@ -8,6 +8,7 @@
 		{
 			"binding": "DB",
 			"database_name": "anshin-taro-web",
+			"database_id": "4ed2b202-5ec4-4d14-9715-f9ab3d414634",
 		},
 	],
 	"r2_buckets": [
