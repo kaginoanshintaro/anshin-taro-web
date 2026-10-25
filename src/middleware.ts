@@ -5,7 +5,7 @@ import { defineMiddleware } from "astro:middleware";
 // 404 にするため使わず、ここで公開側だけリダイレクトする。
 export const onRequest = defineMiddleware((context, next) => {
 	const { pathname, search } = context.url;
-	if (pathname.endsWith("/") || pathname === "/404" || pathname.startsWith("/_") || /\.[a-z0-9]+$/i.test(pathname)) {
+	if (pathname.endsWith("/") || pathname === "/404" || pathname.startsWith("/_") || pathname.startsWith("/api/") || /\.[a-z0-9]+$/i.test(pathname)) {
 		return next();
 	}
 	// リダイレクトはページのキャッシュに入れない（EmDash の Route Caching の注意）

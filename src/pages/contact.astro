@@ -1,0 +1,127 @@
+---
+// お問い合わせ（/contact/。URL は今の WordPress と同じ）。
+// 文は今のページから写したもの（2026-10-25）。LINE の案内の文は今のトップから。
+// パソコン版: 左にメールフォーム、右にメール・電話・LINE・所在地。
+// フォームは Contact Form 7 の代わりに /api/contact/ へ送る（佐藤さん: 問い合わせができれば何でもよい）。
+import Base from "../layouts/Base.astro";
+import { site } from "../site";
+import "../styles/contact.css";
+
+const mapUrl = "https://maps.app.goo.gl/2g73uk2teCsFsxuE8";
+// Cloudflare Turnstile（迷惑送信よけ）。サイトキーを入れたときだけ出す。
+const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY as string | undefined;
+---
+
+<Base title="お問い合わせ">
+	<div class="contact-page">
+		<header class="ct-head">
+			<div class="wrap">
+				<h1>お問い合わせ</h1>
+				<nav class="ct-crumb" aria-label="現在地"><a href="/">ホーム</a><span aria-hidden="true">›</span>お問い合わせ</nav>
+			</div>
+		</header>
+
+		<div class="wrap ct-body">
+			<section class="ct-card ct-form-card" aria-labelledby="ct-form-title">
+				<h2 id="ct-form-title">メールフォーム</h2>
+				<form class="ct-form" id="ct-form" action="/api/contact/" method="post" novalidate>
+					<label class="ct-field">
+						<span>氏名<em>必須</em></span>
+						<input type="text" name="name" autocomplete="name" maxlength="400" required />
+					</label>
+					<label class="ct-field">
+						<span>メールアドレス<em>必須</em></span>
+						<input type="email" name="email" autocomplete="email" maxlength="400" required />
+					</label>
+					<label class="ct-field">
+						<span>題名<em>必須</em></span>
+						<input type="text" name="subject" maxlength="400" required />
+					</label>
+					<label class="ct-field">
+						<span>メッセージ本文</span>
+						<textarea name="message" rows="8" maxlength="2000"></textarea>
+					</label>
+					<!-- 人には見えない欄。ここに入力があれば迷惑送信として捨てる -->
+					<div class="ct-hp" aria-hidden="true">
+						<label>会社のURL<input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
+					</div>
+					{turnstileSiteKey && <div class="cf-turnstile" data-sitekey={turnstileSiteKey} data-language="ja"></div>}
+					<button class="ct-submit" type="submit">送信</button>
+					<p class="ct-status" role="status" aria-live="polite"></p>
+				</form>
+			</section>
+
+			<aside class="ct-side">
+				<section class="ct-card ct-mail" aria-labelledby="ct-mail-title">
+					<h2 id="ct-mail-title">メール</h2>
+					<p class="ct-address"><span>E-mail</span><a href={`mailto:${site.email}`}>{site.email}</a></p>
+					<p class="ct-note">※迷惑メールフォルダーに送信される場合があります。<br />１〜２日で返事がないようでしたらお手数ですがお電話にてお問い合わせください。</p>
+				</section>
+
+				<section class="ct-card ct-tel" aria-labelledby="ct-tel-title">
+					<h2 id="ct-tel-title">お電話</h2>
+					<a class="ct-tel-btn" href={site.mobile.href}>
+						<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M13.3 21.6c3.1 5.3 7.5 9.9 13 13 .9.6 2 .5 2.8-.3l2.9-2.9c.7-.7 1.5-.7 2.4-.6l8.2 1.3c1.2.2 2.3 1 2.3 2.3v8.1c0 1.3-1 2.3-2.3 2.3C20.8 44.9 3 27.2 3 5.5c0-1.3 1-2.3 2.3-2.3h8.1c1.3 0 2.2 1.1 2.3 2.3l1.3 8.2c.2.9.1 1.7-.6 2.4L13.5 18c-.6.6-.8 2.8-.2 3.6z" /></svg>
+						<span><small>電話でお問い合わせ</small>{site.mobile.label}</span>
+					</a>
+				</section>
+
+				<section class="ct-card ct-line" aria-labelledby="ct-line-title">
+					<h2 id="ct-line-title">公式LINE</h2>
+					<a class="ct-line-banner" href={site.line} target="_blank" rel="noopener">
+						<img src="/images/contact/line-banner.webp" width="1080" height="346" alt="安心太郎ちゃんとLINEで繋がろう!! LINE公式アカウント 友だち募集中 友達追加で10%オフクーポンプレゼント中" loading="lazy" decoding="async" />
+					</a>
+					<p class="ct-line-text">＼ 押すだけ今すぐ追加！！ ／</p>
+				</section>
+
+				<section class="ct-card ct-place" aria-labelledby="ct-place-title">
+					<h2 id="ct-place-title">所在地</h2>
+					<p>{site.name}<br />〒{site.postalCode}<br />{site.addressLine}</p>
+					<p class="ct-place-tel">TEL <a href={site.tel.href}>{site.tel.label}</a></p>
+					<a class="ct-maplink" href={mapUrl} target="_blank" rel="noopener">Googleマップで開く</a>
+				</section>
+			</aside>
+		</div>
+
+		<div class="wrap ct-cta">
+			<a class="ct-cta-home" href="/">ホームに戻る</a>
+		</div>
+	</div>
+
+	{turnstileSiteKey && <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>}
+	<script is:inline>
+		(() => {
+			const form = document.getElementById("ct-form");
+			const status = form.querySelector(".ct-status");
+			const button = form.querySelector(".ct-submit");
+			const show = (text, ok) => { status.textContent = text; status.classList.toggle("is-ok", !!ok); status.classList.toggle("is-error", !ok); };
+			form.addEventListener("submit", async (e) => {
+				e.preventDefault();
+				if (!form.checkValidity()) {
+					form.classList.add("was-checked");
+					show("入力されていない項目があります。", false);
+					form.querySelector(":invalid")?.focus();
+					return;
+				}
+				button.disabled = true;
+				show("送信しています…", true);
+				try {
+					const res = await fetch(form.action, { method: "POST", body: new FormData(form), headers: { Accept: "application/json" } });
+					const data = await res.json().catch(() => ({}));
+					if (res.ok) {
+						form.reset();
+						form.classList.remove("was-checked");
+						show(data.message || "送信しました。", true);
+					} else {
+						show(data.message || "送信できませんでした。お手数ですがお電話にてお問い合わせください。", false);
+					}
+				} catch {
+					show("送信できませんでした。お手数ですがお電話にてお問い合わせください。", false);
+				} finally {
+					button.disabled = false;
+					window.turnstile?.reset();
+				}
+			});
+		})();
+	</script>
+</Base>
