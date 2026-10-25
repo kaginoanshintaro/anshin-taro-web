@@ -340,9 +340,12 @@
 .fa-pc .col .cal .hours { grid-template-rows: repeat(5, 18px); }
 .fa-pc .col .cal .col-day { height: 90px; }
 /* 右下の会社情報（見出し・ラベルなしの小さい表示。佐藤さんの指示 2026-10-25） */
-.fa-pc .col > .panel.company { flex: none; margin-top: auto; padding: 12px 18px; display: flex; flex-direction: column; gap: 2px; font-size: 0.74rem; line-height: 1.6; color: var(--gray-900); }
+.fa-pc .col > .panel.company { flex: none; margin-top: auto; padding: 12px 18px; display: flex; flex-direction: column; gap: 2px; font-size: 1rem; font-weight: 700; line-height: 1.6; color: var(--gray-900); }
 .fa-pc .company p { margin: 0; }
-.fa-pc .company .co-name { font-size: 0.7rem; color: var(--gray-700); }
-.fa-pc .company .co-addr { white-space: nowrap; }
+.fa-pc .company .co-head { display: flex; flex-wrap: wrap; gap: 0 1em; }
+/* 住所は1行で。幅に収まる最大の大きさにする（1rem まで） */
+.fa-pc .col > .panel.company { container-type: inline-size; }
+.fa-pc .company .co-addr { white-space: nowrap; font-size: min(1rem, 2.85cqi); }
+.fa-pc .stage { grid-template-columns: minmax(0, 1fr) 600px minmax(0, 1fr); }
 .fa-pc .company .co-contact { display: flex; flex-wrap: wrap; gap: 4px 18px; margin-top: 2px; }
 .fa-pc .company a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
