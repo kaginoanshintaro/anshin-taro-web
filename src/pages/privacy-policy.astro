@@ -21,11 +21,13 @@ const linkify = (text: string) => text.split(/(https?:\/\/[^\s　]+)/).filter(Bo
 
 		<div class="wrap pv-layout">
 			<aside class="pv-side">
-				<nav class="pv-toc" aria-label="項目">
-					<p class="pv-toc-title">目次</p>
-					<ol>
-						{privacySections.map((s) => <li><a href={`#${s.id}`}>{s.title}</a></li>)}
-					</ol>
+				<nav aria-label="項目">
+					<details class="pv-toc" open>
+						<summary class="pv-toc-title">目次</summary>
+						<ol>
+							{privacySections.map((s) => <li><a href={`#${s.id}`}>{s.title}</a></li>)}
+						</ol>
+					</details>
 				</nav>
 			</aside>
 
@@ -50,3 +52,19 @@ const linkify = (text: string) => text.split(/(https?:\/\/[^\s　]+)/).filter(Bo
 		</div>
 	</div>
 </Base>
+
+<script>
+	// スマホでは目次を閉じた状態から始め、項目を押したら閉じる。パソコンは開いたまま
+	const toc = document.querySelector<HTMLDetailsElement>(".pv-toc");
+	const phone = window.matchMedia("(max-width: 767px)");
+	if (toc) {
+		toc.open = !phone.matches;
+		phone.addEventListener("change", () => (toc.open = !phone.matches));
+		toc.querySelector("summary")?.addEventListener("click", (e) => {
+			if (!phone.matches) e.preventDefault();
+		});
+		toc.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => {
+			if (phone.matches) toc.open = false;
+		}));
+	}
+</script>
