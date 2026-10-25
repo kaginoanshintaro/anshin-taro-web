@@ -13,7 +13,7 @@ export const site = {
 		"大分市・別府市・速水郡・玖珠郡・中津市・日田市・佐伯市・臼杵市・津久見市・竹田市・豊後高田市・杵築市・宇佐市・豊後大野市・由布市・国東市・熊本県一部地域（小国町・南小国町・産山村・阿蘇市・高森町）",
 };
 
-/** 今の「グロナビ」メニューの上の階層（並び順もそのまま） */
+/** 今の「グロナビ」メニューの上の階層（並び順もそのまま）。ハチ駆除事業は佐藤さんの指示で外した */
 export const globalNav = [
 	{ label: "HOME", href: "/" },
 	{ label: "サービス料金", href: "/price/" },
@@ -21,6 +21,7 @@ export const globalNav = [
 	{ label: "お役立ち", href: "/tipshints/" },
 	{ label: "会社概要・アクセス", href: "/profile/" },
 	{ label: "お問い合わせ", href: "/contact/" },
+	{ label: "プライバシーポリシー", href: "/privacy-policy/" },
 ];
 
 export const footerNav = [

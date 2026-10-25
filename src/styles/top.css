@@ -1,0 +1,307 @@
+/* トップページの「固定背景エリア」。見本（emdash-migration/mock-src の pc.html・sp2.html・glass.css・chat-clear.css・patrol.css）から作った。
+   パソコン用は .fa-pc、スマホ用は .fa-sp の中だけに効く。 */
+:root { --line-green: #05833a; }
+/* 共通の部品 */
+.fa {font-family: "Shippori Mincho", serif; color: var(--gray-900); letter-spacing: 0.03em; line-height: 1.6;
+	
+	background: radial-gradient(circle at 20% 10%, #fff 0, var(--color-cream) 45%, #efe6da 100%);}
+.fa a {color: inherit; text-decoration: none;}
+.fa img {display: block; max-width: 100%;}
+.fa .panel {background: rgb(255 255 255 / 0.92); border-radius: 20px; box-shadow: 0 8px 24px rgb(38 38 38 / 0.08);}
+.fa .panel-title {margin: 0; font-size: 1rem; color: var(--color-brown); display: flex; align-items: center; gap: 8px;}
+.fa .panel-title::before {content: ""; width: 4px; height: 1.1em; border-radius: 2px; background: var(--color-orange);}
+.fa .tag-sample {font-size: 0.7rem; font-weight: normal; color: var(--white); background: var(--gray-500); border-radius: 4px; padding: 0 6px;}
+.fa .date {font-size: 0.75rem; color: var(--gray-500);}
+.fa .chat {display: flex; flex-direction: column;}
+.fa .chat-head {display: flex; align-items: center; gap: 12px;}
+.fa .avatar {flex: none; border-radius: 50%; background: var(--color-orange-soft); overflow: hidden;}
+.fa .chat-name {margin: 0; font-weight: bold; color: var(--color-brown);}
+.fa .chat-sub {margin: 0; font-size: 0.75rem; color: var(--gray-500);}
+.fa .msgs {display: flex; flex-direction: column; gap: 10px;}
+.fa .msg {display: flex; gap: 8px; align-items: flex-end;}
+.fa .bubble {padding: 10px 14px; border-radius: 16px; background: var(--gray-100); font-size: 0.92rem;}
+.fa .msg.bot .bubble {border-bottom-left-radius: 4px;}
+.fa .msg.user {justify-content: flex-end;}
+.fa .msg.user .bubble {background: var(--color-orange-soft); border-bottom-right-radius: 4px;}
+.fa .chips {display: flex; flex-wrap: wrap; gap: 8px;}
+.fa .chip {font-size: 0.82rem; padding: 4px 12px; border: 1px solid var(--color-orange); color: var(--color-orange-dark); border-radius: 40px; background: var(--white);}
+.fa .input {display: flex; gap: 8px; align-items: center; border: 1px solid var(--gray-200); border-radius: 40px; padding: 6px 6px 6px 16px; background: var(--white);}
+.fa .input span:first-child {flex: 1; color: var(--gray-500); font-size: 0.88rem;}
+.fa .send {flex: none; width: 36px; height: 36px; border-radius: 50%; background: var(--color-orange); color: var(--white); display: grid; place-items: center; font-weight: bold;}
+.fa .note {font-size: 0.7rem; color: var(--gray-500);}
+.fa .btn-tel {display: flex; align-items: center; justify-content: center; gap: 8px; background: var(--color-orange); color: var(--white); font-weight: bold; border-radius: 80px;}
+.fa .btn-line {display: flex; align-items: center; justify-content: center; gap: 8px; background: var(--line-green); color: var(--white); font-weight: bold; border-radius: 80px;}
+/* パソコン（pc.html） */
+.fa-pc .stage {height: 100vh; padding: 24px 40px; display: grid; grid-template-columns: 1fr 600px 1fr; gap: 24px;}
+.fa-pc .col {display: flex; flex-direction: column; gap: 16px; min-height: 0;}
+.fa-pc .panel {padding: 16px 20px;}
+.fa-pc .col > .panel:last-child {flex: 1;}
+.fa-pc .bank {display: flex; align-items: center; gap: 14px; padding: 16px 20px; border-radius: 20px; background: var(--color-brown); color: var(--white);}
+.fa-pc .bank svg {flex: none; width: 44px; height: 44px; fill: none; stroke: var(--white); stroke-width: 1.6;}
+.fa-pc .bank b {display: block; font-size: 1.3rem; line-height: 1.3;}
+.fa-pc .bank small {font-size: 0.8rem; color: var(--gray-100);}
+.fa-pc .bank .arrow {margin-left: auto; font-size: 1.4rem;}
+.fa-pc .list {list-style: none; margin: 8px 0 0; padding: 0;}
+.fa-pc .list li {padding: 7px 0; border-bottom: 1px solid var(--gray-200); font-size: 0.88rem; line-height: 1.45;}
+.fa-pc .list li:last-child {border-bottom: 0;}
+.fa-pc .list .date {display: block;}
+.fa-pc .more {margin: 6px 0 0; text-align: right; font-size: 0.8rem; color: var(--color-orange-dark);}
+.fa-pc .comment {margin: 2px 0 0; font-size: 0.78rem; color: var(--gray-700);}
+.fa-pc .comment b {font-size: 0.68rem; color: var(--color-brown); background: var(--color-orange-soft); border-radius: 4px; padding: 0 5px; margin-right: 6px;}
+.fa-pc .news-head {display: flex; align-items: center; gap: 10px;}
+.fa-pc .news-head img {width: 40px; height: 40px; border-radius: 50%; background: var(--color-orange-soft);}
+.fa-pc .center {display: flex; flex-direction: column; gap: 16px; min-height: 0;}
+.fa-pc .chat {flex: 1; min-height: 0; padding: 20px 24px 16px; gap: 12px; overflow: hidden;}
+.fa-pc .chat-body {flex: 1; min-height: 0; display: grid; grid-template-columns: 130px 1fr; gap: 10px;}
+.fa-pc .taro {align-self: end; width: 125px; filter: drop-shadow(0 8px 10px rgb(38 38 38 / 0.15));}
+.fa-pc .chat-name {font-size: 1.3rem;}
+.fa-pc .msgs {justify-content: flex-end;}
+.fa-pc .msg.bot .bubble {border-bottom-left-radius: 16px; border-top-left-radius: 4px;}
+.fa-pc .cal {padding: 14px 20px 16px;}
+.fa-pc .cal-head {display: flex; justify-content: space-between; align-items: baseline;}
+.fa-pc .cal-head small {font-size: 0.72rem; color: var(--gray-500);}
+.fa-pc .week {display: grid; grid-template-columns: 36px repeat(7, 1fr); gap: 4px; margin-top: 8px; font-size: 0.72rem;}
+.fa-pc .week .day {text-align: center; color: var(--gray-700);}
+.fa-pc .week .day.sat {color: #2f5d8a;}
+.fa-pc .week .day.sun {color: #a33a2a;}
+.fa-pc .hours {display: grid; grid-template-rows: repeat(5, 22px); color: var(--gray-500);}
+.fa-pc .col-day {position: relative; height: 110px; background: var(--gray-100); border-radius: 6px;}
+.fa-pc .busy {position: absolute; left: 2px; right: 2px; border-radius: 4px; background: var(--gray-300); color: var(--gray-900); font-size: 0.62rem; text-align: center; overflow: hidden;}
+.fa-pc .btn-tel {padding: 12px; font-size: 1.6rem; flex-direction: column; gap: 0; line-height: 1.3; border-radius: 20px;}
+.fa-pc .btn-tel small {font-size: 1.2rem;}
+.fa-pc .banner {display: block; overflow: hidden; padding: 0;}
+.fa-pc .banner img {width: 100%;}
+.fa-pc .small-row {display: grid; grid-template-columns: 1fr 96px 96px; gap: 12px;}
+.fa-pc .small-row > * {display: grid; place-items: center; padding: 8px; height: 96px;}
+.fa-pc .small-row img {max-width: 100%; max-height: 100%;}
+.fa-pc .insta svg {width: 64px; height: 64px;}
+.fa-pc .partner {padding: 12px 18px;}
+.fa-pc .partner img {width: 64%; margin: 0 auto 4px;}
+.fa-pc .partner p {margin: 0; font-size: 0.78rem; line-height: 1.5; color: var(--gray-700);}
+.fa-pc .bank .bulb {width: 40px; height: 40px; color: var(--white); flex: none;}
+/* スマホ 2ページ切り替え（sp2.html） */
+.fa-sp {font-size: 15px;}
+.fa-sp .stage {height: 100vh; padding: 12px 14px 96px; display: flex; flex-direction: column; gap: 10px; overflow: hidden;}
+.fa-sp .stage > :not(.chat) {flex: none;}
+.fa-sp .chat {position: relative; padding: 14px; gap: 10px; flex: 1; min-height: 0; overflow: hidden;}
+.fa-sp .chat-name {font-size: 1.15rem;}
+.fa-sp .chat-body {flex: 1; min-height: 0; overflow: hidden; grid-template-rows: minmax(0, 1fr); display: grid; grid-template-columns: 120px 1fr; gap: 6px;}
+.fa-sp .taro {align-self: end; justify-self: center; height: 100%; max-height: 100%; width: auto; max-width: 120px; object-fit: contain; object-position: bottom; filter: drop-shadow(0 8px 10px rgb(38 38 38 / 0.15));}
+.fa-sp .msgs {min-height: 0; overflow: hidden; justify-content: flex-end; -webkit-mask-image: linear-gradient(transparent, #000 30px); mask-image: linear-gradient(transparent, #000 30px);}
+.fa-sp .bubble {font-size: 0.88rem; padding: 8px 12px;}
+.fa-sp .msg.bot .bubble {border-bottom-left-radius: 16px; border-top-left-radius: 4px;}
+.fa-sp .chips {flex-wrap: nowrap; overflow-x: auto; margin: 0 -14px; padding: 0 14px; scrollbar-width: none;}
+.fa-sp .chip {flex: none; font-size: 0.82rem;}
+.fa-sp .row-title {display: flex; justify-content: space-between; align-items: baseline; margin: 0 2px 6px;}
+.fa-sp .row-title a {font-size: 0.8rem; color: var(--color-orange-dark);}
+.fa-sp .swipe {display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; margin: 0 -14px; padding: 0 14px 4px; scrollbar-width: none;}
+.fa-sp .card {flex: none; width: 210px; scroll-snap-align: start; padding: 10px 12px;}
+.fa-sp .card p {margin: 2px 0 0; font-size: 0.86rem; line-height: 1.45; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;}
+.fa-sp .news-card {display: flex; gap: 8px; align-items: center;}
+.fa-sp .news-card img {width: 34px; height: 34px; border-radius: 50%; background: var(--color-orange-soft); flex: none;}
+.fa-sp .banners {display: grid; grid-template-columns: 56px 56px 56px 1fr; gap: 6px;}
+.fa-sp .banners > * {display: grid; place-items: center; padding: 4px; overflow: hidden; height: 56px;}
+.fa-sp .banners img {max-width: 100%; max-height: 100%;}
+.fa-sp .banners .warn {grid-column: 1 / -1; height: 40px; background: #f5ff93; padding: 0;}
+.fa-sp .banners .warn img {height: 100%; width: 100%; object-fit: cover;}
+.fa-sp .dock {position: fixed; left: 0; right: 0; bottom: 0; display: flex; gap: 12px; align-items: center; padding: 8px 14px calc(8px + env(safe-area-inset-bottom)); background: rgb(255 255 255 / 0.95); box-shadow: 0 -4px 16px rgb(38 38 38 / 0.08);}
+.fa-sp .links {padding: 10px 14px;}
+.fa-sp .links ul {list-style: none; margin: 0; padding: 0;}
+.fa-sp .links li {padding: 4px 0; border-bottom: 1px solid var(--gray-200); font-size: 0.85rem; line-height: 1.45;}
+.fa-sp .links li:last-child {border-bottom: 0;}
+.fa-sp .links li > a {color: var(--color-orange-dark); text-decoration: underline; text-underline-offset: 3px; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
+.fa-sp .comment {margin: 2px 0 0; font-size: 0.78rem; color: var(--gray-700);}
+.fa-sp .comment b {font-size: 0.68rem; color: var(--color-brown); background: var(--color-orange-soft); border-radius: 4px; padding: 0 5px; margin-right: 6px; font-weight: bold;}
+.fa-sp .bank {background: var(--color-brown); border-radius: 14px;}
+.fa-sp .bank svg {width: 34px; height: 34px; fill: none; stroke: var(--white); stroke-width: 1.8;}
+.fa-sp .insta {background: var(--white); border-radius: 14px; box-shadow: 0 8px 24px rgb(38 38 38 / 0.08);}
+.fa-sp .insta svg {width: 40px; height: 40px;}
+.fa-sp .mini-cal {display: block; padding: 8px 12px 10px;}
+.fa-sp .cal-cap {display: flex; justify-content: space-between; align-items: center; margin: 0 0 4px; font-size: 0.8rem;}
+.fa-sp .cal-cap b {color: var(--color-brown);}
+.fa-sp .cal-cap span {font-size: 0.72rem; color: var(--gray-700); display: flex; align-items: center; gap: 4px;}
+.fa-sp .key {display: inline-block; width: 12px; height: 12px; border-radius: 2px; background: var(--color-brown);}
+.fa-sp .days {display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; height: 84px;}
+.fa-sp .days > div {display: flex; flex-direction: column; align-items: center; min-height: 0;}
+.fa-sp .days span {font-size: 0.95rem; font-weight: bold; line-height: 1.1; color: var(--gray-900);}
+.fa-sp .days small {font-size: 0.68rem; margin-left: 1px;}
+.fa-sp .days .sat span {color: #2f5d8a;}
+.fa-sp .days .sun span {color: #a33a2a;}
+.fa-sp .days i {position: relative; flex: 1; width: 100%; margin-top: 3px; background: var(--white); border: 1px solid var(--gray-300); border-radius: 4px; overflow: hidden;}
+.fa-sp .days i b {position: absolute; left: 0; right: 0; background: var(--color-brown);}
+.fa-sp .dock > a {flex: 1; height: 68px; border-radius: 16px; overflow: hidden;}
+.fa-sp .tel-icon {background: var(--color-orange); display: grid; place-items: center;}
+.fa-sp .tel-icon svg {width: 44px; height: 44px; fill: var(--white);}
+.fa-sp .line-banner {background: #06c755;}
+.fa-sp .line-banner img {width: 100%; height: 100%; object-fit: contain;}
+.fa-sp .viewport {position: fixed; top: 0; left: 0; right: 0; bottom: 84px; overflow: hidden;}
+.fa-sp .track {display: flex; width: 200%; height: 100%;}
+.fa-sp .page {width: 50%; height: 100%; padding: 12px 14px 22px; display: flex; flex-direction: column; gap: 12px;}
+.fa-sp .page > :not(.chat) {flex: none;}
+.fa-sp .page1 .chat-body {grid-template-columns: 160px 1fr;}
+.fa-sp .page1 .taro {max-width: 160px;}
+.fa-sp .page2 .links li {padding: 6px 0; font-size: 0.9rem;}
+.fa-sp .page2 .banners {grid-template-columns: 64px 64px 64px 1fr;}
+.fa-sp .page2 .banners > * {height: 64px;}
+.fa-sp .page2 .banners .warn {height: 52px;}
+.fa-sp .rack {position: absolute; left: 0; bottom: 0; width: 200%; height: 12px;
+		background:
+			repeating-linear-gradient(90deg, transparent 0 4px, #8a8a8a 4px 11.7px, transparent 11.7px 15.708px) top / 100% 7px no-repeat,
+			linear-gradient(180deg, #bdbdbd, #8a8a8a) bottom / 100% 5px no-repeat;}
+.fa-sp .dock {height: 84px; padding-top: 10px;}
+.fa-sp .dock > a {height: 64px;}
+.fa-sp .dock .gap {flex: none; width: 84px;}
+.fa-sp .switch {position: fixed; left: 50%; bottom: 24px; width: 80px; height: 80px; margin-left: -40px; border: 0; padding: 0; background: none; cursor: pointer; z-index: 5;}
+.fa-sp .switch .gear {position: absolute; inset: 0; width: 80px; height: 80px; filter: drop-shadow(0 3px 4px rgb(38 38 38 / 0.35));}
+.fa-sp .switch .cap {position: absolute; inset: 21px; border-radius: 50%; background: var(--color-orange); color: var(--white); display: grid; place-items: center; box-shadow: inset 0 -3px 0 rgb(0 0 0 / 0.2), 0 0 0 2px var(--white);}
+.fa-sp .switch .cap svg {width: 24px; height: 24px; stroke: currentColor; stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round;}
+.fa-sp .switch .num {position: absolute; left: 0; right: 0; bottom: -18px; font-size: 0.68rem; color: var(--gray-700); text-align: center;}
+.fa-sp .track, .fa-sp .rack {transition: transform 900ms cubic-bezier(.7, 0, .25, 1.12);}
+.fa-sp .switch .gear {transition: transform 900ms cubic-bezier(.7, 0, .25, 1.12);}
+.fa-sp .switch .cap svg {transition: transform 300ms ease 600ms;}
+.on2 .fa-sp .track, .on2 .fa-sp .rack {transform: translateX(-50%);}
+.on2 .fa-sp .switch .gear {transform: rotate(-745deg);}
+.on2 .fa-sp .switch .cap svg {transform: scaleX(-1);}
+.fa-sp .clunk {animation: clunk 220ms ease-out;}
+@keyframes clunk { 0% { transform: translateY(0); } 30% { transform: translateY(2px); } 60% { transform: translateY(-1px); } 100% { transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) {
+.fa-sp .track, .fa-sp .rack, .fa-sp .switch .gear, .fa-sp .switch .cap svg {transition: none;}
+.fa-sp .clunk {animation: none;}
+}
+.fa-sp .services {display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;}
+.fa-sp .services a {position: relative; height: 76px; border-radius: 14px; overflow: hidden; box-shadow: 0 6px 16px rgb(38 38 38 / 0.1);}
+.fa-sp .services img {width: 100%; height: 100%; object-fit: cover;}
+.fa-sp .services span {position: absolute; left: 0; right: 0; bottom: 0; padding: 14px 4px 4px; font-size: 0.78rem; font-weight: bold; color: var(--white); text-align: center; background: linear-gradient(transparent, rgb(38 38 38 / 0.8));}
+.fa-sp .pair {display: grid; grid-template-columns: 1fr 1fr; gap: 8px;}
+.fa-sp .pair > * {height: 60px; border-radius: 14px; display: flex; align-items: center; justify-content: center; gap: 10px; font: inherit; font-weight: bold; font-size: 1rem; cursor: pointer;}
+.fa-sp .price-btn {background: var(--white); color: var(--color-brown); border: 2px solid var(--color-brown);}
+.fa-sp .price-btn svg {width: 26px; height: 26px; stroke: currentColor; stroke-width: 2.4; fill: none; stroke-linecap: round; stroke-linejoin: round;}
+.fa-sp .prof-btn {background: var(--color-orange-soft); color: var(--color-brown); border: 2px solid var(--color-orange); font-size: 0.85rem; line-height: 1.3; text-align: left;}
+.fa-sp .prof-btn img {width: 44px; height: 44px; border-radius: 50%; object-fit: cover; background: var(--white);}
+.fa-sp .prof {position: fixed; inset: 0; z-index: 20; display: none; place-items: center; background: rgb(38 38 38 / 0.5); padding: 20px;}
+.prof-open .fa-sp .prof {display: grid;}
+.fa-sp .prof-card {position: relative; background: var(--color-cream); border-radius: 20px; padding: 22px 20px 18px; text-align: center; max-width: 340px;}
+.fa-sp .prof-card img {width: 120px; height: 120px; border-radius: 50%; margin: 0 auto 8px; background: var(--white);}
+.fa-sp .prof-card h2 {margin: 0; font-size: 1.2rem; color: var(--color-brown);}
+.fa-sp .prof-card .kana {margin: 0 0 10px; font-size: 0.75rem; color: var(--gray-500);}
+.fa-sp .prof-card dl {display: grid; grid-template-columns: auto 1fr; gap: 2px 12px; margin: 0 0 10px; font-size: 0.82rem; text-align: left;}
+.fa-sp .prof-card dt {color: var(--gray-500);}
+.fa-sp .prof-card dd {margin: 0;}
+.fa-sp .prof-card p {margin: 0 0 12px; font-size: 0.85rem; text-align: left;}
+.fa-sp .prof-card .close {position: absolute; top: 10px; right: 10px; width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--gray-300); background: var(--white); font-size: 1.1rem;}
+.fa-sp .prof-card .to-profile {color: var(--color-orange-dark); font-size: 0.85rem; text-decoration: underline;}
+@media (max-height: 700px) {
+.fa-sp .page2 .links ul:first-of-type li:nth-child(3), .fa-sp .page2 .links ul:last-of-type li:nth-child(2) {display: none;}
+.fa-sp .page2 {gap: 10px;}
+.fa-sp .services a {height: 64px;}
+.fa-sp .pair > * {height: 54px;}
+}
+.fa-sp .bank .bulb {width: 40px; height: 40px; color: var(--white); flex: none;}
+.fa-sp .bottom-row {display: grid; grid-template-columns: 1fr 1fr; gap: 8px; height: 150px;}
+.fa-sp .access {padding: 8px 10px; display: flex; flex-direction: column; gap: 3px; overflow: hidden;}
+.fa-sp .mini-title {font-size: 0.78rem; color: var(--color-brown);}
+.fa-sp .map {position: relative; flex: 1; min-height: 0; border-radius: 8px; background:
+		linear-gradient(28deg, transparent 46%, #fff 46% 54%, transparent 54%),
+		linear-gradient(-62deg, transparent 47%, #fff 47% 53%, transparent 53%),
+		linear-gradient(90deg, transparent 70%, #fff 70% 74%, transparent 74%),
+		#dfe8d6; border: 1px solid var(--gray-200);}
+.fa-sp .pin {position: absolute; left: 50%; top: 45%; width: 16px; height: 16px; margin: -16px 0 0 -8px; background: var(--color-orange); border-radius: 50% 50% 50% 0; transform: rotate(-45deg); box-shadow: 0 0 0 2px var(--white);}
+.fa-sp .addr {font-size: 0.64rem; line-height: 1.35; color: var(--gray-700);}
+.fa-sp .more-link {font-size: 0.68rem; color: var(--color-orange-dark);}
+.fa-sp .coupon {position: relative; border-radius: 20px; overflow: hidden; padding: 10px 12px; color: var(--white); background: linear-gradient(150deg, #05a548, #05833a); box-shadow: 0 6px 16px rgb(5 131 58 / 0.3); display: flex; flex-direction: column;}
+.fa-sp .coupon .c1 {font-size: 0.72rem; font-weight: bold; line-height: 1.3;}
+.fa-sp .coupon .c2 {font-size: 2.6rem; font-weight: bold; line-height: 1; color: #fff36b; text-shadow: 0 2px 0 rgb(0 0 0 / 0.2);}
+.fa-sp .coupon .c2 small {font-size: 1rem; margin-left: 2px;}
+.fa-sp .coupon .c3 {font-size: 0.78rem; font-weight: bold; line-height: 1.3;}
+.fa-sp .coupon img {position: absolute; right: -6px; bottom: -6px; width: 70px; height: 70px; border-radius: 50%; background: #fff; border: 3px solid #fff36b;}
+.fa-sp .coupon .c4 {position: absolute; left: 12px; bottom: 6px; font-size: 0.6rem; opacity: 0.9;}
+@media (max-height: 700px) {
+.fa-sp .bottom-row {height: 120px;}
+.fa-sp .coupon .c2 {font-size: 2rem;}
+.fa-sp .coupon img {width: 54px; height: 54px;}
+.fa-sp .page2 .links ul:first-of-type li:nth-child(2) {display: none;}
+}
+.fa-sp .page2 {gap: 8px; padding-top: 10px;}
+.fa-sp .page2 .links {padding: 8px 14px;}
+.fa-sp .page2 .links li {padding: 4px 0;}
+.fa-sp .page2 .links .row-title {margin-bottom: 2px;}
+.fa-sp .services a {height: 64px;}
+.fa-sp .pair > * {height: 50px;}
+.fa-sp .page2 .banners > * {height: 54px;}
+.fa-sp .page2 .banners .warn {height: 42px;}
+.fa-sp .bottom-row {height: 136px;}
+@media (max-height: 700px) {
+.fa-sp .services a {height: 52px;}
+.fa-sp .pair > * {height: 44px;}
+.fa-sp .page2 .banners > * {height: 46px;}
+.fa-sp .page2 .banners .warn {height: 34px;}
+.fa-sp .bottom-row {height: 112px;}
+.fa-sp .access .addr {display: none;}
+}
+.fa-sp .page2 .banners .warn img {width: auto; height: 40px; max-height: none;}
+@media (max-height: 700px) {
+.fa-sp .page2 .banners .warn img {height: 32px;}
+.fa-sp .coupon .c3 br {display: none;}
+.fa-sp .coupon .c3 {padding-right: 50px;}
+.fa-sp .coupon .c4 {display: none;}
+}
+.fa-sp .page2 .comment {font-size: 0.82rem;}
+.fa-sp .page2 .comment b {font-size: 0.75rem;}
+.fa-sp .svc .panel-title {margin: 0 2px 6px; font-size: 0.95rem;}
+.fa-sp .tile {display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; background: var(--white); border: 2px solid var(--color-brown-light); border-radius: 16px; color: var(--color-brown); font: inherit; cursor: pointer;}
+.fa-sp .tile svg {width: 30px; height: 30px; stroke: currentColor; stroke-width: 1.9; fill: none; stroke-linecap: round; stroke-linejoin: round;}
+.fa-sp .tile b {font-size: 0.95rem;}
+.fa-sp .tile.row {flex-direction: row; gap: 10px;}
+.fa-sp .tiles3 {display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;}
+.fa-sp .tiles3 .tile {height: 72px;}
+.fa-sp .tiles2 {display: grid; grid-template-columns: 1fr 1fr; gap: 8px;}
+.fa-sp .tiles2 .tile {height: 56px;}
+.fa-sp .prof-btn img {width: 38px; height: 38px; border-radius: 50%; object-fit: cover;}
+.fa-sp .icons4 {display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;}
+.fa-sp .ic {height: 60px; border-radius: 16px; display: grid; place-items: center; background: var(--white); box-shadow: 0 4px 12px rgb(38 38 38 / 0.08);}
+.fa-sp .bulb-ic {background: var(--color-brown); color: var(--white);}
+.fa-sp .bulb-ic .bulb {width: 40px; height: 40px;}
+.fa-sp .ic.sa img {height: 50px;}
+.fa-sp .hand {color: var(--color-brown);}
+.fa-sp .hand svg {width: 38px; height: 38px; stroke: currentColor; stroke-width: 1.8; fill: none; stroke-linecap: round; stroke-linejoin: round;}
+.fa-sp .icons4 .insta {height: 60px; border-radius: 16px;}
+.fa-sp .line-mark {display: inline-grid; place-items: center; padding: 3px 7px; border-radius: 8px; background: #06c755; color: #fff; font-family: system-ui, sans-serif; font-weight: 800; font-size: 0.8rem; letter-spacing: 0.02em;}
+.fa-sp .coupon2 {border-color: #06c755;}
+.fa-sp .coupon2 b {font-size: 1.3rem; color: var(--color-orange-dark);}
+.fa-sp .warn2 {display: block; height: 44px; border-radius: 14px; background: #f5ff93; overflow: hidden; text-align: center;}
+.fa-sp .warn2 img {height: 100%; width: auto; display: inline-block;}
+.fa-sp .dock .line-min {display: grid; place-items: center; background: #06c755;}
+.fa-sp .line-mark.big {font-size: 1.6rem; padding: 4px 14px; border-radius: 12px; background: #fff; color: #06c755;}
+@media (max-height: 700px) {
+.fa-sp .tiles3 .tile {height: 56px;}
+.fa-sp .tiles3 .tile svg {width: 24px; height: 24px;}
+.fa-sp .tiles2 .tile {height: 46px;}
+.fa-sp .ic, .fa-sp .icons4 .insta {height: 48px;}
+.fa-sp .ic.sa img {height: 40px;}
+.fa-sp .bulb-ic .bulb {width: 32px; height: 32px;}
+.fa-sp .warn2 {height: 36px;}
+.fa-sp .svc .panel-title {display: none;}
+}
+.fa-sp .icons4 .insta {display: grid; place-items: center;}
+.fa-sp .hand {grid-auto-flow: column; gap: 2px;}
+.fa-sp .hand img {height: 40px; width: auto;}
+.fa-sp .hand b {font-size: 0.95rem; color: var(--color-brown);}
+@media (max-height: 700px) {
+.fa-sp .hand img {height: 32px;}
+}
+.fa-sp .tile.add {border-style: dashed; color: var(--color-brown-light); font-size: 1.8rem; background: transparent;}
+.fa-sp .tiles3 {row-gap: 8px;}
+/* 太郎ちゃんのパトロール（patrol.css、街並みは使わない） */
+.fa .chat-body {position: relative;}
+.fa .chat-body > * {position: relative; z-index: 1;}
+.fa .chat.walking .chat.walking .taro {animation: bob 0.45s ease-in-out infinite alternate;}
+@keyframes bob { from { transform: translateY(0) rotate(-2deg); } to { transform: translateY(-6px) rotate(2deg); } }
+.fa .msg.hello .bubble {animation: pop 0.35s ease-out;}
+@keyframes pop { from { transform: scale(0.6); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+.fa .chat.walking .taro, .fa .msg.hello .bubble {animation: none;}
+}
+/* すりガラス（glass.css）と、チャットだけ透明（chat-clear.css） */
+.fa .panel, .fa .tile, .fa .ic, .fa .insta {background: rgb(255 255 255 / 0.55) !important; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); box-shadow: 0 6px 20px rgb(0 0 0 / 0.15) !important;}
+.fa .panel.chat {background: transparent !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; box-shadow: none !important;}
+.fa .chat .town {display: none;}
