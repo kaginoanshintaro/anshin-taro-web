@@ -1,7 +1,6 @@
 ---
 import { getBylineBySlug, getEntriesByByline, decodeSlug } from "emdash";
 import Base from "../../layouts/Base.astro";
-import "@fontsource/shippori-mincho/700.css";
 
 const slug = decodeSlug(Astro.params.slug);
 const byline = slug ? await getBylineBySlug(slug) : null;
