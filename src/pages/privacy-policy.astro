@@ -1,0 +1,52 @@
+---
+// プライバシーポリシー（/privacy-policy/。URL は今の WordPress と同じ）。
+// 文は src/data/privacy.ts（今のページから写したもの）。
+// パソコン版: 料金ページと同じく、左に項目のメニュー（スクロールしても付いてくる）、右に白いカードの本文。
+import Base from "../layouts/Base.astro";
+import { privacySections } from "../data/privacy";
+import "../styles/privacy.css";
+
+// 文中の URL をリンクにする
+const linkify = (text: string) => text.split(/(https?:\/\/[^\s　]+)/).filter(Boolean);
+---
+
+<Base title="プライバシーポリシー">
+	<div class="privacy-page">
+		<header class="pv-head">
+			<div class="wrap">
+				<h1>プライバシーポリシー</h1>
+				<nav class="pv-crumb" aria-label="現在地"><a href="/">ホーム</a><span aria-hidden="true">›</span>プライバシーポリシー</nav>
+			</div>
+		</header>
+
+		<div class="wrap pv-layout">
+			<aside class="pv-side">
+				<nav class="pv-toc" aria-label="項目">
+					<p class="pv-toc-title">目次</p>
+					<ol>
+						{privacySections.map((s) => <li><a href={`#${s.id}`}>{s.title}</a></li>)}
+					</ol>
+				</nav>
+			</aside>
+
+			<article class="pv-card">
+				{privacySections.map((s) => (
+					<section id={s.id}>
+						<h2>{s.title}</h2>
+						{s.body.map((b) =>
+							typeof b === "string" ? (
+								<p>{linkify(b).map((t) => (/^https?:/.test(t) ? <a href={t} target="_blank" rel="noopener">{t}</a> : t))}</p>
+							) : (
+								<ul>{b.list.map((li) => <li>{li}</li>)}</ul>
+							),
+						)}
+					</section>
+				))}
+			</article>
+		</div>
+
+		<div class="pv-cta">
+			<a class="pv-cta-home" href="/">ホームに戻る</a>
+		</div>
+	</div>
+</Base>
