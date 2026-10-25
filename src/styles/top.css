@@ -323,7 +323,7 @@
 /* パソコン: パートナー募集はベビちゃんのニュースの下（佐藤さんの指示 2026-10-25）。ニュースが残りの高さを使う */
 .fa-pc .col > .panel.partner { flex: none; }
 .fa-pc .col > .panel.news-panel { flex: 1; min-height: 0; overflow: hidden; }
-.fa-pc .partner img { width: 50%; }
+.fa-pc .partner img { width: 80%; }
 
 /* チャットの窓は透明なので、上の名前・説明と下の注意書きだけ、すりガラスの帯にのせて読みやすくする（2026-10-25） */
 .fa .chat-head-label, .fa .chat-note, .fa-sp .chat > div:first-child {
