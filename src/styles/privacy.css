@@ -14,7 +14,9 @@
 .pv-head h1 { margin: 0; padding-left: 16px; border-left: 5px solid var(--accent); font-size: 1.6rem; line-height: 1.4; color: var(--heading); letter-spacing: 0.08em; }
 
 /* 左に目次、右に本文 */
-.pv-layout { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: clamp(24px, 2.5vw, 32px); align-items: start; margin-top: 40px; max-width: 1100px; }
+.pv-layout { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: clamp(24px, 2.5vw, 32px); align-items: start; max-width: 1100px; }
+/* .wrap（Base.astro）の margin: 0 auto に負けないよう、ページ名を付けて上の余白を指定 */
+.privacy-page .pv-layout { margin-top: 40px; }
 
 .pv-side { position: sticky; top: calc(var(--header-h) + 24px); }
 .pv-toc { padding: 20px 18px; border-radius: var(--radius); background: var(--white); border: 1px solid var(--line); }
@@ -46,7 +48,8 @@
 @media (max-width: 900px) {
 	.pv-head .wrap { flex-direction: column; align-items: flex-start; gap: 4px; }
 	.pv-head h1 { font-size: 1.3rem; }
-	.pv-layout { grid-template-columns: 1fr; margin-top: 20px; }
+	.pv-layout { grid-template-columns: 1fr; }
+	.privacy-page .pv-layout { margin-top: 20px; }
 	.pv-side { position: static; }
 	.pv-card { padding: 24px 18px 28px; }
 	.pv-card h2 { font-size: 1.15rem; }
