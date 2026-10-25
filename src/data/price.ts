@@ -25,7 +25,7 @@ export interface PriceSection {
 	rows: PriceRow[];
 }
 
-const img = (name: string, height = 560) => ({ src: `/images/price/${name}.webp`, width: 560, height });
+const img = (name: string, height = 400) => ({ src: `/images/price/${name}.webp`, width: 400, height });
 
 export const priceNotes = {
 	items: [
@@ -45,7 +45,7 @@ export const priceSections: PriceSection[] = [
 		id: "house",
 		title: "住宅の鍵開け",
 		short: "住宅の鍵開け",
-		image: img("house", 521),
+		image: img("house", 372),
 		photo: { src: "/images/price/thumbturn.webp", alt: "スイッチ式ツマミ（防犯サムターン）" },
 		body: [
 			"住宅の鍵開けは玄関の鍵以外に勝手口や窓の鍵など、もっとも早く簡単に開錠できる場所を探します。",
