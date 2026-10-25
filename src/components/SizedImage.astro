@@ -1,0 +1,51 @@
+---
+// 本文の画像。WordPress から取り込んだ画像は幅と高さを持っていないため、読み込み中に下の文がずれる（CLS）。
+// ファイル名の「-1010x1024.jpg」から大きさが分かるものは width / height を付けて出す。
+// 分からないものや EmDash に置いた画像は、EmDash の標準の部品にそのまま任せる。
+import { Image } from "emdash/ui";
+
+const { node, ...rest } = Astro.props;
+const url: string = typeof node?.asset?.url === "string" ? node.asset.url : "";
+const size = url.match(/-(\d+)x(\d+)\.(?:jpe?g|png|gif|webp)$/i);
+const sized = size && !node.width && !node.height && !node.asset?.provider;
+const width = sized ? Number(size[1]) : undefined;
+const height = sized ? Number(size[2]) : undefined;
+// 本番の画像は http:// のものが混じっているので https:// で読む
+const src = url.replace(/^http:\/\/kagino-anshin-taro\.com\//, "https://kagino-anshin-taro.com/");
+const rawHref = typeof node?.link === "string" ? node.link : node?.link?.href;
+const href = typeof rawHref === "string" && /^(https?:\/\/|\/)/.test(rawHref) ? rawHref : undefined;
+const blank = typeof node?.link === "object" && node.link?.blank === true;
+const img = { src, alt: node?.alt ?? "", title: node?.title, width, height, loading: "lazy", decoding: "async" } as const;
+---
+
+{
+	sized ? (
+		<figure class:list={["sized-image", node.alignment && `align-${node.alignment}`]}>
+			{href ? (
+				<a href={href} target={blank ? "_blank" : undefined} rel={blank ? "noopener noreferrer" : undefined}>
+					<img {...img} />
+				</a>
+			) : (
+				<img {...img} />
+			)}
+			{node.caption && <figcaption>{node.caption}</figcaption>}
+		</figure>
+	) : (
+		<Image node={node} {...rest} />
+	)
+}
+
+<style>
+	/* EmDash の標準の画像部品と同じ並び方 */
+	.sized-image { margin: 1.5rem 0; }
+	.sized-image img { max-width: 100%; height: auto; }
+	.sized-image figcaption { margin-top: 0.5rem; font-size: 0.875rem; color: var(--color-muted, #666); text-align: center; }
+	.align-left, .align-right { width: fit-content; max-width: 50%; }
+	.align-left { float: left; margin: 0 1.5rem 1rem 0; }
+	.align-right { float: right; margin: 0 0 1rem 1.5rem; }
+	.align-center { width: fit-content; margin-inline: auto; }
+	.align-wide, .align-full { width: 100%; }
+	@media (max-width: 640px) {
+		.align-left, .align-right { float: none; width: 100%; max-width: 100%; margin-inline: 0; }
+	}
+</style>

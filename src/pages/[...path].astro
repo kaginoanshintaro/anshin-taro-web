@@ -5,6 +5,7 @@
 import { getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
 import { PortableText } from "emdash/ui";
 import Base from "../layouts/Base.astro";
+import SizedImage from "../components/SizedImage.astro";
 import { resolveStarterSiteIdentity } from "../utils/site-identity";
 
 let segments: string[] = [];
@@ -27,7 +28,11 @@ if (!entry && !parent) {
 }
 if (!entry) return Astro.rewrite("/404");
 
-if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+// 固定ページ・投稿は Cloudflare の入口にキャッシュする（更新時は EmDash がタグで消す）
+if (Astro.cache?.enabled) {
+	Astro.cache.set({ maxAge: 3600, swr: 86400, tags: ["all"] });
+	Astro.cache.set(cacheHint);
+}
 const { siteTitle } = resolveStarterSiteIdentity(await getSiteSettings());
 const seo = getSeoMeta(entry, { siteTitle, siteUrl: Astro.url.origin, path: Astro.url.pathname });
 const categories = entry.data.terms?.category ?? [];
@@ -37,6 +42,6 @@ const categories = entry.data.terms?.category ?? [];
 	<article data-collection={collection}>
 		<h1 {...entry.edit.title}>{entry.data.title}</h1>
 		{categories.map((c) => <a href={`/category/${c.slug}/`}>{c.label}</a>)}
-		<PortableText value={entry.data.content} />
+		<PortableText value={entry.data.content} components={{ type: { image: SizedImage } }} />
 	</article>
 </Base>

@@ -8,5 +8,7 @@ export const onRequest = defineMiddleware((context, next) => {
 	if (pathname.endsWith("/") || pathname === "/404" || pathname.startsWith("/_") || /\.[a-z0-9]+$/i.test(pathname)) {
 		return next();
 	}
+	// リダイレクトはページのキャッシュに入れない（EmDash の Route Caching の注意）
+	context.cache?.set(false);
 	return context.redirect(`${pathname}/${search}`, 301);
 });
