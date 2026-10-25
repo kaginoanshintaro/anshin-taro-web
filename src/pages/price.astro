@@ -4,10 +4,13 @@
 // パソコン版: 左に料金メニュー（スクロールしても付いてくる）、右に種類ごとのカード。
 import Base from "../layouts/Base.astro";
 import { site } from "../site";
-import { priceSections } from "../data/price";
+import { priceNotes, priceSections } from "../data/price";
 import "../styles/price.css";
 
 // 一番下の「電話で問い合わせる」は今のページと同じ番号（佐藤さんの指示 2026-10-25）
+// 料金表の名前の（ ）の部分は小さく出して、1行に収まりやすくする
+const splitParen = (name: string) => name.split(/(（[^）]*）)/).filter(Boolean);
+
 const ctaTel = { label: "080-6416-9440", href: "tel:08064169440" };
 ---
 
@@ -33,39 +36,13 @@ const ctaTel = { label: "080-6416-9440", href: "tel:08064169440" };
 			</aside>
 
 			<div class="pp-main">
-				<!-- 注意書きの見せ方を3案並べている（佐藤さんが選んだら1つだけ残す） -->
-				<p class="pp-variant">注意書き 案A：3つのカード</p>
-				<section class="pp-notes-a" aria-label="料金について">
-					<div class="cards">
-						<div><p class="k">料金</p><p class="v">出張料・税込み</p><p class="s">の金額です</p></div>
-						<div><p class="k">深夜早朝（pm20:00〜am8:00）</p><p class="v">＋3,300円</p><p class="s">の料金となります</p></div>
-						<div><p class="k">キャンセル料</p><p class="v sm">日中 5,500円<br />夜間早朝 8,800円</p><p class="s">お見積もり以外のサービスについては出発してからのキャンセルはキャンセル料が発生いたします。</p></div>
-					</div>
-					<p class="ask">料金項目にない場合などご不明点はお気軽にお問い合わせください。</p>
-				</section>
-
-				<p class="pp-variant">注意書き 案B：料金表と同じ形</p>
-				<section class="pp-card pp-notes-b" aria-label="料金について">
-					<p class="lead"><strong>出張料・税込み</strong>の金額です</p>
-					<dl class="pp-table">
-						<div><dt>深夜早朝（pm20:00〜am8:00）</dt><dd>＋3,300円</dd></div>
-						<div><dt>キャンセル料　日中（8:00〜20:00）</dt><dd>5,500円</dd></div>
-						<div><dt>キャンセル料　夜間早朝（20:00〜8:00）</dt><dd>8,800円</dd></div>
-					</dl>
+				<section class="pp-notes" aria-label="料金について">
 					<ul>
-						<li>お見積もり以外のサービスについては出発してからのキャンセルは<strong>キャンセル料</strong>が発生いたします。</li>
-						<li>料金項目にない場合などご不明点はお気軽にお問い合わせください。</li>
+						{priceNotes.items.map((n) => <li>{n.strong && <strong>{n.strong}</strong>}{n.rest}{n.strong2 && <strong>{n.strong2}</strong>}{n.tail}</li>)}
 					</ul>
-				</section>
-
-				<p class="pp-variant">注意書き 案C：細い帯</p>
-				<section class="pp-notes-c" aria-label="料金について">
-					<div class="chips">
-						<span><b>出張料・税込み</b>の金額です</span>
-						<span>深夜早朝（20:00〜8:00）<b>＋3,300円</b></span>
-						<span>キャンセル料 日中<b>5,500円</b>／夜間早朝<b>8,800円</b></span>
-					</div>
-					<p>※お見積もり以外のサービスについては出発してからのキャンセルはキャンセル料が発生いたします。料金項目にない場合などご不明点はお気軽にお問い合わせください。</p>
+					<dl class="pp-cancel">
+						{priceNotes.cancelFees.map((f) => <div><dt>{f.label}</dt><dd>{f.price}</dd></div>)}
+					</dl>
 				</section>
 
 				{priceSections.map((s) => (
@@ -81,11 +58,12 @@ const ctaTel = { label: "080-6416-9440", href: "tel:08064169440" };
 								<dl class="pp-table">
 									{s.rows.map((r) => (
 										<div>
-											<dt>{r.name}</dt>
-											<dd>{r.price}{r.note && <small>{r.note}</small>}</dd>
+											<dt>{splitParen(r.name).map((t) => (t.startsWith("（") ? <span class="paren">{t}</span> : t))}</dt>
+											<dd>{r.price}{r.note && <small>※</small>}</dd>
 										</div>
 									))}
 								</dl>
+								{[...new Set(s.rows.map((r) => r.note).filter(Boolean))].map((n) => <p class="pp-table-note">{n}</p>)}
 							</div>
 							{s.photo && (
 								<figure class="pp-photo">
