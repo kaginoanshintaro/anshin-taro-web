@@ -132,17 +132,13 @@ const dateFormat = new Intl.DateTimeFormat("ja-JP", {
 
 				<div class="col">
 					<a class="btn-tel" href={site.tel.href}><small>電話で見積もり・佐藤が電話に出ます</small>{site.tel.label}</a>
-					<a class="panel banner" href="#"><img loading="lazy" decoding="async" src="/images/top/line-v2.webp" alt="LINE 公式アカウント 友だち追加" width="1080" height="346" /></a>
+					<a class="bank-banner" href="#"><img loading="lazy" decoding="async" src="/images/top/line-v3-600.webp" srcset="/images/top/line-v3-600.webp 600w, /images/top/line-v3-1200.webp 1200w" sizes="600px" width="1200" height="379" alt="LINE 公式アカウント 友だち追加で10%オフクーポン" /></a>
 					<div class="small-row">
 						<a class="panel banner" href="#" style="background:#f5ff93"><img loading="lazy" decoding="async" src="/images/top/takagaku.webp" alt="高額請求にご注意" /></a>
 						<div class="panel"><img loading="lazy" decoding="async" src="/images/top/sa2.webp" alt="SECURITY ACTION 二つ星" /></div>
 						<a class="panel insta" href="#" aria-label="佐藤の Instagram"><svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="ig" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#f9a23b"/><stop offset=".45" stop-color="#e1306c"/><stop offset="1" stop-color="#7a3cc4"/></linearGradient></defs><rect x="2" y="2" width="60" height="60" rx="16" fill="url(#ig)"/><rect x="14" y="14" width="36" height="36" rx="11" fill="none" stroke="#fff" stroke-width="4"/><circle cx="32" cy="32" r="8.5" fill="none" stroke="#fff" stroke-width="4"/><circle cx="43" cy="21" r="2.6" fill="#fff"/></svg></a>
 					</div>
-					<a class="bank" href="/tipshints/">
-						<svg class="bulb" viewBox="0 0 48 48" aria-hidden="true"><g stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M24 3v4M8.5 9.5l2.8 2.8M39.5 9.5l-2.8 2.8M3 24h4M41 24h4"/></g><path d="M24 11a12 12 0 0 0-7.2 21.6c1.2 1 2.2 2.6 2.2 4.4h10c0-1.8 1-3.4 2.2-4.4A12 12 0 0 0 24 11z" fill="#ffd36b" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"/><path d="M19.5 41h9M21 45h6" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>
-						<span><b>お役立ち情報</b><small>鍵の技術・防犯・コラムの一覧</small></span>
-						<span class="arrow">→</span>
-					</a>
+					<a class="bank-banner" href="/tipshints/"><img loading="lazy" decoding="async" src="/images/top/otasuke-v2-600.webp" srcset="/images/top/otasuke-v2-600.webp 600w, /images/top/otasuke-v2-1200.webp 1200w" sizes="600px" width="1200" height="442" alt="お役立ち情報 鍵の技術・防犯・コラムの一覧" /></a>
 					<section class="panel company" aria-label="会社情報">
 						<p class="co-head"><span>{site.name}</span><span>〒{site.postalCode}</span></p>
 						<p class="co-addr">{site.addressLine}</p>
@@ -354,7 +350,18 @@ const dateFormat = new Intl.DateTimeFormat("ja-JP", {
 	:global(html) { scroll-snap-type: y proximity; }
 	.fixed-area { position: relative; height: 100vh; height: 100svh; padding-top: var(--header-h); clip-path: inset(0); scroll-snap-align: start; }
 	/* 写真は画面に固定（新しい背景は佐藤さんが用意予定。今は作業風景の写真） */
-	.fa-bg { position: fixed; inset: 0; background: url("/images/top/fixed-bg.webp") center / cover; z-index: 0; }
+	/* 背景は佐藤さんの写真（合鍵の機械で作業する手元、2026-10-25）。読めるブラウザは AVIF、画面が小さければ小さい方 */
+	.fa-bg {
+		position: fixed; inset: 0; z-index: 0;
+		background: url("/images/top/fixed-bg-keycut-2400.webp") center / cover;
+		background-image: image-set(url("/images/top/fixed-bg-keycut-2400.avif") type("image/avif"), url("/images/top/fixed-bg-keycut-2400.webp") type("image/webp"));
+	}
+	@media (max-width: 1199px) {
+		.fa-bg {
+			background-image: url("/images/top/fixed-bg-keycut-1600.webp");
+			background-image: image-set(url("/images/top/fixed-bg-keycut-1600.avif") type("image/avif"), url("/images/top/fixed-bg-keycut-1600.webp") type("image/webp"));
+		}
+	}
 	.fixed-area > .fa-pc, .fixed-area > .fa-sp { position: relative; z-index: 1; height: 100%; }
 	.fa-pc .stage { height: 100%; padding-top: 16px; padding-bottom: 16px; }
 	/* スマホは2ページ切り替えの部品を、画面ではなくこのエリアの中に置く */

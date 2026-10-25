@@ -371,3 +371,8 @@
 	.fa .send .shackle { transition: none; }
 	.fa.pins-ready .fa-pc .busy, .fa.pins-ready .fa-sp .days i b { transform: none; }
 }
+
+/* LINE とお役立ち情報は佐藤さんのバナー画像（2026-10-25） */
+/* 角は画像の側で透明にしてあるので切らない。影も画像の形に沿わせる */
+.fa-pc .bank-banner { display: block; filter: drop-shadow(0 2px 6px rgb(0 0 0 / 0.2)); }
+.fa-pc .bank-banner img { display: block; width: 100%; height: auto; }
