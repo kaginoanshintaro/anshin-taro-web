@@ -17,7 +17,7 @@
 .pp-head h1 { margin: 0; padding-left: 16px; border-left: 5px solid var(--accent); font-size: 1.6rem; line-height: 1.4; color: var(--heading); letter-spacing: 0.08em; }
 
 /* 左に料金メニュー、右に本文 */
-.pp-layout { display: grid; grid-template-columns: 240px 1fr; gap: clamp(24px, 3vw, 40px); align-items: start; margin-top: 40px; max-width: 1200px; }
+.pp-layout { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: clamp(24px, 2.5vw, 32px); align-items: start; margin-top: 40px; max-width: 1200px; }
 
 .pp-side { position: sticky; top: calc(var(--header-h) + 24px); display: grid; gap: 16px; }
 .pp-toc { padding: 20px 18px; border-radius: var(--radius); background: var(--white); border: 1px solid var(--line); }
@@ -35,16 +35,16 @@
 .pp-main { display: grid; gap: 32px; min-width: 0; }
 
 /* 料金のご案内 */
-.pp-notes { display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: center; padding: 24px 28px; border-radius: var(--radius); background: var(--accent-soft); }
+.pp-notes { display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: center; padding: 22px 16px 22px 20px; border-radius: var(--radius); background: var(--accent-soft); }
 /* 1行ずつ収まるよう文字は小さめ（佐藤さんの指示 2026-10-25） */
-.pp-notes ul { margin: 0; padding-left: 1.2em; font-size: 0.8rem; line-height: 2; letter-spacing: 0.02em; white-space: nowrap; }
+.pp-notes ul { margin: 0; padding-left: 1.2em; font-size: 0.8rem; line-height: 2; letter-spacing: 0; white-space: nowrap; }
 .pp-notes strong { color: var(--accent-dark); }
 /* キャンセル料は白い箱1つに2行。左の文と高さを揃える（佐藤さんの指示 2026-10-25） */
-.pp-cancel { padding: 10px 18px 12px; border-radius: 14px; background: var(--white); }
+.pp-cancel { padding: 10px 14px 12px; border-radius: 14px; background: var(--white); }
 .pp-cancel-title { margin: 0 0 4px; padding-bottom: 4px; border-bottom: 1px solid var(--gray-200); font-size: 0.75rem; font-weight: bold; text-align: center; color: var(--gray-700); }
 .pp-cancel dl { margin: 0; }
-.pp-cancel dl > div { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; }
-.pp-cancel dt { font-size: 0.75rem; line-height: 1.9; color: var(--gray-700); white-space: nowrap; }
+.pp-cancel dl > div { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.pp-cancel dt { font-size: 0.75rem; line-height: 1.9; letter-spacing: 0; color: var(--gray-700); white-space: nowrap; }
 .pp-cancel dd { margin: 0; font-size: 1.1rem; font-weight: bold; line-height: 1.6; color: var(--gray-900); white-space: nowrap; }
 
 /* 種類ごとのカード */
@@ -91,9 +91,6 @@
 /* 一番下のボタン */
 .pp-cta { display: flex; justify-content: center; gap: 16px; margin-top: 8px; }
 .pp-cta a { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; min-width: 240px; padding: 12px 24px; border-radius: 999px; font-weight: bold; text-decoration: none; line-height: 1.4; }
-.pp-cta-tel { background: var(--accent); color: var(--white); font-size: 1.1rem; }
-.pp-cta-tel span { font-size: 0.85rem; font-weight: normal; }
-.pp-cta-tel:hover { background: var(--accent-dark); }
 .pp-cta-home { border: 2px solid var(--color-brown-light); color: var(--color-brown); background: var(--white); font-size: 1rem; }
 
 /* 小さめのパソコン画面: 左メニューとカードの余白を少し詰める */

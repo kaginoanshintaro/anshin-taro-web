@@ -7,11 +7,8 @@ import { site } from "../site";
 import { priceNotes, priceSections } from "../data/price";
 import "../styles/price.css";
 
-// 一番下の「電話で問い合わせる」は今のページと同じ番号（佐藤さんの指示 2026-10-25）
 // 料金表の名前の（ ）の部分は小さく出して、1行に収まりやすくする
 const splitParen = (name: string) => name.split(/(（[^）]*）)/).filter(Boolean);
-
-const ctaTel = { label: "080-6416-9440", href: "tel:08064169440" };
 ---
 
 <Base title="サービス料金">
@@ -116,7 +113,6 @@ const ctaTel = { label: "080-6416-9440", href: "tel:08064169440" };
 				</section>
 
 				<div class="pp-cta">
-					<a class="pp-cta-tel" href={ctaTel.href}>電話で問い合わせる<span>{ctaTel.label}</span></a>
 					<a class="pp-cta-home" href="/">ホームに戻る</a>
 				</div>
 			</div>
