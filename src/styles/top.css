@@ -349,3 +349,25 @@
 .fa-pc .stage { grid-template-columns: minmax(0, 1fr) 600px minmax(0, 1fr); }
 .fa-pc .company .co-contact { display: flex; flex-wrap: wrap; gap: 4px 18px; margin-top: 2px; }
 .fa-pc .company a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+
+/* ===== 鍵のギミック（2026-10-25） ===== */
+/* 送信ボタンは南京錠。触れるとツルが外れて開く */
+.fa .send .padlock { width: 22px; height: 22px; fill: none; stroke: var(--white); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; overflow: visible; }
+.fa .send .padlock rect { fill: var(--white); }
+.fa .send .padlock .keyhole { fill: var(--color-orange); stroke: none; }
+.fa .send .shackle { transform-origin: 16px 11px; transition: transform 0.35s cubic-bezier(0.3, 1.6, 0.5, 1); }
+.fa .input:hover .shackle, .fa .input:active .shackle { transform: translateY(-3.5px) rotate(-40deg); }
+/* 佐藤の予定は、鍵のピンのように下から順に上がって収まる（画面に入ったとき一度だけ） */
+.fa-pc .col-day { overflow: hidden; }
+.fa.pins-ready .fa-pc .busy, .fa.pins-ready .fa-sp .days i b { transform: translateY(120px); }
+.fa.pins-set .fa-pc .busy, .fa.pins-set .fa-sp .days i b { transform: none; transition: transform 0.55s cubic-bezier(0.3, 1.5, 0.5, 1); }
+.fa.pins-set .fa-pc .col-day:nth-of-type(3) .busy, .fa.pins-set .fa-sp .days > div:nth-child(2) b { transition-delay: 0.07s; }
+.fa.pins-set .fa-pc .col-day:nth-of-type(4) .busy, .fa.pins-set .fa-sp .days > div:nth-child(3) b { transition-delay: 0.14s; }
+.fa.pins-set .fa-pc .col-day:nth-of-type(5) .busy, .fa.pins-set .fa-sp .days > div:nth-child(4) b { transition-delay: 0.21s; }
+.fa.pins-set .fa-pc .col-day:nth-of-type(6) .busy, .fa.pins-set .fa-sp .days > div:nth-child(5) b { transition-delay: 0.28s; }
+.fa.pins-set .fa-pc .col-day:nth-of-type(7) .busy, .fa.pins-set .fa-sp .days > div:nth-child(6) b { transition-delay: 0.35s; }
+.fa.pins-set .fa-pc .col-day:nth-of-type(8) .busy, .fa.pins-set .fa-sp .days > div:nth-child(7) b { transition-delay: 0.42s; }
+@media (prefers-reduced-motion: reduce) {
+	.fa .send .shackle { transition: none; }
+	.fa.pins-ready .fa-pc .busy, .fa.pins-ready .fa-sp .days i b { transform: none; }
+}
