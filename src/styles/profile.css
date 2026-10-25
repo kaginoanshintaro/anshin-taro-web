@@ -5,6 +5,19 @@
 
 .profile-page { padding-bottom: 24px; }
 
+/*
+ * 見出しのフォント: しっぽり明朝（太字）から、このページの見出しの文字だけを取り出した小さいファイル（約3KB）。
+ * サイト共通のしっぽり明朝のファイルは読みに行かない。見出しの文字を変えたら scripts/make-profile-font.py を実行し直す。
+ */
+@font-face {
+	font-family: "Profile Headings";
+	font-style: normal;
+	font-weight: 700;
+	font-display: swap;
+	src: url("/fonts/profile-headings.woff2") format("woff2");
+}
+.profile-page h1, .profile-page h2 { font-family: "Profile Headings", var(--font-serif); }
+
 /* ページの見出し（料金ページと同じ細い帯） */
 .pf-head { padding: 12px 0; border-bottom: 1px solid var(--line); background: var(--white); }
 .pf-head .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; max-width: 1200px; }
