@@ -339,12 +339,12 @@
 @media (prefers-reduced-motion: reduce) { .fa .btn-tel::after { animation: none; display: none; } }
 .fa-pc .col .cal .hours { grid-template-rows: repeat(5, 18px); }
 .fa-pc .col .cal .col-day { height: 90px; }
-/* 右下の会社情報（見出し・ラベルなしの小さい表示。佐藤さんの指示 2026-10-25） */
-.fa-pc .col > .panel.company { flex: none; margin-top: auto; padding: 12px 18px; display: flex; flex-direction: column; gap: 2px; font-size: 1rem; font-weight: 700; line-height: 1.6; color: var(--gray-900); }
+/* 真ん中のチャットの下の会社情報（2026-10-25 右下から移動）（見出し・ラベルなしの小さい表示。佐藤さんの指示 2026-10-25） */
+.fa-pc .panel.company { flex: none; padding: 12px 18px; display: flex; flex-direction: column; gap: 2px; font-size: 1rem; font-weight: 700; line-height: 1.6; color: var(--gray-900); }
 .fa-pc .company p { margin: 0; }
 .fa-pc .company .co-head { display: flex; flex-wrap: wrap; gap: 0 1em; }
 /* 住所は1行で。幅に収まる最大の大きさにする（1rem まで） */
-.fa-pc .col > .panel.company { container-type: inline-size; }
+.fa-pc .panel.company { container-type: inline-size; }
 .fa-pc .company .co-addr { white-space: nowrap; font-size: min(1rem, 2.85cqi); }
 .fa-pc .stage { grid-template-columns: minmax(0, 1fr) 600px minmax(0, 1fr); }
 .fa-pc .company .co-contact { display: flex; flex-wrap: wrap; gap: 4px 18px; margin-top: 2px; }
@@ -376,3 +376,10 @@
 /* 角は画像の側で透明にしてあるので切らない。影も画像の形に沿わせる */
 .fa-pc .bank-banner { display: block; filter: drop-shadow(0 2px 6px rgb(0 0 0 / 0.2)); }
 .fa-pc .bank-banner img { display: block; width: 100%; height: auto; }
+
+/* 右下のサービス紹介ボタン3つ（スマホ2ページ目のタイルと同じ形） */
+.fa-pc .svc-row { margin-top: auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.fa-pc .svc-row a { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; height: 104px; background: var(--white); border: 2px solid var(--color-brown-light); border-radius: 18px; color: var(--color-brown); box-shadow: 0 6px 20px rgb(0 0 0 / 0.15); transition: transform 0.15s; }
+.fa-pc .svc-row a:hover { transform: translateY(-2px); }
+.fa-pc .svc-row svg { width: 38px; height: 38px; stroke: currentColor; stroke-width: 1.9; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.fa-pc .svc-row b { font-size: 0.95rem; }
