@@ -56,7 +56,7 @@ const pageCtx = createPublicPageContext({
 			スマホは左にメニュー、真ん中にロゴ、右にホームのアイコンだけ。メニューは左から出る引き出し。
 		-->
 		<header class="site-header">
-			<button class="icon-btn menu-btn" type="button" aria-label="メニューを開く" aria-controls="drawer" aria-expanded="false"><svg class="menu-key" viewBox="0 0 24 24" aria-hidden="true"><circle cx="7" cy="12" r="4" /><circle cx="7" cy="12" r="1.2" /><path d="M11 12h10M17 12v3M20 12v2.5" /></svg></button>
+			<button class="icon-btn menu-btn" type="button" aria-label="メニューを開く" aria-controls="drawer" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" /></svg></button>
 			<a class="logo" href="/"><img src="/images/top/logo-tight.webp" alt={site.name} width="576" height="149" /></a>
 			<a class="icon-btn home-btn" href="/" aria-label="ホームへ"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-7 9 7" /><path d="M5 10v10h5v-6h4v6h5V10" /></svg></a>
 			<nav class="pc-nav" aria-label="メニュー">
@@ -77,13 +77,7 @@ const pageCtx = createPublicPageContext({
 			(() => {
 				const btn = document.querySelector(".menu-btn");
 				const set = (open) => { document.documentElement.classList.toggle("menu-open", open); btn.setAttribute("aria-expanded", String(open)); };
-				// 鍵を回してから開く（動きを減らす設定なら、すぐ開く）
-				const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
-				btn.addEventListener("click", () => {
-					if (still) return set(true);
-					btn.classList.add("turning");
-					setTimeout(() => { set(true); btn.classList.remove("turning"); }, 320);
-				});
+				btn.addEventListener("click", () => set(true));
 				document.querySelector(".drawer-close").addEventListener("click", () => set(false));
 				document.querySelector(".drawer-shade").addEventListener("click", () => set(false));
 			})();
@@ -179,10 +173,6 @@ const pageCtx = createPublicPageContext({
 	.icon-btn { display: inline-grid; place-items: center; width: 44px; height: 44px; padding: 0; border-radius: 50%; border: 1px solid var(--color-brown-light); background: var(--white); color: var(--color-brown); cursor: pointer; }
 	.icon-btn svg { width: 26px; height: 26px; stroke: currentColor; stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
 	.menu-btn { justify-self: start; }
-	/* メニューのボタンは鍵。押すと鍵穴で回すように90度回ってから開く */
-	.menu-key { transition: transform 0.3s ease-in-out; }
-	.menu-btn.turning .menu-key { transform: rotateX(180deg); }
-	@media (prefers-reduced-motion: reduce) { .menu-key { transition: none; } }
 	.home-btn { justify-self: end; }
 	/* ロゴは見本より大きく（佐藤さんの指示 2026-10-25） */
 	.logo img { display: block; height: 46px; width: auto; }
