@@ -144,8 +144,7 @@ const dateFormat = new Intl.DateTimeFormat("ja-JP", {
 						<span class="arrow">→</span>
 					</a>
 					<section class="panel company" aria-label="会社情報">
-						<p class="co-name">{site.name}</p>
-						<p class="co-zip">〒{site.postalCode}</p>
+						<p class="co-head"><span>{site.name}</span><span>〒{site.postalCode}</span></p>
 						<p class="co-addr">{site.addressLine}</p>
 						<p class="co-contact"><a href={site.tel.href}>{site.tel.label}</a><a href={`mailto:${site.email}`}>{site.email}</a></p>
 					</section>
