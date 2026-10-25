@@ -254,6 +254,22 @@ const dateFormat = new Intl.DateTimeFormat("ja-JP", {
 		sp.querySelector(".prof .close").addEventListener("click", () => document.body.classList.remove("prof-open"));
 	})();
 
+	// パソコン: 見本は 1440×900 の画面（ヘッダーの下 808px）で作ったので、ブラウザの表示の高さがそれより低いときは
+	// 全体を縮めて1画面に収める（佐藤さんの確認 2026-10-25: ヘッダーの分だけ収まっていなかった）
+	(() => {
+		const pc = document.querySelector(".fa-pc"), stage = pc.querySelector(".stage");
+		const DESIGN_H = 808;
+		const fit = () => {
+			if (getComputedStyle(pc).display === "none") return;
+			const avail = pc.clientHeight;
+			const s = Math.min(1, avail / DESIGN_H);
+			stage.style.zoom = String(s);
+			stage.style.height = `${avail / s}px`;
+		};
+		fit();
+		addEventListener("resize", fit);
+	})();
+
 	// 太郎ちゃんのパトロール: 9秒歩いて、立ち止まったら挨拶を1つチャットに出し、5秒後にまた歩き出す
 	document.querySelectorAll(".fa .chat").forEach((chat) => {
 		const msgs = chat.querySelector(".msgs");
@@ -267,6 +283,8 @@ const dateFormat = new Intl.DateTimeFormat("ja-JP", {
 			m.innerHTML = '<div class="bubble"></div>';
 			m.firstChild.textContent = hellos[i++ % hellos.length];
 			msgs.append(m);
+			// 見えなくなった古い吹き出しは消す
+			while (msgs.children.length > 6) msgs.firstElementChild.remove();
 			setTimeout(walk, 5000);
 		};
 		walk();
@@ -327,7 +345,5 @@ const dateFormat = new Intl.DateTimeFormat("ja-JP", {
 	@media (min-width: 1200px) {
 		.fa-pc { display: block; }
 		.fa-sp { display: none; }
-		/* パソコンの見本は 1440×900 で作った。画面の低いノートパソコンでは、はみ出さないよう少しだけ縦にスクロールさせる */
-		.fixed-area { min-height: 860px; }
 	}
 </style>

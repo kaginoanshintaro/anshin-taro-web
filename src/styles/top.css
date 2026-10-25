@@ -294,7 +294,7 @@
 /* 太郎ちゃんのパトロール（patrol.css、街並みは使わない） */
 .fa .chat-body {position: relative;}
 .fa .chat-body > * {position: relative; z-index: 1;}
-.fa .chat.walking .chat.walking .taro {animation: bob 0.45s ease-in-out infinite alternate;}
+.fa .chat.walking .taro {animation: bob 0.45s ease-in-out infinite alternate;}
 @keyframes bob { from { transform: translateY(0) rotate(-2deg); } to { transform: translateY(-6px) rotate(2deg); } }
 .fa .msg.hello .bubble {animation: pop 0.35s ease-out;}
 @keyframes pop { from { transform: scale(0.6); opacity: 0; } }
@@ -314,3 +314,8 @@
 	.fa-sp .days { height: 52px; }
 	.fa-sp .mini-cal { padding: 6px 12px 8px; }
 }
+
+/* パソコンもチャットが増えたら上の古い吹き出しから見えなくし、太郎ちゃんの位置は動かさない
+   （佐藤さんの確認 2026-10-25: 発言のたびに太郎ちゃんが下がっていた） */
+.fa-pc .chat-body { grid-template-rows: minmax(0, 1fr); overflow: hidden; }
+.fa-pc .msgs { min-height: 0; overflow: hidden; -webkit-mask-image: linear-gradient(transparent, #000 30px); mask-image: linear-gradient(transparent, #000 30px); }
