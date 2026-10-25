@@ -40,9 +40,12 @@ const ctaTel = { label: "080-6416-9440", href: "tel:08064169440" };
 					<ul>
 						{priceNotes.items.map((n) => <li>{n.strong && <strong>{n.strong}</strong>}{n.rest}{n.strong2 && <strong>{n.strong2}</strong>}{n.tail}</li>)}
 					</ul>
-					<dl class="pp-cancel">
-						{priceNotes.cancelFees.map((f) => <div><dt>{f.label}</dt><dd>{f.price}</dd></div>)}
-					</dl>
+					<div class="pp-cancel">
+						<p class="pp-cancel-title">キャンセル料</p>
+						<dl>
+							{priceNotes.cancelFees.map((f) => <div><dt>{f.label}</dt><dd>{f.price}</dd></div>)}
+						</dl>
+					</div>
 				</section>
 
 				{priceSections.map((s) => (

@@ -39,11 +39,13 @@
 /* 1行ずつ収まるよう文字は小さめ（佐藤さんの指示 2026-10-25） */
 .pp-notes ul { margin: 0; padding-left: 1.2em; font-size: 0.8rem; line-height: 2; letter-spacing: 0.02em; white-space: nowrap; }
 .pp-notes strong { color: var(--accent-dark); }
-.pp-cancel { margin: 0; display: grid; gap: 8px; min-width: 200px; }
-.pp-cancel > div { padding: 8px 14px; border-radius: 12px; background: var(--white); text-align: center; }
-.pp-cancel dt { font-size: 0.75rem; line-height: 1.6; color: var(--gray-700); white-space: nowrap; }
-.pp-cancel dt::before { content: "キャンセル料"; display: block; }
-.pp-cancel dd { margin: 0; font-size: 1.25rem; font-weight: bold; color: var(--gray-900); line-height: 1.4; }
+/* キャンセル料は白い箱1つに2行。左の文と高さを揃える（佐藤さんの指示 2026-10-25） */
+.pp-cancel { padding: 10px 18px 12px; border-radius: 14px; background: var(--white); }
+.pp-cancel-title { margin: 0 0 4px; padding-bottom: 4px; border-bottom: 1px solid var(--gray-200); font-size: 0.75rem; font-weight: bold; text-align: center; color: var(--gray-700); }
+.pp-cancel dl { margin: 0; }
+.pp-cancel dl > div { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; }
+.pp-cancel dt { font-size: 0.75rem; line-height: 1.9; color: var(--gray-700); white-space: nowrap; }
+.pp-cancel dd { margin: 0; font-size: 1.1rem; font-weight: bold; line-height: 1.6; color: var(--gray-900); white-space: nowrap; }
 
 /* 種類ごとのカード */
 .pp-card { scroll-margin-top: calc(var(--header-h) + 20px); padding: 32px 36px 36px; border-radius: var(--radius); background: var(--white); box-shadow: 0 2px 14px rgb(38 38 38 / 0.06); }
@@ -102,8 +104,7 @@
 	.pp-intro img { width: 170px; }
 	/* 注意書きが1行に収まるよう、キャンセル料の箱は下に横並び */
 	.pp-notes { grid-template-columns: 1fr; gap: 14px; }
-	.pp-cancel { grid-template-columns: 1fr 1fr; }
-	.pp-cancel dt::before { content: "キャンセル料 "; display: inline; }
+	.pp-cancel dl { display: grid; grid-template-columns: 1fr 1fr; gap: 0 32px; }
 }
 
 /* スマホ版はパソコン版が決まってから作る。それまでは1列に並べるだけ */
