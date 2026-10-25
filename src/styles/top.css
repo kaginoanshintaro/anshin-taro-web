@@ -75,9 +75,6 @@
 .fa-pc .small-row > * {display: grid; place-items: center; padding: 8px; height: 96px;}
 .fa-pc .small-row img {max-width: 100%; max-height: 100%;}
 .fa-pc .insta svg {width: 64px; height: 64px;}
-.fa-pc .partner {padding: 12px 18px;}
-.fa-pc .partner img {width: 64%; margin: 0 auto 4px;}
-.fa-pc .partner p {margin: 0; font-size: 0.78rem; line-height: 1.5; color: var(--gray-700);}
 .fa-pc .bank .bulb {width: 40px; height: 40px; color: var(--white); flex: none;}
 /* スマホ 2ページ切り替え（sp2.html） */
 .fa-sp {font-size: 15px;}
@@ -321,9 +318,8 @@
 .fa-pc .msgs { min-height: 0; overflow: hidden; -webkit-mask-image: linear-gradient(transparent, #000 30px); mask-image: linear-gradient(transparent, #000 30px); }
 
 /* パソコン: パートナー募集はベビちゃんのニュースの下（佐藤さんの指示 2026-10-25）。ニュースが残りの高さを使う */
-.fa-pc .col > .panel.partner { flex: none; }
+.fa-pc .col > .panel.cal { flex: none; }
 .fa-pc .col > .panel.news-panel { flex: 1; min-height: 0; overflow: hidden; }
-.fa-pc .partner img { width: 80%; }
 
 /* チャットの窓は透明なので、上の名前・説明と下の注意書きだけ、すりガラスの帯にのせて読みやすくする（2026-10-25） */
 .fa .chat-head-label, .fa .chat-note, .fa-sp .chat > div:first-child {
@@ -341,3 +337,5 @@
 }
 @keyframes tel-shine { 0%, 70% { left: -60%; } 100% { left: 130%; } }
 @media (prefers-reduced-motion: reduce) { .fa .btn-tel::after { animation: none; display: none; } }
+.fa-pc .col .cal .hours { grid-template-rows: repeat(5, 18px); }
+.fa-pc .col .cal .col-day { height: 90px; }
