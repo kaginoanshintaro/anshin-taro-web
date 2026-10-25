@@ -8,12 +8,13 @@
 
 /* ページの見出し */
 .pp-head .wrap { max-width: 1200px; }
-.pp-head { padding: 36px 0 28px; border-bottom: 1px solid var(--line); background: var(--white); }
+/* タイトルの帯は細く、見出しはカードの見出しと同じ形（佐藤さんの指示 2026-10-25） */
+.pp-head { padding: 12px 0; border-bottom: 1px solid var(--line); background: var(--white); }
+.pp-head .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
 .pp-crumb { font-size: 0.8rem; color: var(--muted); }
 .pp-crumb a { color: var(--muted); text-decoration: none; }
 .pp-crumb span { margin: 0 8px; }
-.pp-head h1 { margin: 6px 0 0; font-size: 2.2rem; line-height: 1.4; color: var(--heading); letter-spacing: 0.12em; }
-.pp-head h1::after { content: ""; display: block; width: 56px; height: 4px; margin-top: 14px; border-radius: 2px; background: var(--accent); }
+.pp-head h1 { margin: 0; padding-left: 16px; border-left: 5px solid var(--accent); font-size: 1.6rem; line-height: 1.4; color: var(--heading); letter-spacing: 0.08em; }
 
 /* 左に料金メニュー、右に本文 */
 .pp-layout { display: grid; grid-template-columns: 240px 1fr; gap: 40px; align-items: start; margin-top: 40px; max-width: 1200px; }
@@ -33,15 +34,27 @@
 
 .pp-main { display: grid; gap: 32px; min-width: 0; }
 
-/* 料金のご案内 */
-.pp-notes { display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: center; padding: 24px 28px; border-radius: var(--radius); background: var(--accent-soft); }
-.pp-notes ul { margin: 0; padding-left: 1.2em; font-size: 0.95rem; line-height: 1.9; }
-.pp-notes strong { color: var(--accent-dark); }
-.pp-cancel { margin: 0; display: grid; gap: 8px; min-width: 230px; }
-.pp-cancel > div { padding: 8px 14px; border-radius: 12px; background: var(--white); text-align: center; }
-.pp-cancel dt { font-size: 0.75rem; color: var(--gray-700); }
-.pp-cancel dt::before { content: "キャンセル料 "; }
-.pp-cancel dd { margin: 0; font-size: 1.25rem; font-weight: bold; color: var(--gray-900); line-height: 1.4; }
+/* 料金のご案内（3案。決まったら1つだけ残す） */
+.pp-variant { justify-self: start; margin: 0 0 -20px; padding: 2px 10px; border-radius: 6px; background: var(--gray-500); color: var(--white); font-size: 0.8rem; font-weight: bold; }
+
+.pp-notes-a .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.pp-notes-a .cards > div { padding: 18px 20px; border-radius: 16px; border-top: 4px solid var(--accent); background: var(--white); box-shadow: 0 2px 14px rgb(38 38 38 / 0.06); }
+.pp-notes-a p { margin: 0; }
+.pp-notes-a .k { font-size: 0.8rem; color: var(--gray-700); }
+.pp-notes-a .v { font-size: 1.4rem; font-weight: bold; line-height: 1.5; color: var(--accent-dark); }
+.pp-notes-a .v.sm { font-size: 1.1rem; }
+.pp-notes-a .s { font-size: 0.8rem; line-height: 1.6; color: var(--gray-500); }
+.pp-notes-a .ask { margin-top: 12px; font-size: 0.9rem; text-align: center; }
+
+.pp-notes-b .lead { margin: 0 0 10px; }
+.pp-notes-b .lead strong { color: var(--accent-dark); }
+.pp-notes-b ul { margin: 14px 0 0; padding-left: 1.2em; font-size: 0.85rem; color: var(--gray-700); }
+
+.pp-notes-c { padding: 14px 20px; border-radius: 14px; border-left: 6px solid var(--accent); background: var(--white); }
+.pp-notes-c .chips { display: flex; flex-wrap: wrap; gap: 8px 10px; }
+.pp-notes-c .chips span { padding: 4px 14px; border-radius: 999px; background: var(--accent-soft); font-size: 0.9rem; }
+.pp-notes-c .chips b { margin: 0 2px; color: var(--accent-dark); }
+.pp-notes-c p { margin: 8px 0 0; font-size: 0.8rem; line-height: 1.7; color: var(--gray-700); }
 
 /* 種類ごとのカード */
 .pp-card { scroll-margin-top: calc(var(--header-h) + 20px); padding: 32px 36px 36px; border-radius: var(--radius); background: var(--white); box-shadow: 0 2px 14px rgb(38 38 38 / 0.06); }
@@ -93,7 +106,7 @@
 @media (max-width: 1023px) {
 	.pp-layout { grid-template-columns: 1fr; gap: 24px; margin-top: 24px; }
 	.pp-side { position: static; }
-	.pp-notes { grid-template-columns: 1fr; padding: 20px; }
+	.pp-notes-a .cards { grid-template-columns: 1fr; }
 	.pp-card { padding: 24px 18px; }
 	.pp-intro, .pp-table-wrap.has-photo { grid-template-columns: 1fr; }
 	.pp-intro img, .pp-photo img { width: 160px; }
