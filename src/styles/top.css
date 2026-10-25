@@ -319,3 +319,7 @@
    （佐藤さんの確認 2026-10-25: 発言のたびに太郎ちゃんが下がっていた） */
 .fa-pc .chat-body { grid-template-rows: minmax(0, 1fr); overflow: hidden; }
 .fa-pc .msgs { min-height: 0; overflow: hidden; -webkit-mask-image: linear-gradient(transparent, #000 30px); mask-image: linear-gradient(transparent, #000 30px); }
+
+/* パソコン: パートナー募集はベビちゃんのニュースの下（佐藤さんの指示 2026-10-25）。ニュースが残りの高さを使う */
+.fa-pc .col > .panel.partner { flex: none; }
+.fa-pc .col > .panel.news-panel { flex: 1; min-height: 0; overflow: hidden; }
