@@ -3,7 +3,6 @@ import { getSiteSettingsWithCacheHint } from "emdash";
 import { EmDashHead, EmDashBodyStart, EmDashBodyEnd } from "emdash/ui";
 import { createPublicPageContext } from "emdash/page";
 import { site, footerNav, globalNav } from "../site";
-import "@fontsource/shippori-mincho/400.css";
 import "@fontsource/shippori-mincho/700.css";
 
 interface Props {
@@ -140,6 +139,9 @@ const pageCtx = createPublicPageContext({
 		--radius: 20px;
 		--wrap: 1080px;
 		--header-h: 64px;
+		--font-sans: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", YuGothic, Meiryo, sans-serif;
+		/* しっぽり明朝は太字（700）だけ読み込む */
+		--font-serif: "Shippori Mincho", "Hiragino Mincho ProN", "Yu Mincho", serif;
 	}
 	@media (min-width: 769px) { :root { --header-h: 92px; } }
 
@@ -149,11 +151,12 @@ const pageCtx = createPublicPageContext({
 		margin: 0;
 		color: var(--text);
 		background: var(--bg);
-		/* 本文も見出しも明朝体（しっぽり明朝、佐藤さんの指示で明朝に） */
-		font-family: "Shippori Mincho", "Hiragino Mincho ProN", "Yu Mincho", serif;
+		/* 本文は端末のゴシック体、見出しだけ明朝体（しっぽり明朝）。表示を速くするため（佐藤さんの選択 2026-10-25） */
+		font-family: var(--font-sans);
 		line-height: 1.9;
 		letter-spacing: 0.04em;
 	}
+	h1, h2, h3, h4, h5, h6 { font-family: var(--font-serif); }
 	img { max-width: 100%; height: auto; }
 	a { color: var(--accent-dark); }
 	.wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 16px; }

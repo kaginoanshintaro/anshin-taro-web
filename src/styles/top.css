@@ -2,7 +2,7 @@
    パソコン用は .fa-pc、スマホ用は .fa-sp の中だけに効く。 */
 :root { --line-green: #05833a; }
 /* 共通の部品 */
-.fa {font-family: "Shippori Mincho", serif; color: var(--gray-900); letter-spacing: 0.03em; line-height: 1.6;
+.fa {font-family: var(--font-sans); color: var(--gray-900); letter-spacing: 0.03em; line-height: 1.6;
 	
 	background: radial-gradient(circle at 20% 10%, #fff 0, var(--color-cream) 45%, #efe6da 100%);}
 .fa a {color: inherit; text-decoration: none;}
@@ -10,7 +10,7 @@
 .fa .panel {background: rgb(255 255 255 / 0.92); border-radius: 20px; box-shadow: 0 8px 24px rgb(38 38 38 / 0.08);}
 .fa .panel-title {margin: 0; font-size: 1rem; color: var(--color-brown); display: flex; align-items: center; gap: 8px;}
 .fa .panel-title::before {content: ""; width: 4px; height: 1.1em; border-radius: 2px; background: var(--color-orange);}
-.fa .tag-sample {font-size: 0.7rem; font-weight: normal; color: var(--white); background: var(--gray-500); border-radius: 4px; padding: 0 6px;}
+.fa .tag-sample {font-family: var(--font-sans); font-size: 0.7rem; font-weight: normal; color: var(--white); background: var(--gray-500); border-radius: 4px; padding: 0 6px;}
 .fa .date {font-size: 0.75rem; color: var(--gray-500);}
 .fa .chat {display: flex; flex-direction: column;}
 .fa .chat-head {display: flex; align-items: center; gap: 12px;}
