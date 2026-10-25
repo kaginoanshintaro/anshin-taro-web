@@ -100,6 +100,7 @@
 @media (max-width: 1240px) {
 	.pp-layout { grid-template-columns: 210px 1fr; }
 	.pp-card { padding: 28px 26px 30px; }
+	.pp-card h2 { font-size: 1.3rem; }
 	.pp-intro { grid-template-columns: 170px 1fr; gap: 22px; }
 	.pp-intro img { width: 170px; }
 	/* 注意書きが1行に収まるよう、キャンセル料の箱は下に横並び */
