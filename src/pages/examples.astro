@@ -2,6 +2,7 @@
 // 施工事例（/examples/。URL は今の WordPress と同じ）。
 // 文と写真は src/data/examples.ts（今のページから写したもの）。
 // パソコン版: 左に事例の一覧（スクロールしても付いてくる）、右に事例ごとのカード。
+// スマホ版: 事例の一覧は上に付いてくる横長の帯（横にすべらせる）、写真は横いっぱい、電話ボタンは一番下。
 // 表示を速くするため、写真は幅400pxの WebP を遅延読み込みし、拡大用の大きい写真は押したときだけ読む。
 import Base from "../layouts/Base.astro";
 import { site } from "../site";
@@ -9,7 +10,8 @@ import { examples } from "../data/examples";
 import "../styles/examples.css";
 
 const num = (i: number) => String(i + 1).padStart(2, "0");
-const img = (name: string, small = false) => `/images/examples/${name}${small ? "-s" : ""}.webp`;
+// 写真は3種類: -s（幅400px、パソコンの一覧用）、-m（幅600px、スマホで横いっぱいに出す用）、無印（拡大用）
+const img = (name: string, size?: true | "m") => `/images/examples/${name}${size === true ? "-s" : size === "m" ? "-m" : ""}.webp`;
 ---
 
 <Base title="施工事例" description="カギの安心太郎の施工事例。大分市・別府市などで行った鍵の新規取付や錠前の交換を、写真と一緒にご紹介します。">
@@ -57,6 +59,8 @@ const img = (name: string, small = false) => `/images/examples/${name}${small ? 
 									<a class="ex-photo" href={img(s.photo.name)} data-w={s.photo.width} data-h={s.photo.height} aria-label="写真を大きく見る">
 										<img
 											src={img(s.photo.name, true)}
+											srcset={s.photo.width > 600 ? `${img(s.photo.name, true)} 400w, ${img(s.photo.name, "m")} 600w` : undefined}
+											sizes={s.photo.width > 600 ? "(max-width: 767px) 92vw, 240px" : undefined}
 											width={s.photo.thumbWidth}
 											height={s.photo.thumbHeight}
 											alt={`${e.item} ${e.work}の写真 ${j + 1}`}
@@ -75,6 +79,7 @@ const img = (name: string, small = false) => `/images/examples/${name}${small ? 
 				))}
 
 				<div class="ex-cta">
+					<a class="ex-cta-tel" href={site.tel.href}><small>電話で見積もり</small>{site.tel.label}</a>
 					<a class="ex-cta-home" href="/">ホームに戻る</a>
 				</div>
 			</div>
@@ -106,5 +111,25 @@ const img = (name: string, small = false) => `/images/examples/${name}${small ? 
 		viewer.addEventListener("click", (ev) => {
 			if (ev.target === viewer) viewer.close();
 		});
+	}
+
+	// スマホ・タブレット: 上の帯で、いま見ている事例の札に色を付けて見える位置まで寄せる
+	const links = [...document.querySelectorAll<HTMLAnchorElement>(".ex-toc a")];
+	const strip = document.querySelector<HTMLElement>(".ex-toc ol");
+	if (links.length && strip && "IntersectionObserver" in window) {
+		const io = new IntersectionObserver(
+			(entries) => {
+				for (const en of entries) {
+					if (!en.isIntersecting) continue;
+					links.forEach((a) => {
+						const on = decodeURIComponent(a.hash.slice(1)) === en.target.id;
+						a.classList.toggle("is-current", on);
+						if (on && strip.scrollWidth > strip.clientWidth) strip.scrollTo({ left: a.parentElement!.offsetLeft - 16, behavior: "smooth" });
+					});
+				}
+			},
+			{ rootMargin: "-40% 0px -55% 0px" },
+		);
+		document.querySelectorAll(".ex-card").forEach((c) => io.observe(c));
 	}
 </script>
