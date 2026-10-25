@@ -3,7 +3,7 @@ import { getSiteSettingsWithCacheHint } from "emdash";
 import { EmDashHead, EmDashBodyStart, EmDashBodyEnd } from "emdash/ui";
 import { createPublicPageContext } from "emdash/page";
 import { site, footerNav, globalNav } from "../site";
-// 見出しの明朝体（しっぽり明朝 700）は各ページで読み込む。料金ページは見出しの文字だけの小さいフォントを使うため
+import "@fontsource/shippori-mincho/700.css";
 
 interface Props {
 	title: string;

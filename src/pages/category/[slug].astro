@@ -6,7 +6,6 @@ import {
 } from "emdash";
 import { Image } from "emdash/ui";
 import Base from "../../layouts/Base.astro";
-import "@fontsource/shippori-mincho/700.css";
 
 const slug = decodeSlug(Astro.params.slug);
 const termsResult = await getTaxonomyTermsWithCacheHint("category", {
