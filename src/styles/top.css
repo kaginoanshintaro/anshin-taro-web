@@ -339,3 +339,9 @@
 @media (prefers-reduced-motion: reduce) { .fa .btn-tel::after { animation: none; display: none; } }
 .fa-pc .col .cal .hours { grid-template-rows: repeat(5, 18px); }
 .fa-pc .col .cal .col-day { height: 90px; }
+/* 右下の会社情報（佐藤の予定と同じくらいの大きさで下に揃える） */
+.fa-pc .col > .panel.company { flex: none; margin-top: auto; padding: 14px 20px 16px; }
+.fa-pc .company dl { display: grid; grid-template-columns: auto 1fr; gap: 6px 16px; margin: 10px 0 0; font-size: 0.82rem; line-height: 1.5; }
+.fa-pc .company dt { color: var(--gray-500); white-space: nowrap; }
+.fa-pc .company dd { margin: 0; color: var(--gray-900); }
+.fa-pc .company a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
