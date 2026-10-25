@@ -2,7 +2,7 @@
 // 本文の画像。WordPress から取り込んだ画像は幅と高さを持っていないため、読み込み中に下の文がずれる（CLS）。
 // ファイル名の「-1010x1024.jpg」から大きさが分かるものは width / height を付けて出す。
 // 分からないものや EmDash に置いた画像は、EmDash の標準の部品にそのまま任せる。
-import { Image } from "emdash/ui";
+import { PTImage } from "emdash/ui";
 
 const { node, ...rest } = Astro.props;
 const url: string = typeof node?.asset?.url === "string" ? node.asset.url : "";
@@ -31,7 +31,7 @@ const img = { src, alt: node?.alt ?? "", title: node?.title, width, height, load
 			{node.caption && <figcaption>{node.caption}</figcaption>}
 		</figure>
 	) : (
-		<Image node={node} {...rest} />
+		<PTImage node={node} {...rest} />
 	)
 }
 
