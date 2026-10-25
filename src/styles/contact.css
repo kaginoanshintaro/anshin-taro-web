@@ -44,7 +44,8 @@
 }
 .ct-submit:hover { background: var(--accent-dark); }
 .ct-submit:disabled { background: var(--gray-300); cursor: wait; }
-.ct-status { min-height: 1.6em; text-align: center; font-size: 0.9rem; }
+.ct-status { text-align: center; font-size: 0.9rem; }
+.ct-status:empty { display: none; }
 .ct-status.is-ok { color: var(--gray-700); }
 .ct-status.is-error { color: var(--accent-dark); font-weight: bold; }
 
@@ -82,12 +83,29 @@
 	.ct-body { grid-template-columns: minmax(0, 1fr) 300px; gap: 20px; }
 }
 
-/* スマホ（仮。パソコン版が決まってから詰める）: 1列にして、連絡先を先に */
+/*
+ * スマホ: パソコン版を元に1列。急ぎの人のために電話と LINE のボタンを一番上に置き、
+ * その下にフォーム → メール（迷惑メールの注意） → 所在地。
+ */
 @media (max-width: 767px) {
 	.ct-head .wrap { flex-direction: column; align-items: flex-start; gap: 4px; }
 	.ct-head h1 { font-size: 1.3rem; }
-	.ct-body { grid-template-columns: 1fr; margin-top: 20px; gap: 20px; }
-	.ct-card { padding: 22px 16px 24px; }
-	.ct-card h2 { font-size: 1.2rem; }
+	.ct-body { grid-template-columns: 1fr; margin-top: 16px; gap: 16px; }
+	.ct-side { display: contents; }
+	.ct-tel-btn { order: 1; }
+	.ct-line-banner { order: 2; margin-top: -4px; }
+	.ct-form-card { order: 3; margin-top: 8px; }
+	.ct-mail { order: 4; }
+	.ct-place { order: 5; }
+	.ct-card, .ct-side .ct-card { padding: 20px 16px 22px; border-radius: 16px; }
+	.ct-card h2 { font-size: 1.15rem; }
+	.ct-side .ct-card h2 { font-size: 1.05rem; }
+	.ct-form-card h2 { margin-bottom: 16px; }
+	.ct-form { gap: 14px; }
+	/* 文字の大きさは 16px 以上（iPhone で入力欄に触れたとき画面が拡大されないように） */
+	.ct-field input, .ct-field textarea { font-size: 16px; padding: 10px 12px; }
+	.ct-field textarea { min-height: 150px; }
 	.ct-submit { width: 100%; }
+	.ct-tel-btn span { font-size: 1.35rem; }
+	.ct-cta { margin-top: 24px; }
 }
