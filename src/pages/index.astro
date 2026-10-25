@@ -350,7 +350,18 @@ const dateFormat = new Intl.DateTimeFormat("ja-JP", {
 	:global(html) { scroll-snap-type: y proximity; }
 	.fixed-area { position: relative; height: 100vh; height: 100svh; padding-top: var(--header-h); clip-path: inset(0); scroll-snap-align: start; }
 	/* 写真は画面に固定（新しい背景は佐藤さんが用意予定。今は作業風景の写真） */
-	.fa-bg { position: fixed; inset: 0; background: url("/images/top/fixed-bg.webp") center / cover; z-index: 0; }
+	/* 背景は佐藤さんの写真（合鍵の機械で作業する手元、2026-10-25）。読めるブラウザは AVIF、画面が小さければ小さい方 */
+	.fa-bg {
+		position: fixed; inset: 0; z-index: 0;
+		background: url("/images/top/fixed-bg-keycut-2400.webp") center / cover;
+		background-image: image-set(url("/images/top/fixed-bg-keycut-2400.avif") type("image/avif"), url("/images/top/fixed-bg-keycut-2400.webp") type("image/webp"));
+	}
+	@media (max-width: 1199px) {
+		.fa-bg {
+			background-image: url("/images/top/fixed-bg-keycut-1600.webp");
+			background-image: image-set(url("/images/top/fixed-bg-keycut-1600.avif") type("image/avif"), url("/images/top/fixed-bg-keycut-1600.webp") type("image/webp"));
+		}
+	}
 	.fixed-area > .fa-pc, .fixed-area > .fa-sp { position: relative; z-index: 1; height: 100%; }
 	.fa-pc .stage { height: 100%; padding-top: 16px; padding-bottom: 16px; }
 	/* スマホは2ページ切り替えの部品を、画面ではなくこのエリアの中に置く */
