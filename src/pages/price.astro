@@ -12,6 +12,7 @@ const splitParen = (name: string) => name.split(/(（[^）]*）)/).filter(Boolea
 ---
 
 <Base title="サービス料金">
+	<link slot="head" rel="preload" href="/fonts/price-headings.woff2" as="font" type="font/woff2" crossorigin />
 	<div class="price-page">
 		<header class="pp-head">
 			<div class="wrap">
@@ -45,11 +46,11 @@ const splitParen = (name: string) => name.split(/(（[^）]*）)/).filter(Boolea
 					</div>
 				</section>
 
-				{priceSections.map((s) => (
+				{priceSections.map((s, i) => (
 					<section class="pp-card" id={s.id}>
 						<h2>{s.title}</h2>
 						<div class="pp-intro">
-							<img src={s.image.src} width={s.image.width} height={s.image.height} alt="" loading="lazy" decoding="async" />
+							<img src={s.image.src} width={s.image.width} height={s.image.height} alt="" loading={i === 0 ? "eager" : "lazy"} decoding="async" />
 							<div class="pp-body">{s.body.map((p) => <p>{p}</p>)}</div>
 						</div>
 						<div class:list={["pp-table-wrap", { "has-photo": s.photo }]}>
@@ -67,7 +68,7 @@ const splitParen = (name: string) => name.split(/(（[^）]*）)/).filter(Boolea
 							</div>
 							{s.photo && (
 								<figure class="pp-photo">
-									<img src={s.photo.src} width="560" height="560" alt={s.photo.alt} loading="lazy" decoding="async" />
+									<img src={s.photo.src} width="400" height="400" alt={s.photo.alt} loading="lazy" decoding="async" />
 									<figcaption>{s.photo.alt}</figcaption>
 								</figure>
 							)}
@@ -77,7 +78,7 @@ const splitParen = (name: string) => name.split(/(（[^）]*）)/).filter(Boolea
 
 				<!-- イモビライザー搭載車の見分け方（今のページの会話をそのまま） -->
 				<section class="pp-card pp-talk" id="immobilizer-check">
-					<div class="talk taro"><img src="/images/price/taro-teacher-face.webp" width="200" height="200" alt="安心太郎ちゃん" /><p><strong>イモビライザー搭載車の見分け方について解説するよ</strong></p></div>
+					<div class="talk taro"><img src="/images/price/taro-teacher-face.webp" width="160" height="160" alt="安心太郎ちゃん" /><p><strong>イモビライザー搭載車の見分け方について解説するよ</strong></p></div>
 
 					<h3>１、メーターパネルの警告灯で確認</h3>
 					<div class="talk baby"><img src="/images/top/baby-face.webp" width="160" height="160" alt="カギベイビー" /><p><strong>これらの表示があればイモビライザーシステム搭載だね</strong></p></div>
@@ -109,7 +110,7 @@ const splitParen = (name: string) => name.split(/(（[^）]*）)/).filter(Boolea
 						<li>車検証または取説に「イモビライザー」「盗難防止装置」の記載があれば搭載あり　※表記がない場合もあり</li>
 					</ul>
 					<div class="talk baby"><img src="/images/top/baby-face.webp" width="160" height="160" alt="カギベイビー" /><p>字を読むのがめんどくさい時ってあるよね〜！</p></div>
-					<div class="talk taro"><img src="/images/price/taro-teacher-face.webp" width="200" height="200" alt="安心太郎ちゃん" /><p>少し年式の古い車か商用車、トラックなどはイモビライザー搭載車は少ない印象だね！</p></div>
+					<div class="talk taro"><img src="/images/price/taro-teacher-face.webp" width="160" height="160" alt="安心太郎ちゃん" /><p>少し年式の古い車か商用車、トラックなどはイモビライザー搭載車は少ない印象だね！</p></div>
 				</section>
 
 				<div class="pp-cta">
