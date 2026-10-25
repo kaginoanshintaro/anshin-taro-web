@@ -1,3 +1,5 @@
-# 会社概要ページの画像はブラウザに1週間残す（画像を差し替えるときはファイル名を変える）
-/images/profile/*
-  Cache-Control: public, max-age=604800
+# 画像とフォントはブラウザに1日置いておく（同じ名前で差し替えても1日で新しくなる）
+/images/*
+  Cache-Control: public, max-age=86400
+/fonts/*
+  Cache-Control: public, max-age=86400

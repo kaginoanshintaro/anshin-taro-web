@@ -6,6 +6,20 @@
 
 .price-page { padding-bottom: 24px; }
 
+/*
+ * 見出しのフォント: しっぽり明朝（太字）から、このページの見出しに出てくる文字だけを取り出した小さいファイル（約23KB）。
+ * 全部の文字がここにあるので、サイト共通のしっぽり明朝（約280KB）のファイルは読みに行かない。
+ * 見出しの文字を変えたら scripts/make-price-font.py を実行し直す。
+ */
+@font-face {
+	font-family: "Price Headings";
+	font-style: normal;
+	font-weight: 700;
+	font-display: swap;
+	src: url("/fonts/price-headings.woff2") format("woff2");
+}
+.price-page h1, .price-page h2, .price-page h3, .pp-toc-title { font-family: "Price Headings", var(--font-serif); }
+
 /* ページの見出し */
 .pp-head .wrap { max-width: 1200px; }
 /* タイトルの帯は細く、見出しはカードの見出しと同じ形（佐藤さんの指示 2026-10-25） */
@@ -21,7 +35,7 @@
 
 .pp-side { position: sticky; top: calc(var(--header-h) + 24px); display: grid; gap: 16px; }
 .pp-toc { padding: 20px 18px; border-radius: var(--radius); background: var(--white); border: 1px solid var(--line); }
-.pp-toc-title { margin: 0 0 8px; font-family: var(--font-serif); font-weight: 700; color: var(--heading); }
+.pp-toc-title { margin: 0 0 8px; font-weight: 700; color: var(--heading); }
 .pp-toc ol { list-style: none; margin: 0; padding: 0; counter-reset: toc; }
 .pp-toc li a { display: flex; gap: 10px; padding: 7px 4px; border-bottom: 1px dashed var(--gray-200); font-size: 0.88rem; line-height: 1.5; color: var(--gray-900); text-decoration: none; }
 .pp-toc li a::before { counter-increment: toc; content: counter(toc, decimal-leading-zero); color: var(--accent); font-weight: bold; font-size: 0.8rem; padding-top: 1px; }
