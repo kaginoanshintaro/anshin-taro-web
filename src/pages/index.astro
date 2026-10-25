@@ -124,7 +124,7 @@ const dateFormat = new Intl.DateTimeFormat("ja-JP", {
 							<span class="chip">車の鍵も作れる？</span>
 							<span class="chip">会社の場所</span>
 						</div>
-						<div class="input"><span>安心太郎ちゃんに質問する…</span><span class="send">↑</span></div>
+						<div class="input"><span>安心太郎ちゃんに質問する…</span><span class="send" aria-hidden="true"><svg class="padlock" viewBox="0 0 24 24"><path class="shackle" d="M8 11V8a4 4 0 0 1 8 0v3" /><rect x="5.5" y="11" width="13" height="9" rx="2" /><circle class="keyhole" cx="12" cy="15.5" r="1.4" /></svg></span></div>
 						<p class="note chat-note" style="margin:0">電話番号やメールアドレスは入力しないでね（送る前にお知らせします）</p>
 					</section>
 
@@ -172,7 +172,7 @@ const dateFormat = new Intl.DateTimeFormat("ja-JP", {
 						<span class="chip">対応エリアは？</span>
 						<span class="chip">車の鍵も作れる？</span>
 					</div>
-					<div class="input"><span>質問する…</span><span class="send">↑</span></div>
+					<div class="input"><span>質問する…</span><span class="send" aria-hidden="true"><svg class="padlock" viewBox="0 0 24 24"><path class="shackle" d="M8 11V8a4 4 0 0 1 8 0v3" /><rect x="5.5" y="11" width="13" height="9" rx="2" /><circle class="keyhole" cx="12" cy="15.5" r="1.4" /></svg></span></div>
 				</section>
 				<a class="panel mini-cal" href="#" aria-label="佐藤の予定（7日分）">
 					<p class="cal-cap"><b>佐藤の予定</b><span><i class="key"></i>予定あり　9時〜18時</span></p>
@@ -297,6 +297,19 @@ const dateFormat = new Intl.DateTimeFormat("ja-JP", {
 		};
 		walk();
 	});
+
+	// 佐藤の予定: 固定背景エリアが画面に入ったら、予定のブロックを鍵のピンのように下から上げる（一度だけ）
+	(() => {
+		const area = document.querySelector("#top-area");
+		if (!("IntersectionObserver" in window) || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+		area.classList.add("pins-ready");
+		const io = new IntersectionObserver((es) => {
+			if (!es.some((e) => e.isIntersecting)) return;
+			requestAnimationFrame(() => area.classList.add("pins-set"));
+			io.disconnect();
+		}, { threshold: 0.6 });
+		io.observe(area);
+	})();
 </script>
 
 <style>
