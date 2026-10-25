@@ -208,6 +208,11 @@ const pageCtx = createPublicPageContext({
 		.logo img { height: 44px; }
 	}
 
+	/* パンくずリストはスマホでは出さない（佐藤さんの指示 2026-10-25）。PCはそのまま */
+	@media (max-width: 768px) {
+		nav[aria-label="現在地"] { display: none; }
+	}
+
 	/* スマホのメニュー（左から出る引き出し） */
 	.drawer { position: fixed; z-index: 20; inset: 0; display: none; }
 	.menu-open .drawer { display: block; }
