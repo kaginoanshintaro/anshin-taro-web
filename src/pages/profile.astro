@@ -7,6 +7,8 @@ import { site } from "../site";
 import "../styles/profile.css";
 
 const mapUrl = "https://maps.app.goo.gl/2g73uk2teCsFsxuE8";
+// 写真の表示幅（profile.css の .pf-body と .pf-photos に合わせる）。スマホは小さい画像を読む
+const sizes = "(max-width: 767px) calc(50vw - 21px), 352px";
 ---
 
 <Base title="会社概要・アクセス">
@@ -22,13 +24,13 @@ const mapUrl = "https://maps.app.goo.gl/2g73uk2teCsFsxuE8";
 			<div class="pf-photos">
 				<figure>
 					<div class="pf-frame">
-						<img src="/images/profile/storefront-800.webp" width="800" height="450" alt="カギの安心太郎の店舗外観" fetchpriority="high" decoding="async" />
+						<img src="/images/profile/storefront-800.webp" srcset="/images/profile/storefront-400.webp 400w, /images/profile/storefront-800.webp 800w" sizes={sizes} width="800" height="450" alt="カギの安心太郎の店舗外観" fetchpriority="high" decoding="async" />
 					</div>
 					<figcaption>店舗外観</figcaption>
 				</figure>
 				<figure>
 					<a class="pf-frame pf-map" href="/images/profile/access-map.webp" target="_blank" rel="noopener">
-						<img src="/images/profile/access-map-800.webp" width="800" height="574" alt="アクセスマップ。国道210号の信号から野津原方面へ進み、トキハインダストリー富士見が丘店のそば" decoding="async" />
+						<img src="/images/profile/access-map-800.webp" srcset="/images/profile/access-map-400.webp 400w, /images/profile/access-map-800.webp 800w" sizes={sizes} width="800" height="574" alt="アクセスマップ。国道210号の信号から野津原方面へ進み、トキハインダストリー富士見が丘店のそば" decoding="async" />
 					</a>
 					<figcaption>アクセスマップ<span>（押すと拡大）</span></figcaption>
 				</figure>
