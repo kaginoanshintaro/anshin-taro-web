@@ -305,3 +305,12 @@
 .fa .panel, .fa .tile, .fa .ic, .fa .insta {background: rgb(255 255 255 / 0.55) !important; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); box-shadow: 0 6px 20px rgb(0 0 0 / 0.15) !important;}
 .fa .panel.chat {background: transparent !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; box-shadow: none !important;}
 .fa .chat .town {display: none;}
+
+/* 画面の低いスマホ（ブラウザのバーが出ている iPhone など）は、太郎ちゃんを小さくしないよう
+   チャットの候補ボタンを外し、予定表を低くする（佐藤さんの iPhone Safari での確認 2026-10-25） */
+@media (max-height: 700px) {
+	.fa-sp .chips { display: none; }
+	.fa-sp .chat { padding: 10px 14px; gap: 8px; }
+	.fa-sp .days { height: 52px; }
+	.fa-sp .mini-cal { padding: 6px 12px 8px; }
+}
