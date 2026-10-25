@@ -391,3 +391,9 @@
 	color: #3d2716;
 }
 .fa-pc .company a { color: #6b4429; }
+/* サービス3ボタンも同じ木の枠（ボタンの形に合わせて組み直した frame-button.webp） */
+.fa-pc .svc-row a {
+	background: none; border: 14px solid transparent; border-radius: 0; box-shadow: none;
+	border-image: url("/images/top/frame-button.webp") 40 fill / 14px stretch;
+	filter: drop-shadow(0 4px 10px rgb(0 0 0 / 0.3)); color: #5a3820;
+}
