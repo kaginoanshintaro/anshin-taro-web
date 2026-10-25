@@ -35,7 +35,7 @@
 .pf-table > div:nth-child(even) { background: var(--color-cream); }
 .pf-table dt { font-weight: bold; color: var(--heading); font-size: 0.95rem; line-height: 1.75; }
 .pf-table dd { margin: 0; font-size: 0.95rem; line-height: 1.75; color: var(--gray-900); overflow-wrap: anywhere; }
-.pf-maplink { display: inline-block; margin-left: 10px; padding: 2px 12px; border: 1px solid var(--color-brown-light); border-radius: 999px; font-size: 0.8rem; line-height: 1.6; color: var(--color-brown); text-decoration: none; background: var(--white); white-space: nowrap; }
+.pf-maplink { display: table; margin-top: 6px; padding: 2px 12px; border: 1px solid var(--color-brown-light); border-radius: 999px; font-size: 0.8rem; line-height: 1.6; color: var(--color-brown); text-decoration: none; background: var(--white); white-space: nowrap; }
 .pf-maplink:hover { border-color: var(--accent); color: var(--accent-dark); }
 
 /* 一番下のボタン（料金ページと同じ） */
@@ -57,5 +57,4 @@
 	.pf-card h2 { font-size: 1.2rem; }
 	.pf-table > div { grid-template-columns: 1fr; gap: 2px; padding: 12px 8px; }
 	.pf-table dt { font-size: 0.85rem; }
-	.pf-maplink { margin: 6px 0 0; }
 }
