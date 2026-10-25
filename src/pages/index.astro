@@ -143,15 +143,11 @@ const dateFormat = new Intl.DateTimeFormat("ja-JP", {
 						<span><b>お役立ち情報</b><small>鍵の技術・防犯・コラムの一覧</small></span>
 						<span class="arrow">→</span>
 					</a>
-					<section class="panel company">
-						<h2 class="panel-title">会社情報</h2>
-						<dl>
-							<dt>会社名</dt><dd>{site.name}</dd>
-							<dt>郵便番号</dt><dd>〒{site.postalCode}</dd>
-							<dt>住所</dt><dd>{site.addressLine.split(" ").map((line, i) => <>{i > 0 && <br />}{line}</>)}</dd>
-							<dt>電話番号</dt><dd><a href={site.tel.href}>{site.tel.label}</a></dd>
-							<dt>メール</dt><dd><a href={`mailto:${site.email}`}>{site.email}</a></dd>
-						</dl>
+					<section class="panel company" aria-label="会社情報">
+						<p class="co-name">{site.name}</p>
+						<p class="co-zip">〒{site.postalCode}</p>
+						<p class="co-addr">{site.addressLine}</p>
+						<p class="co-contact"><a href={site.tel.href}>{site.tel.label}</a><a href={`mailto:${site.email}`}>{site.email}</a></p>
 					</section>
 				</div>
 			</div>
