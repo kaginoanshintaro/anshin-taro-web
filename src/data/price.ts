@@ -17,6 +17,8 @@ export interface PriceSection {
 	title: string;
 	/** メニューに出す短い名前 */
 	short: string;
+	/** スマホのメニューのボタンに出す、さらに短い名前（1行に収めるため） */
+	tiny?: string;
 	image: { src: string; width: number; height: number };
 	/** 表の横に添える写真（今のページで表の横にある写真） */
 	photo?: { src: string; alt: string };
@@ -93,6 +95,7 @@ export const priceSections: PriceSection[] = [
 		id: "car",
 		title: "自動車、バイクの鍵開け",
 		short: "自動車・バイクの鍵開け",
+		tiny: "車・バイクの鍵開け",
 		image: img("car"),
 		body: [
 			"自動車の鍵を閉じ込めてしまったりバイクのメットインに鍵を入れたまま閉めてしまった時の鍵開けはメーカーと車種、年式などをわかる範囲でお伝えください。",
@@ -109,6 +112,7 @@ export const priceSections: PriceSection[] = [
 		id: "repair",
 		title: "鍵の修理・加工・調整など",
 		short: "鍵の修理・加工・調整",
+		tiny: "鍵の修理・調整",
 		image: img("repair"),
 		body: [
 			"鍵が回りづらい、鍵が折れた、など錠前の修理以外にもメンテナンスや扉の建て付けの調整など、ドア周りの事はおまかせください。",
@@ -182,6 +186,7 @@ export const priceSections: PriceSection[] = [
 		id: "immobilizer",
 		title: "鍵なし鍵作成（イモビライザーシステム搭載車）",
 		short: "鍵なし鍵作成（イモビライザー）",
+		tiny: "イモビ車の鍵作成",
 		image: img("immobi"),
 		body: [
 			"イモビライザーシステムとは車の盗難を防ぐための電子的な鍵認証システムのことで、このイモビライザーシステム搭載車は鍵の中にICチップが埋め込まれており、このICチップの情報と車両の情報が一致しなければエンジンがかからない仕組みになっています。",

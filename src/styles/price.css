@@ -107,6 +107,9 @@
 .pp-cta a { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; min-width: 240px; padding: 12px 24px; border-radius: 999px; font-weight: bold; text-decoration: none; line-height: 1.4; }
 .pp-cta-home { border: 2px solid var(--color-brown-light); color: var(--color-brown); background: var(--white); font-size: 1rem; }
 
+.pp-toc .sp-only { display: none; }
+.pp-toc .pp-toc-sub a { white-space: normal; }
+
 /* 小さめのパソコン画面: 左メニューとカードの余白を少し詰める */
 @media (max-width: 1240px) {
 	.pp-layout { grid-template-columns: 210px 1fr; }
@@ -119,16 +122,78 @@
 	.pp-cancel dl { display: grid; grid-template-columns: 1fr 1fr; gap: 0 32px; }
 }
 
-/* スマホ版はパソコン版が決まってから作る。それまでは1列に並べるだけ */
+/*
+ * タブレット・スマホ: パソコン版を元に1列。
+ * 料金メニューは縦の一覧をやめて押しやすいボタンの並びにし、その下に電話 → 注意書き → 種類ごとのカード。
+ */
 @media (max-width: 1023px) {
-	.pp-layout { grid-template-columns: 1fr; gap: 24px; margin-top: 24px; }
-	.pp-side { position: static; }
-	.pp-notes { grid-template-columns: 1fr; padding: 20px; }
+	.pp-layout { grid-template-columns: minmax(0, 1fr); gap: 16px; margin-top: 16px; }
+	.pp-side { position: static; gap: 12px; }
+	.pp-toc { padding: 14px 14px 16px; }
+	.pp-toc ol { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+	.pp-toc li a { height: 100%; align-items: center; padding: 8px 10px; border: 1px solid var(--gray-200); border-radius: 10px; background: var(--color-cream); font-size: 0.82rem; line-height: 1.35; }
+	.pp-toc li:last-child a { border-bottom: 1px solid var(--gray-200); }
+	.pp-toc .pp-toc-sub { grid-column: 1 / -1; }
+	.pp-toc .pp-toc-sub a { justify-content: center; }
+	.pp-toc .pp-toc-sub a::before { content: none; }
+	.pp-main { gap: 20px; }
+	.pp-notes { grid-template-columns: minmax(0, 1fr); gap: 12px; padding: 18px 16px; }
 	.pp-notes ul { white-space: normal; }
-	.pp-card { padding: 24px 18px; }
 	.pp-intro, .pp-table-wrap.has-photo { grid-template-columns: 1fr; }
-	.pp-intro img, .pp-photo img { width: 160px; }
-	.pp-table dd { white-space: normal; }
+	.pp-photo { display: none; }
 	.pp-lamps { grid-template-columns: repeat(2, 1fr); }
 	.pp-cta { flex-direction: column; align-items: center; }
+}
+
+/* スマホ */
+@media (max-width: 767px) {
+	.pp-head .wrap { flex-direction: column; align-items: flex-start; gap: 2px; }
+	.pp-head h1 { font-size: 1.3rem; }
+	.pp-toc-title { margin-bottom: 10px; font-size: 0.95rem; }
+	.pp-toc ol { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+	.pp-toc li a { gap: 6px; padding: 8px; font-size: 0.78rem; }
+	.pp-toc li a::before { font-size: 0.72rem; }
+	.pp-toc .pc-only { display: none; }
+	.pp-toc .sp-only { display: inline; }
+	.pp-toc .pp-toc-sub { grid-column: auto; }
+	.pp-toc .pp-toc-sub a { justify-content: flex-start; }
+	.pp-toc .pp-toc-sub a::before { content: "└"; color: var(--gray-300); }
+	.pp-toc li a { white-space: nowrap; }
+	.pp-tel { font-size: 1.35rem; }
+	/* 注意書き: 文は折り返してよい。キャンセル料は2行のまま */
+	.pp-notes ul { font-size: 0.82rem; line-height: 1.75; }
+	.pp-notes li + li { margin-top: 4px; }
+	.pp-cancel dl { display: block; }
+	.pp-card { padding: 20px 16px 22px; border-radius: 16px; }
+	.pp-card h2 { margin-bottom: 14px; padding-left: 12px; border-left-width: 4px; font-size: 1.12rem; }
+	/* 絵は小さく左に置き、説明文を回り込ませる */
+	.pp-intro { display: block; }
+	.pp-intro::after { content: ""; display: block; clear: both; }
+	.pp-intro img { float: left; width: 104px; margin: 4px 14px 6px 0; border-radius: 12px; }
+	.pp-body p { font-size: 0.86rem; line-height: 1.85; }
+	.pp-table-wrap { margin-top: 16px; }
+	/*
+	 * 料金の行: 名前と金額が横に入るときは1行、入らないときは名前を1行で出して金額をその下の右端へ。
+	 * 名前の最後の（ ）は名前の下に小さく。
+	 */
+	.pp-table > div { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 10px; row-gap: 0; padding: 9px 6px; }
+	.pp-table dt { font-size: 0.86rem; line-height: 1.5; }
+	.pp-table dd { margin-left: auto; }
+	.pp-table .paren { font-size: 0.72rem; }
+	.pp-table .paren.tail { display: block; line-height: 1.4; }
+	.pp-table dd { font-size: 0.95rem; }
+	.pp-table-note { font-size: 0.72rem; }
+	.pp-talk h3 { margin-top: 22px; font-size: 1rem; }
+	.talk { gap: 10px; }
+	.talk img { width: 44px; height: 44px; }
+	.talk p { font-size: 0.85rem; padding: 8px 12px; }
+	.pp-lamps img { height: 84px; }
+	.pp-check { font-size: 0.85rem; }
+	.pp-year { font-size: 0.82rem; }
+	.pp-year th, .pp-year td { padding: 8px 10px; }
+}
+
+/* 幅の狭いスマホ（360px など）: メニューのボタンの文字を少し小さく */
+@media (max-width: 374px) {
+	.pp-toc li a { padding: 8px 6px; font-size: 0.72rem; }
 }

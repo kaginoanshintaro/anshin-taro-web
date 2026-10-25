@@ -26,8 +26,8 @@ const splitParen = (name: string) => name.split(/(（[^）]*）)/).filter(Boolea
 				<nav class="pp-toc" aria-label="料金の種類">
 					<p class="pp-toc-title">料金メニュー</p>
 					<ol>
-						{priceSections.map((s) => <li><a href={`#${s.id}`}>{s.short}</a></li>)}
-						<li class="pp-toc-sub"><a href="#immobilizer-check">イモビライザー搭載車の見分け方</a></li>
+						{priceSections.map((s) => <li><a href={`#${s.id}`}>{s.tiny ? <><span class="pc-only">{s.short}</span><span class="sp-only">{s.tiny}</span></> : s.short}</a></li>)}
+						<li class="pp-toc-sub"><a href="#immobilizer-check"><span class="pc-only">イモビライザー搭載車の見分け方</span><span class="sp-only">イモビ車の見分け方</span></a></li>
 					</ol>
 				</nav>
 				<a class="pp-tel" href={site.tel.href}><small>電話で見積もり</small>{site.tel.label}</a>
@@ -59,7 +59,7 @@ const splitParen = (name: string) => name.split(/(（[^）]*）)/).filter(Boolea
 								<dl class="pp-table">
 									{s.rows.map((r) => (
 										<div>
-											<dt>{splitParen(r.name).map((t) => (t.startsWith("（") ? <span class="paren">{t}</span> : t))}</dt>
+											<dt>{splitParen(r.name).map((t, j, all) => (t.startsWith("（") ? <span class:list={["paren", { tail: j === all.length - 1 }]}>{t}</span> : t))}</dt>
 											<dd>{r.price}{r.note && <small>※</small>}</dd>
 										</div>
 									))}
