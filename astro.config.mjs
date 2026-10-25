@@ -18,6 +18,7 @@ export default defineConfig({
 	routeRules: {
 		"/": { maxAge: 3600, swr: 86400, tags: ["posts", "pages", "all"] },
 		"/price": { maxAge: 3600, swr: 86400, tags: ["all"] },
+		"/examples": { maxAge: 3600, swr: 86400, tags: ["all"] },
 		"/category/[slug]": { maxAge: 3600, swr: 86400, tags: ["posts", "all"] },
 		"/tag/[slug]": { maxAge: 3600, swr: 86400, tags: ["posts", "all"] },
 		"/author/[slug]": { maxAge: 3600, swr: 86400, tags: ["posts", "all"] },
