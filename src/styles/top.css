@@ -371,3 +371,7 @@
 	.fa .send .shackle { transition: none; }
 	.fa.pins-ready .fa-pc .busy, .fa.pins-ready .fa-sp .days i b { transform: none; }
 }
+
+/* お役立ち情報は佐藤さんのバナー画像（2026-10-25）。画像の角の丸みに合わせて切る */
+.fa-pc .bank-banner { display: block; border-radius: 14px; overflow: hidden; box-shadow: 0 2px 10px rgb(0 0 0 / 0.15); }
+.fa-pc .bank-banner img { display: block; width: 100%; height: auto; }
