@@ -46,6 +46,20 @@ const pageCtx = createPublicPageContext({
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<!-- Google Search Console の所有者確認（今の WordPress と同じタグ。移行後も確認が外れないように） -->
 		<meta name="google-site-verification" content="vhQ7N4UEjsL-jDOGrP9Vk_UG6G7sWX9Cz4EPN7nPfy0" />
+		<!-- Google アナリティクス（佐藤さんが使っている測定ID。2026-10-25 確認）。
+		     テスト用URLのアクセスが混ざらないよう、本番ドメインで開いたときだけ読み込む -->
+		<script is:inline>
+			if (location.hostname === "kagino-anshin-taro.com") {
+				window.dataLayer = window.dataLayer || [];
+				window.gtag = function () { dataLayer.push(arguments); };
+				gtag("js", new Date());
+				gtag("config", "G-CY0ER16Y0B");
+				var s = document.createElement("script");
+				s.async = true;
+				s.src = "https://www.googletagmanager.com/gtag/js?id=G-CY0ER16Y0B";
+				document.head.appendChild(s);
+			}
+		</script>
 		<title>{fullTitle}</title>
 		<EmDashHead page={pageCtx} />
 	</head>
