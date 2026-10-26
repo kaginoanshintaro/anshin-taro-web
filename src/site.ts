@@ -28,12 +28,13 @@ export const globalNav = [
 	{ label: "会社概要・アクセス", href: "/profile/" },
 	{ label: "お問い合わせ", href: "/contact/" },
 	{ label: "プライバシーポリシー", href: "/privacy-policy/" },
+	{ label: "利用規約", href: "/terms/" },
 ];
 
+/** リンク集（/link/）は佐藤さんの指示でメニューから外した（2026-10-26） */
 export const footerNav = [
 	{ label: "会社概要・アクセス", href: "/profile/" },
 	{ label: "お問い合わせ", href: "/contact/" },
 	{ label: "プライバシーポリシー", href: "/privacy-policy/" },
 	{ label: "利用規約", href: "/terms/" },
-	{ label: "リンク集", href: "/link/" },
 ];
