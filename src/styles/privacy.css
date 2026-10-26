@@ -1,6 +1,7 @@
 /*
  * プライバシーポリシー（/privacy-policy/）
  * 見出しの帯・左のメニュー・白いカードは料金ページ（price.css）と同じ形。パソコン版を先に作る。
+ * 利用規約（/terms/、src/pages/terms.astro）も同じ形なのでこのファイルを使う。tm- で始まるものは利用規約だけのもの。
  */
 
 .privacy-page { padding-bottom: 24px; }
@@ -40,6 +41,11 @@
 .pv-card ul:last-child { margin-bottom: 0; }
 .pv-card li::marker { color: var(--accent); }
 
+/* 利用規約: 前書き・項目番号・制定日 */
+.tm-intro { margin-bottom: 32px; padding: 18px 22px; border-radius: 12px; background: var(--color-cream); }
+.tm-num { margin-right: 0.5em; color: var(--accent); }
+.pv-card .tm-enacted { margin-top: 36px; padding-top: 20px; border-top: 1px solid var(--gray-200); text-align: right; font-size: 0.85rem; color: var(--muted); }
+
 /* 一番下のボタン（料金ページと同じ） */
 .pv-cta { display: flex; justify-content: center; margin-top: 32px; }
 .pv-cta a { display: inline-flex; align-items: center; justify-content: center; min-width: 240px; padding: 12px 24px; border-radius: 999px; font-weight: bold; text-decoration: none; line-height: 1.4; }
@@ -72,6 +78,8 @@
 	.pv-card p { font-size: 0.9rem; line-height: 1.9; }
 	.pv-card ul { padding: 12px 14px 12px 1.8em; font-size: 0.9rem; line-height: 1.8; }
 	.pv-card li + li { margin-top: 4px; }
+	.tm-intro { margin-bottom: 24px; padding: 14px 16px; }
+	.pv-card .tm-enacted { margin-top: 28px; }
 
 	.pv-cta { margin-top: 24px; }
 	.pv-cta a { min-width: 0; width: 100%; max-width: 320px; }
