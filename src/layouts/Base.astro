@@ -174,6 +174,22 @@ const pageCtx = createPublicPageContext({
 		letter-spacing: 0.04em;
 	}
 	h1, h2, h3, h4, h5, h6 { font-family: var(--font-serif); }
+
+	/*
+	 * 改行の位置（佐藤さんの依頼 2026-10-25）。「安心太/郎」のように単語の途中で改行されないようにする。
+	 * - 文字ごとの改行を止め（keep-all）、サーバーで入れた文節の切れ目（<wbr>、src/utils/phrase-break.ts）
+	 *   でだけ改行する。iPhone（Safari）を含む全ブラウザで効く。
+	 *   1つの文節が枠より長いときだけ、はみ出さないよう途中で折る（overflow-wrap: break-word）。
+	 * - 「ー」「ゃ」などが行の頭に来ないよう厳しめの禁則（line-break: strict）。
+	 * - 段落の最後の行が1文節だけ残らないよう text-wrap: pretty、見出しは行の長さをそろえる balance。
+	 *   どちらも未対応のブラウザでは普通に折り返すだけ。
+	 * - ブラウザの JS であとから入れる日本語（チャットボットの返事など）には <wbr> が無いので、
+	 *   その枠には word-break: auto-phrase（Chrome）か normal を指定すること。
+	 */
+	body { word-break: keep-all; overflow-wrap: break-word; line-break: strict; text-wrap: pretty; }
+	h1, h2, h3, h4, h5, h6 { text-wrap: balance; }
+	.nobr { white-space: nowrap; } /* 番地・電話番号（phrase-break.ts が付ける） */
+
 	img { max-width: 100%; height: auto; }
 	a { color: var(--accent-dark); }
 	.wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 16px; }
