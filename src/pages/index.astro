@@ -353,7 +353,8 @@ const dateFormat = new Intl.DateTimeFormat("ja-JP", {
 
 	/* ここから下は固定背景エリア。部品の見た目は src/styles/top.css */
 	:global(html) { scroll-snap-type: y proximity; }
-	.fixed-area { position: relative; height: 100vh; height: 100svh; padding-top: var(--header-h); clip-path: inset(0); scroll-snap-align: start; }
+	/* 高さはブラウザのバーが引っ込んだときの大きさ（lvh）。svh だとバーが引っ込んだとき上が欠けて上の段落が見えてしまう（iPhone の Chrome、2026-10-26） */
+	.fixed-area { position: relative; height: 100vh; height: 100lvh; padding-top: var(--header-h); clip-path: inset(0); scroll-snap-align: start; }
 	/* 写真は画面に固定（新しい背景は佐藤さんが用意予定。今は作業風景の写真） */
 	/* 背景は佐藤さんの写真（合鍵の機械で作業する手元、2026-10-25）。読めるブラウザは AVIF、画面が小さければ小さい方 */
 	.fa-bg {
