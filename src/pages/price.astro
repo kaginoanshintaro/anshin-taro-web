@@ -1,0 +1,122 @@
+---
+// サービス料金（/price/。URL は今の WordPress と同じ）。
+// 文と金額は src/data/price.ts（今のページから写したもの）。
+// パソコン版: 左に料金メニュー（スクロールしても付いてくる）、右に種類ごとのカード。
+import Base from "../layouts/Base.astro";
+import { site } from "../site";
+import { priceNotes, priceSections } from "../data/price";
+import "../styles/price.css";
+
+// 料金表の名前の（ ）の部分は小さく出して、1行に収まりやすくする
+const splitParen = (name: string) => name.split(/(（[^）]*）)/).filter(Boolean);
+---
+
+<Base title="サービス料金">
+	<link slot="head" rel="preload" href="/fonts/price-headings.woff2" as="font" type="font/woff2" crossorigin />
+	<div class="price-page">
+		<header class="pp-head">
+			<div class="wrap">
+				<h1>サービス料金</h1>
+				<nav class="pp-crumb" aria-label="現在地"><a href="/">ホーム</a><span aria-hidden="true">›</span>サービス料金</nav>
+			</div>
+		</header>
+
+		<div class="wrap pp-layout">
+			<aside class="pp-side">
+				<nav class="pp-toc" aria-label="料金の種類">
+					<p class="pp-toc-title">料金メニュー</p>
+					<ol>
+						{priceSections.map((s) => <li><a href={`#${s.id}`}>{s.tiny ? <><span class="pc-only">{s.short}</span><span class="sp-only">{s.tiny}</span></> : s.short}</a></li>)}
+						<li class="pp-toc-sub"><a href="#immobilizer-check"><span class="pc-only">イモビライザー搭載車の見分け方</span><span class="sp-only">イモビ車の見分け方</span></a></li>
+					</ol>
+				</nav>
+				<a class="pp-tel" href={site.tel.href}><small>電話で見積もり</small>{site.tel.label}</a>
+			</aside>
+
+			<div class="pp-main">
+				<section class="pp-notes" aria-label="料金について">
+					<ul>
+						{priceNotes.items.map((n) => <li>{n.strong && <strong>{n.strong}</strong>}{n.rest}{n.strong2 && <strong>{n.strong2}</strong>}{n.tail}</li>)}
+					</ul>
+					<div class="pp-cancel">
+						<p class="pp-cancel-title">キャンセル料</p>
+						<dl>
+							{priceNotes.cancelFees.map((f) => <div><dt>{f.label}</dt><dd>{f.price}</dd></div>)}
+						</dl>
+					</div>
+				</section>
+
+				{priceSections.map((s, i) => (
+					<section class="pp-card" id={s.id}>
+						<h2>{s.title}</h2>
+						<div class="pp-intro">
+							<img src={s.image.src} width={s.image.width} height={s.image.height} alt="" loading={i === 0 ? "eager" : "lazy"} decoding="async" />
+							<div class="pp-body">{s.body.map((p) => <p>{p}</p>)}</div>
+						</div>
+						<div class:list={["pp-table-wrap", { "has-photo": s.photo }]}>
+							<div>
+								{s.tableTitle && <p class="pp-table-title">{s.tableTitle}</p>}
+								<dl class="pp-table">
+									{s.rows.map((r) => (
+										<div>
+											<dt>{splitParen(r.name).map((t, j, all) => (t.startsWith("（") ? <span class:list={["paren", { tail: j === all.length - 1 }]}>{t}</span> : t))}</dt>
+											<dd>{r.price}{r.note && <small>※</small>}</dd>
+										</div>
+									))}
+								</dl>
+								{[...new Set(s.rows.map((r) => r.note).filter(Boolean))].map((n) => <p class="pp-table-note">{n}</p>)}
+							</div>
+							{s.photo && (
+								<figure class="pp-photo">
+									<img src={s.photo.src} width="400" height="400" alt={s.photo.alt} loading="lazy" decoding="async" />
+									<figcaption>{s.photo.alt}</figcaption>
+								</figure>
+							)}
+						</div>
+					</section>
+				))}
+
+				<!-- イモビライザー搭載車の見分け方（今のページの会話をそのまま） -->
+				<section class="pp-card pp-talk" id="immobilizer-check">
+					<div class="talk taro"><img src="/images/price/taro-teacher-face.webp" width="160" height="160" alt="安心太郎ちゃん" /><p><strong>イモビライザー搭載車の見分け方について解説するよ</strong></p></div>
+
+					<h3>１、メーターパネルの警告灯で確認</h3>
+					<div class="talk baby"><img src="/images/top/baby-face.webp" width="160" height="160" alt="カギベイビー" /><p><strong>これらの表示があればイモビライザーシステム搭載だね</strong></p></div>
+					<div class="pp-lamps">
+						<img src="/images/price/warn1.webp" width="218" height="100" alt="IMMOBILIZER の警告灯" loading="lazy" />
+						<img src="/images/price/warn2.webp" width="132" height="116" alt="錠前の形の警告灯" loading="lazy" />
+						<img src="/images/price/warn3.webp" width="226" height="138" alt="車と鍵の形の警告灯" loading="lazy" />
+						<img src="/images/price/warn4.webp" width="214" height="152" alt="SECURITY の警告灯" loading="lazy" />
+					</div>
+
+					<h3>2. 鍵自体を確認する</h3>
+					<ul class="pp-check">
+						<li>グリップ部分が<strong>厚め・プラスチック製</strong><span>→</span>チップ内蔵の可能性あり</li>
+						<li>金属のみのシンプルな鍵<span>→</span>イモビなし</li>
+						<li>スマートキー<span>→</span>ほぼイモビあり</li>
+					</ul>
+					<div class="talk baby"><img src="/images/top/baby-face.webp" width="160" height="160" alt="カギベイビー" /><p>見た目だけでの判断はちょっと難しいかもね〜</p></div>
+
+					<h3>3. 年式・車種で判断する</h3>
+					<table class="pp-year">
+						<tr><th>国産車</th><td>2000年代以降はほぼ標準搭載</td></tr>
+						<tr><th>輸入車</th><td>1990年代後半から搭載モデルあり</td></tr>
+						<tr><th>軽トラ・旧車</th><td>搭載されていないケースが多い</td></tr>
+					</table>
+					<div class="talk baby"><img src="/images/top/baby-face.webp" width="160" height="160" alt="カギベイビー" /><p>最近の車はほぼイモビライザー搭載なんだね！</p></div>
+
+					<h3>4. 車検証・取扱説明書で確認</h3>
+					<ul class="pp-check">
+						<li>車検証または取説に「イモビライザー」「盗難防止装置」の記載があれば搭載あり　※表記がない場合もあり</li>
+					</ul>
+					<div class="talk baby"><img src="/images/top/baby-face.webp" width="160" height="160" alt="カギベイビー" /><p>字を読むのがめんどくさい時ってあるよね〜！</p></div>
+					<div class="talk taro"><img src="/images/price/taro-teacher-face.webp" width="160" height="160" alt="安心太郎ちゃん" /><p>少し年式の古い車か商用車、トラックなどはイモビライザー搭載車は少ない印象だね！</p></div>
+				</section>
+
+				<div class="pp-cta">
+					<a class="pp-cta-home" href="/">ホームに戻る</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</Base>

@@ -1,0 +1,66 @@
+---
+// 会社概要・アクセス（/profile/。URL は今の WordPress と同じ）。
+// 文と画像は今のページから写したもの（2026-10-25）。
+// パソコン版: 店の外観と地図を今の半分くらいの大きさで横に並べ、その下に会社概要の表（佐藤さんの指示 2026-10-25）。
+import Base from "../layouts/Base.astro";
+import { site } from "../site";
+import "../styles/profile.css";
+
+const mapUrl = "https://maps.app.goo.gl/2g73uk2teCsFsxuE8";
+// 写真の表示幅（profile.css の .pf-body と .pf-photos に合わせる）。スマホは小さい画像を読む
+const sizes = "(max-width: 767px) calc(50vw - 21px), 352px";
+---
+
+<Base title="会社概要・アクセス">
+	<link slot="head" rel="preload" href="/fonts/profile-headings.woff2" as="font" type="font/woff2" crossorigin />
+	<div class="profile-page">
+		<header class="pf-head">
+			<div class="wrap">
+				<h1>会社概要・アクセス</h1>
+				<nav class="pf-crumb" aria-label="現在地"><a href="/">ホーム</a><span aria-hidden="true">›</span>会社概要・アクセス</nav>
+			</div>
+		</header>
+
+		<div class="wrap pf-body">
+			<div class="pf-photos">
+				<figure>
+					<div class="pf-frame">
+						<img src="/images/profile/storefront-800.webp" srcset="/images/profile/storefront-400.webp 400w, /images/profile/storefront-800.webp 800w" sizes={sizes} width="800" height="450" alt="カギの安心太郎の店舗外観" fetchpriority="high" decoding="async" />
+					</div>
+					<figcaption>店舗外観</figcaption>
+				</figure>
+				<figure>
+					<a class="pf-frame pf-map" href="/images/profile/access-map.webp" target="_blank" rel="noopener">
+						<img src="/images/profile/access-map-800.webp" srcset="/images/profile/access-map-400.webp 400w, /images/profile/access-map-800.webp 800w" sizes={sizes} width="800" height="574" alt="アクセスマップ。国道210号の信号から野津原方面へ進み、トキハインダストリー富士見が丘店のそば" decoding="async" />
+					</a>
+					<figcaption>アクセスマップ<span>（押すと拡大）</span></figcaption>
+				</figure>
+			</div>
+
+			<section class="pf-card" aria-labelledby="pf-outline">
+				<h2 id="pf-outline">会社概要</h2>
+				<dl class="pf-table">
+					<div><dt>会社名</dt><dd>カギの安心太郎株式会社</dd></div>
+					<div><dt>代表者</dt><dd>佐藤　翔平（さとう　しょうへい）</dd></div>
+					<div>
+						<dt>所在地</dt>
+						<dd>
+							〒870-1177<br />大分県大分市富士見が丘西1-3-1第一グリーンプラザビル東側簡易店舗
+							<a class="pf-maplink" href={mapUrl} target="_blank" rel="noopener">Googleマップで開く</a>
+						</dd>
+					</div>
+					<div><dt>電話番号</dt><dd><a href={site.tel.href}>{site.tel.label}</a></dd></div>
+					<div><dt>Eメール</dt><dd>kagino.anshin.taro@gmail.com</dd></div>
+					<div><dt>設立</dt><dd>2023年12月19日設立　2024年1月1日創業</dd></div>
+					<div><dt>事業内容</dt><dd>鍵の解錠および修理交換<br />鍵と防犯機器の販売、取付、合鍵作成</dd></div>
+					<div><dt>資本金</dt><dd>100万円</dd></div>
+					<div><dt>従業員数</dt><dd>1人</dd></div>
+				</dl>
+			</section>
+
+			<div class="pf-cta">
+				<a class="pf-cta-home" href="/">ホームに戻る</a>
+			</div>
+		</div>
+	</div>
+</Base>

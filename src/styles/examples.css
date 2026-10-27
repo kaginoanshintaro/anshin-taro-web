@@ -1,0 +1,124 @@
+/*
+ * 施工事例（/examples/）
+ * 色と形は料金ページ（price.css）に合わせる。Base.astro の変数（クリームの地、ブラウンの見出し、オレンジの飾り）。
+ * パソコン版を先に作り、それを元にスマホ版（767px以下）を作った（佐藤さんの方針）。
+ */
+
+.ex-page { padding-bottom: 24px; }
+
+/* ページの見出し（料金ページと同じ細い帯） */
+.ex-head { padding: 12px 0; border-bottom: 1px solid var(--line); background: var(--white); }
+.ex-head .wrap { max-width: 1200px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.ex-crumb { font-size: 0.8rem; color: var(--muted); }
+.ex-crumb a { color: var(--muted); text-decoration: none; }
+.ex-crumb span { margin: 0 8px; }
+.ex-head h1 { margin: 0; padding-left: 16px; border-left: 5px solid var(--accent); font-size: 1.6rem; line-height: 1.4; color: var(--heading); letter-spacing: 0.08em; }
+
+/* 左に事例の一覧、右に本文 */
+.ex-layout { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: clamp(24px, 2.5vw, 32px); align-items: start; margin-top: 40px; max-width: 1200px; }
+
+.ex-side { position: sticky; top: calc(var(--header-h) + 24px); display: grid; gap: 16px; }
+.ex-toc { padding: 20px 18px; border-radius: var(--radius); background: var(--white); border: 1px solid var(--line); }
+.ex-toc-title { margin: 0 0 8px; font-family: var(--font-serif); font-weight: 700; color: var(--heading); }
+.ex-toc ol { list-style: none; margin: 0; padding: 0; }
+.ex-toc li a { display: flex; gap: 10px; padding: 9px 4px; border-bottom: 1px dashed var(--gray-200); font-size: 0.88rem; font-weight: bold; line-height: 1.5; color: var(--gray-900); text-decoration: none; }
+.ex-toc li:last-child a { border-bottom: 0; }
+.ex-toc li a:hover { color: var(--accent-dark); }
+.ex-toc small { display: block; font-size: 0.75rem; font-weight: normal; color: var(--gray-500); }
+.ex-toc-num { flex: none; padding-top: 0.9em; color: var(--accent); font-size: 0.8rem; }
+.ex-tel { display: flex; flex-direction: column; align-items: center; padding: 12px; border-radius: 16px; background: var(--accent); color: var(--white); font-weight: bold; font-size: 1.3rem; line-height: 1.35; text-decoration: none; }
+.ex-tel small { font-size: 0.8rem; }
+.ex-tel:hover { background: var(--accent-dark); }
+
+.ex-main { display: grid; gap: 32px; min-width: 0; }
+
+/* 事例ごとのカード */
+.ex-card { scroll-margin-top: calc(var(--header-h) + 20px); padding: 32px 36px 20px; border-radius: var(--radius); background: var(--white); box-shadow: 0 2px 14px rgb(38 38 38 / 0.06); }
+.ex-card-head { padding-bottom: 18px; border-bottom: 2px solid var(--color-brown-light); }
+.ex-case { margin: 0 0 4px; font-size: 0.78rem; font-weight: bold; letter-spacing: 0.16em; color: var(--accent); }
+.ex-card h2 { margin: 0 0 14px; padding-left: 16px; border-left: 5px solid var(--accent); font-size: 1.45rem; line-height: 1.5; color: var(--heading); letter-spacing: 0.06em; }
+.ex-card h2 span { margin-left: 0.6em; font-size: 0.8em; }
+.ex-meta { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.ex-meta li { display: inline-flex; align-items: center; gap: 8px; padding: 4px 14px 4px 4px; border-radius: 999px; background: var(--color-cream); font-size: 0.88rem; font-weight: bold; color: var(--gray-900); }
+.ex-meta span { padding: 2px 10px; border-radius: 999px; background: var(--accent-soft); font-size: 0.75rem; font-weight: normal; color: var(--accent-dark); }
+
+/* 写真と文を1組ずつ。写真は左にそろえて、文を読み進めやすくする */
+.ex-steps { margin: 0; padding: 0; list-style: none; counter-reset: step; }
+.ex-step { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 28px; align-items: start; padding: 24px 0; border-bottom: 1px dashed var(--gray-200); }
+.ex-step:last-child { border-bottom: 0; }
+.ex-photo { position: relative; display: block; border-radius: 14px; overflow: hidden; background: var(--gray-100); cursor: zoom-in; }
+.ex-photo img { display: block; width: 100%; height: auto; transition: transform 0.3s; }
+.ex-photo:hover img { transform: scale(1.03); }
+.ex-photo::after { content: "＋"; position: absolute; right: 8px; bottom: 8px; display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: rgb(255 255 255 / 0.9); color: var(--gray-700); font-size: 0.9rem; font-weight: bold; }
+.ex-text { position: relative; padding-top: 2px; }
+.ex-text::before { counter-increment: step; content: counter(step); display: grid; place-items: center; width: 28px; height: 28px; margin-bottom: 10px; border-radius: 50%; background: var(--accent); color: var(--white); font-size: 0.85rem; font-weight: bold; }
+.ex-text p { margin: 0 0 0.5em; font-size: 0.95rem; line-height: 1.95; color: var(--gray-900); }
+.ex-text p:last-child { margin-bottom: 0; }
+
+/* 一番下のボタン */
+.ex-cta { display: flex; justify-content: center; margin-top: 8px; }
+.ex-cta a { display: inline-flex; align-items: center; justify-content: center; min-width: 240px; padding: 12px 24px; border-radius: 999px; font-weight: bold; text-decoration: none; line-height: 1.4; }
+.ex-cta-home { border: 2px solid var(--color-brown-light); color: var(--color-brown); background: var(--white); font-size: 1rem; }
+
+/* 写真の拡大 */
+.ex-viewer { max-width: min(92vw, 900px); max-height: 92vh; padding: 0; border: 0; border-radius: 14px; background: transparent; overflow: visible; }
+.ex-viewer::backdrop { background: rgb(20 14 10 / 0.8); }
+.ex-viewer img { display: block; width: auto; height: auto; max-width: min(92vw, 900px); max-height: 92vh; border-radius: 14px; background: var(--gray-100); }
+.ex-viewer form { position: absolute; top: -14px; right: -14px; margin: 0; }
+.ex-viewer-close { width: 36px; height: 36px; border: 0; border-radius: 50%; background: var(--white); color: var(--gray-900); font-size: 1.2rem; line-height: 1; cursor: pointer; box-shadow: 0 2px 8px rgb(0 0 0 / 0.3); }
+
+/* 小さめのパソコン画面: 左の一覧と写真を少し詰める */
+@media (max-width: 1240px) {
+	.ex-layout { grid-template-columns: 220px minmax(0, 1fr); }
+	.ex-card { padding: 28px 26px 16px; }
+	.ex-card h2 { font-size: 1.3rem; }
+	.ex-step { grid-template-columns: 200px minmax(0, 1fr); gap: 22px; }
+}
+
+/* スマホだけに出す一番下の電話ボタン */
+.ex-cta-tel { display: none !important; }
+
+/* タブレット・スマホ: 1列。事例の一覧は上に付いてくる横長の帯にして、横にすべらせて選ぶ */
+@media (max-width: 1023px) {
+	.ex-layout { grid-template-columns: minmax(0, 1fr); gap: 16px; margin-top: 0; }
+	.ex-side { position: sticky; top: var(--header-h); z-index: 5; display: block; min-width: 0; margin: 0 -16px; padding: 10px 0; background: var(--color-cream); border-bottom: 1px solid var(--line); }
+	.ex-toc { padding: 0; border: 0; border-radius: 0; background: none; }
+	.ex-toc-title { display: none; }
+	.ex-toc ol { display: flex; gap: 8px; overflow-x: auto; padding: 0 16px; scroll-padding-inline: 16px; scroll-snap-type: x proximity; scrollbar-width: none; }
+	.ex-toc ol::-webkit-scrollbar { display: none; }
+	.ex-toc li { flex: none; scroll-snap-align: start; }
+	.ex-toc li a { gap: 8px; align-items: center; height: 100%; padding: 6px 14px 6px 10px; border: 1px solid var(--gray-200); border-radius: 12px; background: var(--white); font-size: 0.82rem; white-space: nowrap; }
+	.ex-toc li:last-child a { border-bottom: 1px solid var(--gray-200); }
+	/* いま見ている事例の札は色を付ける */
+	.ex-toc li a.is-current { border-color: var(--accent); background: var(--accent-soft); }
+	.ex-toc small { font-size: 0.7rem; }
+	.ex-toc-num { padding-top: 0; font-size: 0.85rem; }
+	.ex-side .ex-tel { display: none; }
+	.ex-main { gap: 20px; margin-top: 8px; }
+	.ex-card { scroll-margin-top: calc(var(--header-h) + 76px); padding: 26px 24px 12px; }
+	.ex-cta { flex-direction: column; align-items: center; gap: 12px; }
+	.ex-cta-tel { display: flex !important; flex-direction: column; min-width: 280px; background: var(--accent); color: var(--white); font-size: 1.3rem; }
+	.ex-cta-tel small { font-size: 0.8rem; }
+	.ex-viewer form { top: 8px; right: 8px; }
+}
+
+/* スマホ: 写真は横いっぱい（4:3の枠。押すと全体が見られる）、番号は写真の左上、文はその下 */
+@media (max-width: 767px) {
+	.ex-head .wrap { flex-direction: column; align-items: flex-start; gap: 4px; }
+	.ex-head h1 { font-size: 1.3rem; }
+	.ex-card { padding: 20px 16px 4px; border-radius: 16px; }
+	.ex-card-head { padding-bottom: 14px; }
+	.ex-card h2 { margin-bottom: 12px; padding-left: 12px; border-left-width: 4px; font-size: 1.2rem; }
+	.ex-card h2 span { display: inline-block; margin-left: 0.4em; }
+	.ex-meta { gap: 6px; }
+	.ex-meta li { padding: 3px 10px 3px 3px; font-size: 0.8rem; gap: 6px; }
+	.ex-meta span { padding: 1px 8px; font-size: 0.7rem; }
+	.ex-step { grid-template-columns: 1fr; gap: 12px; padding: 18px 0; position: relative; }
+	.ex-photo { border-radius: 12px; }
+	.ex-photo img { aspect-ratio: 4 / 3; object-fit: cover; }
+	.ex-photo:hover img { transform: none; }
+	.ex-text { position: static; padding-top: 0; }
+	.ex-text::before { position: absolute; top: 28px; left: 10px; margin: 0; box-shadow: 0 1px 4px rgb(0 0 0 / 0.25); }
+	.ex-text p { font-size: 0.93rem; line-height: 1.85; }
+	.ex-cta a { width: 100%; min-width: 0; }
+}

@@ -1,0 +1,33 @@
+# テスト用URL（anshin-taro-web.kagino-anshin-taro.workers.dev）へのデプロイ。
+# 本番ドメインと DNS には触らない。
+# リポジトリの Actions secrets に CLOUDFLARE_API_TOKEN が必要。
+name: Deploy test site
+
+on:
+  push:
+    branches:
+      - claude/project-thread-kiyam6
+
+concurrency:
+  group: deploy-test
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: 0e3e46a43d38a6b364b91ca4b5c5967e
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      # D1 のデータベース更新。指紋はテスト用 D1（anshin-taro-web）のもの。
+      - run: >-
+          npx emdash migrate --from-config --wrangler-config=wrangler.jsonc
+          --expected-target-fingerprint=bb4b75e6a77a58a592788c14833593ee7574be0be9ceaf78035e28e1dbbb83d8
+      - run: npx wrangler deploy

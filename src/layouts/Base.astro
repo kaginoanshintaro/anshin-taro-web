@@ -1,9 +1,9 @@
 ---
-import { getMenuWithCacheHint, getSiteSettingsWithCacheHint } from "emdash";
+import { getSiteSettingsWithCacheHint } from "emdash";
 import { EmDashHead, EmDashBodyStart, EmDashBodyEnd } from "emdash/ui";
 import { createPublicPageContext } from "emdash/page";
-import LiveSearch from "emdash/ui/search";
-import { resolveStarterSiteIdentity } from "../utils/site-identity";
+import { site, footerNav, globalNav } from "../site";
+import "@fontsource/shippori-mincho/700.css";
 
 interface Props {
 	title: string;
@@ -13,29 +13,17 @@ interface Props {
 	canonical?: string | null;
 	/** Pass content reference for plugin page contributions on content pages */
 	content?: { collection: string; id: string; slug?: string | null };
+	/** フッターを出さない（トップページ。佐藤さんの指示 2026-10-25） */
+	hideFooter?: boolean;
 }
 
-const { title, pageTitle, description, image, canonical, content } =
+const { title, pageTitle, description, image, canonical, content, hideFooter = false } =
 	Astro.props;
-const [settingsResult, menuResult] = await Promise.all([
-	getSiteSettingsWithCacheHint(),
-	getMenuWithCacheHint("primary"),
-]);
-if (Astro.cache?.enabled) {
-	Astro.cache.set(settingsResult.cacheHint);
-	Astro.cache.set(menuResult.cacheHint);
-}
+const settingsResult = await getSiteSettingsWithCacheHint();
+if (Astro.cache?.enabled) Astro.cache.set(settingsResult.cacheHint);
 
-const { siteTitle, siteTagline, siteLogo } = resolveStarterSiteIdentity(
-	settingsResult.data,
-);
-const titleIncludesSiteName =
-	title === siteTitle ||
-	title.endsWith(` | ${siteTitle}`) ||
-	title.endsWith(` — ${siteTitle}`);
-const fullTitle = titleIncludesSiteName ? title : `${title} — ${siteTitle}`;
-const pageDescription = description ?? siteTagline;
-const menu = menuResult.data;
+const fullTitle = title === site.name ? title : `${title} | ${site.name}`;
+const pageDescription = description ?? site.tagline;
 
 const pageCtx = createPublicPageContext({
 	Astro,
@@ -47,55 +35,220 @@ const pageCtx = createPublicPageContext({
 	canonical,
 	image,
 	content,
-	siteName: siteTitle,
+	siteName: site.name,
 });
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="ja">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<!-- Google Search Console の所有者確認（今の WordPress と同じタグ。移行後も確認が外れないように） -->
+		<meta name="google-site-verification" content="vhQ7N4UEjsL-jDOGrP9Vk_UG6G7sWX9Cz4EPN7nPfy0" />
+		<!-- Google アナリティクス（佐藤さんが使っている測定ID。2026-10-25 確認）。
+		     テスト用URLのアクセスが混ざらないよう、本番ドメインで開いたときだけ読み込む -->
+		<script is:inline>
+			if (location.hostname === "kagino-anshin-taro.com") {
+				window.dataLayer = window.dataLayer || [];
+				window.gtag = function () { dataLayer.push(arguments); };
+				gtag("js", new Date());
+				gtag("config", "G-CY0ER16Y0B");
+				var s = document.createElement("script");
+				s.async = true;
+				s.src = "https://www.googletagmanager.com/gtag/js?id=G-CY0ER16Y0B";
+				document.head.appendChild(s);
+			}
+		</script>
 		<title>{fullTitle}</title>
 		<EmDashHead page={pageCtx} />
+		<slot name="head" />
 	</head>
 	<body>
 		<EmDashBodyStart page={pageCtx} />
 
-		<header>
-			<nav>
-				<a href="/">
-					{
-						siteLogo ? (
-							<img
-								src={siteLogo.url}
-								alt={siteLogo.alt || siteTitle}
-								style="height:48px;width:auto;margin:-8px 0;display:block;"
-							/>
-						) : (
-							siteTitle
-						)
-					}
-				</a>
-				{
-					menu?.items.map((item) => (
-						<a
-							href={item.url}
-							target={item.target}
-							rel={item.target === "_blank" ? "noopener noreferrer" : undefined}
-						>
-							{item.label}
-						</a>
-					))
-				}
-				<LiveSearch placeholder="Search..." collections={["posts", "pages"]} />
+		<!--
+			ヘッダー（2026-10-24 の見本 header.html）。
+			パソコンは今のサイトと同じ形: 白い帯、左にロゴ、右に文字のメニュー。
+			スマホは左にメニュー、真ん中にロゴ、右にホームのアイコンだけ。メニューは左から出る引き出し。
+		-->
+		<header class="site-header">
+			<button class="icon-btn menu-btn" type="button" aria-label="メニューを開く" aria-controls="drawer" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" /></svg></button>
+			<a class="logo" href="/"><img src="/images/top/logo-tight.webp" alt={site.name} width="576" height="149" /></a>
+			<a class="icon-btn home-btn" href="/" aria-label="ホームへ"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-7 9 7" /><path d="M5 10v10h5v-6h4v6h5V10" /></svg></a>
+			<nav class="pc-nav" aria-label="メニュー">
+				{globalNav.map((item) => <a href={item.href}>{item.label}</a>)}
 			</nav>
 		</header>
+		<div class="drawer" id="drawer">
+			<div class="drawer-shade"></div>
+			<nav aria-label="メニュー">
+				<button class="icon-btn drawer-close" type="button" aria-label="メニューを閉じる"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg></button>
+				<ul>
+					{globalNav.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+				</ul>
+				<a class="drawer-tel" href={site.tel.href}><small>電話で見積もりOK</small>{site.tel.label}</a>
+			</nav>
+		</div>
+		<script is:inline>
+			(() => {
+				const btn = document.querySelector(".menu-btn");
+				const set = (open) => { document.documentElement.classList.toggle("menu-open", open); btn.setAttribute("aria-expanded", String(open)); };
+				btn.addEventListener("click", () => set(true));
+				document.querySelector(".drawer-close").addEventListener("click", () => set(false));
+				document.querySelector(".drawer-shade").addEventListener("click", () => set(false));
+			})();
+		</script>
 
 		<main>
 			<slot />
 		</main>
 
+		{!hideFooter && (
+		<footer class="site-footer">
+			<div class="wrap">
+				<p class="footer-name">{site.name}</p>
+				<p>{site.address}</p>
+				<p>TEL <a href={site.tel.href}>{site.tel.label}</a></p>
+				<ul class="footer-nav">
+					{footerNav.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+				</ul>
+				<p class="copyright">© {site.name}</p>
+			</div>
+		</footer>
+		)}
+
 		<EmDashBodyEnd page={pageCtx} />
 	</body>
 </html>
+
+<style is:global>
+	:root {
+		/*
+		 * カラーテーマ（2026-10-23 佐藤さんのコンセプト）
+		 * メイン: オレンジ（佐藤さん指定 #D85D0F）／サブ: 木製のドアのブラウン／その他: 錠前のグレースケール
+		 * 文字色と背景の組み合わせのコントラスト比は emdash-migration/color-palette.md
+		 */
+		--color-orange: #d85d0f;
+		--color-orange-dark: #b04a0a; /* 小さい文字のリンク・ボタンのホバー */
+		--color-orange-soft: #f6e3d3; /* メインの淡い色。電話の案内などの面 */
+		--color-brown: #6b4429; /* 見出し */
+		--color-brown-dark: #4a2e1c; /* フッターの面 */
+		--color-brown-light: #a9774f; /* 飾りの線。文字には使わない */
+		--gray-900: #262626; /* 本文 */
+		--gray-700: #4d4d4d; /* 補足の文 */
+		--gray-500: #6b6b6b; /* 日付・キャプション */
+		--gray-300: #bdbdbd; /* アイコン・使えないボタン */
+		--gray-200: #dcdcdc; /* 区切り線 */
+		--gray-100: #f2f2f2; /* 面の背景 */
+		--white: #ffffff; /* カード */
+		--color-cream: #fbf7f1; /* ページの地色（佐藤さん指定でクリーム色） */
+
+		--accent: var(--color-orange);
+		--accent-dark: var(--color-orange-dark);
+		--accent-soft: var(--color-orange-soft);
+		--bg: var(--color-cream);
+		--bg-alt: var(--gray-100);
+		--text: var(--gray-900);
+		--muted: var(--gray-500);
+		--line: var(--gray-200);
+		--heading: var(--color-brown);
+		--radius: 20px;
+		--wrap: 1080px;
+		--header-h: 64px;
+		--font-sans: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", YuGothic, Meiryo, sans-serif;
+		/* しっぽり明朝は太字（700）だけ読み込む */
+		--font-serif: "Shippori Mincho", "Hiragino Mincho ProN", "Yu Mincho", serif;
+	}
+	@media (min-width: 769px) { :root { --header-h: 92px; } }
+
+	*, *::before, *::after { box-sizing: border-box; }
+	html { scroll-behavior: smooth; }
+	body {
+		margin: 0;
+		color: var(--text);
+		background: var(--bg);
+		/* 本文は端末のゴシック体、見出しだけ明朝体（しっぽり明朝）。表示を速くするため（佐藤さんの選択 2026-10-25） */
+		font-family: var(--font-sans);
+		line-height: 1.9;
+		letter-spacing: 0.04em;
+	}
+	h1, h2, h3, h4, h5, h6 { font-family: var(--font-serif); }
+
+	/*
+	 * 改行の位置（佐藤さんの依頼 2026-10-25）。「安心太/郎」のように単語の途中で改行されないようにする。
+	 * - 文字ごとの改行を止め（keep-all）、サーバーで入れた文節の切れ目（<wbr>、src/utils/phrase-break.ts）
+	 *   でだけ改行する。iPhone（Safari）を含む全ブラウザで効く。
+	 *   1つの文節が枠より長いときだけ、はみ出さないよう途中で折る（overflow-wrap: break-word）。
+	 * - 「ー」「ゃ」などが行の頭に来ないよう厳しめの禁則（line-break: strict）。
+	 * - 段落の最後の行が1文節だけ残らないよう text-wrap: pretty、見出しは行の長さをそろえる balance。
+	 *   どちらも未対応のブラウザでは普通に折り返すだけ。
+	 * - ブラウザの JS であとから入れる日本語（チャットボットの返事など）には <wbr> が無いので、
+	 *   その枠には word-break: auto-phrase（Chrome）か normal を指定すること。
+	 */
+	body { word-break: keep-all; overflow-wrap: break-word; line-break: strict; text-wrap: pretty; }
+	h1, h2, h3, h4, h5, h6 { text-wrap: balance; }
+	.nobr { white-space: nowrap; } /* 番地・電話番号（phrase-break.ts が付ける） */
+
+	img { max-width: 100%; height: auto; }
+	a { color: var(--accent-dark); }
+	.wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 16px; }
+
+	main { min-height: 50vh; padding-top: var(--header-h); }
+
+	/* ヘッダー。上に固定 */
+	.site-header {
+		position: fixed; top: 0; left: 0; right: 0; z-index: 10; height: var(--header-h);
+		display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 0 10px;
+		background: rgb(255 255 255 / 0.94); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+		box-shadow: 0 2px 10px rgb(38 38 38 / 0.08);
+	}
+	.icon-btn { display: inline-grid; place-items: center; width: 44px; height: 44px; padding: 0; border-radius: 50%; border: 1px solid var(--color-brown-light); background: var(--white); color: var(--color-brown); cursor: pointer; }
+	.icon-btn svg { width: 26px; height: 26px; stroke: currentColor; stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+	.menu-btn { justify-self: start; }
+	.home-btn { justify-self: end; }
+	/* ロゴは見本より大きく（佐藤さんの指示 2026-10-25） */
+	.logo img { display: block; height: 46px; width: auto; }
+	.pc-nav { display: none; }
+	/*
+	 * 文字のメニューは項目が1行に収まる幅（1024px以上）でだけ出す。それより狭いタブレットは
+	 * スマホと同じ引き出し。項目名は途中で折らず（nowrap）、ロゴも縮ませない。
+	 * 項目を増やしたら、1024px と 1200px で1行に収まるか確かめること。
+	 */
+	@media (min-width: 1024px) {
+		.site-header { display: flex; justify-content: space-between; gap: 24px; padding: 0 max(16px, calc((100% - 1200px) / 2)); background: var(--white); }
+		.menu-btn, .home-btn { display: none; }
+		.logo { flex-shrink: 0; }
+		.logo img { height: 56px; }
+		.pc-nav { display: flex; gap: 25px; }
+		.pc-nav a { font-size: 0.95rem; color: var(--gray-900); text-decoration: none; white-space: nowrap; }
+		.pc-nav a:hover { color: var(--accent-dark); }
+	}
+	@media (min-width: 1024px) and (max-width: 1199px) {
+		.pc-nav { gap: 14px; }
+		.pc-nav a { font-size: 0.85rem; }
+		.logo img { height: 44px; }
+	}
+
+	/* パンくずリストはスマホでは出さない（佐藤さんの指示 2026-10-25）。PCはそのまま */
+	@media (max-width: 768px) {
+		nav[aria-label="現在地"] { display: none; }
+	}
+
+	/* スマホのメニュー（左から出る引き出し） */
+	.drawer { position: fixed; z-index: 20; inset: 0; display: none; }
+	.menu-open .drawer { display: block; }
+	.drawer-shade { position: absolute; inset: 0; background: rgb(38 38 38 / 0.45); }
+	.drawer nav { position: absolute; top: 0; bottom: 0; left: 0; width: 84%; max-width: 360px; overflow-y: auto; background: var(--color-cream); padding: 14px 18px; box-shadow: 8px 0 24px rgb(38 38 38 / 0.2); }
+	.drawer ul { list-style: none; margin: 24px 0 0; padding: 0; }
+	.drawer li a { display: flex; justify-content: space-between; padding: 14px 4px; border-bottom: 1px solid var(--gray-200); font-size: 1rem; color: var(--gray-900); text-decoration: none; }
+	.drawer li a::after { content: "→"; color: var(--accent-dark); }
+	.drawer-tel { display: flex; flex-direction: column; align-items: center; margin-top: 24px; padding: 12px; border-radius: 16px; background: var(--accent); color: var(--white); font-weight: bold; font-size: 1.3rem; line-height: 1.3; text-decoration: none; }
+	.drawer-tel small { font-size: 0.8rem; }
+
+	.site-footer { margin-top: 80px; padding: 48px 0 40px; background: var(--color-brown-dark); color: var(--gray-200); font-size: 0.9rem; border-radius: 48px 48px 0 0; }
+	.site-footer a { color: var(--white); }
+	.footer-name { font-weight: bold; font-size: 1.1rem; color: var(--white); }
+	.footer-nav { display: flex; flex-wrap: wrap; gap: 8px 24px; list-style: none; padding: 0; }
+	.copyright { margin-top: 24px; color: var(--gray-300); font-size: 0.8rem; }
+</style>
