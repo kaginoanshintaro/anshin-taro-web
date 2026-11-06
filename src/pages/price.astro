@@ -3,6 +3,7 @@
 // 文と金額は src/data/price.ts（今のページから写したもの）。
 // パソコン版: 左に料金メニュー（スクロールしても付いてくる）、右に種類ごとのカード。
 import Base from "../layouts/Base.astro";
+import CallButton from "../components/CallButton.astro";
 import { site } from "../site";
 import { priceNotes, priceSections } from "../data/price";
 import "../styles/price.css";
@@ -30,7 +31,7 @@ const splitParen = (name: string) => name.split(/(（[^）]*）)/).filter(Boolea
 						<li class="pp-toc-sub"><a href="#immobilizer-check"><span class="pc-only">イモビライザー搭載車の見分け方</span><span class="sp-only">イモビ車の見分け方</span></a></li>
 					</ol>
 				</nav>
-				<a class="pp-tel" href={site.tel.href}><small>電話で見積もり</small>{site.tel.label}</a>
+				<CallButton class="pp-tel" lead="電話で見積もり" />
 			</aside>
 
 			<div class="pp-main">
