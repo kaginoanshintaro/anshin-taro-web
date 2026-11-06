@@ -453,3 +453,9 @@
 	.fa .prof-card dl, .fa .prof-card p { font-size: 0.95rem; }
 }
 .fa .prof-card p.kana { text-align: center; }
+/* 「鍵屋さんを呼ぶ前にチェックしたい5つのポイント」バナー（高額請求にご注意の差し替え、2026-11-06 佐藤さん）。角は画像側で透明 */
+.fa .kagiya-check { display: grid; place-items: center; padding: 0; background: none; }
+.fa .kagiya-check img { display: block; width: 100%; height: auto; filter: drop-shadow(0 3px 8px rgb(0 0 0 / 0.3)); }
+.fa-pc .small-row > .kagiya-check { padding: 0; }
+.fa-sp .warn2.kagiya-check { height: auto; border-radius: 0; background: none; overflow: visible; }
+.fa-sp .warn2.kagiya-check img { width: auto; max-width: 100%; height: 72px; margin: 0 auto; }
