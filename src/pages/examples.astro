@@ -5,7 +5,6 @@
 // スマホ版: 事例の一覧は上に付いてくる横長の帯（横にすべらせる）、写真は横いっぱい、電話ボタンは一番下。
 // 表示を速くするため、写真は幅400pxの WebP を遅延読み込みし、拡大用の大きい写真は押したときだけ読む。
 import Base from "../layouts/Base.astro";
-import CallButton from "../components/CallButton.astro";
 import { site } from "../site";
 import { examples } from "../data/examples";
 import "../styles/examples.css";
@@ -39,7 +38,7 @@ const img = (name: string, size?: true | "m") => `/images/examples/${name}${size
 						))}
 					</ol>
 				</nav>
-				<CallButton class="ex-tel" lead="電話で見積もり" />
+				<a class="ex-tel" href={site.tel.href}><small>電話で見積もり</small>{site.tel.label}</a>
 			</aside>
 
 			<div class="ex-main">
@@ -80,7 +79,7 @@ const img = (name: string, size?: true | "m") => `/images/examples/${name}${size
 				))}
 
 				<div class="ex-cta">
-					<CallButton class="ex-cta-tel" lead="電話で見積もり" />
+					<a class="ex-cta-tel" href={site.tel.href}><small>電話で見積もり</small>{site.tel.label}</a>
 					<a class="ex-cta-home" href="/">ホームに戻る</a>
 				</div>
 			</div>

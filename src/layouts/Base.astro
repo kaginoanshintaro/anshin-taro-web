@@ -3,7 +3,6 @@ import { getSiteSettingsWithCacheHint } from "emdash";
 import { EmDashHead, EmDashBodyStart, EmDashBodyEnd } from "emdash/ui";
 import { createPublicPageContext } from "emdash/page";
 import { site, footerNav, globalNav } from "../site";
-import CallButton from "../components/CallButton.astro";
 import "@fontsource/shippori-mincho/700.css";
 
 interface Props {
@@ -88,7 +87,7 @@ const pageCtx = createPublicPageContext({
 				<ul>
 					{globalNav.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
 				</ul>
-				<CallButton class="drawer-tel" lead="電話で見積もりOK" />
+				<a class="drawer-tel" href={site.tel.href}><small>電話で見積もりOK</small>{site.tel.label}</a>
 			</nav>
 		</div>
 		<script is:inline>
@@ -246,26 +245,6 @@ const pageCtx = createPublicPageContext({
 	.drawer li a::after { content: "→"; color: var(--accent-dark); }
 	.drawer-tel { display: flex; flex-direction: column; align-items: center; margin-top: 24px; padding: 12px; border-radius: 16px; background: var(--accent); color: var(--white); font-weight: bold; font-size: 1.3rem; line-height: 1.3; text-decoration: none; }
 	.drawer-tel small { font-size: 0.8rem; }
-
-	/*
-	 * 電話ボタンはスマホだけ（佐藤さんの決定 2026-11-06。部品は components/CallButton.astro）。
-	 * 「スマホ」= 指で触る画面（hover: none かつ pointer: coarse）で、かつ小さい画面
-	 * （縦向きで幅 599px 以下、または横向きで高さ 499px 以下）。
-	 * パソコン（マウス）は窓を狭くしてもスマホ扱いしない。タブレット（iPad など）は画面が大きいのでスマホ扱いしない。
-	 * 下の2つのメディアクエリは互いにちょうど裏返し（どの端末でも片方だけが効く）。
-	 */
-	@media (hover: none) and (pointer: coarse) and (max-width: 599px), (hover: none) and (pointer: coarse) and (max-height: 499px) {
-		:root .not-phone { display: none !important; }
-	}
-	@media (hover: hover), (pointer: fine), (pointer: none), (min-width: 600px) and (min-height: 500px) {
-		:root .only-phone { display: none !important; }
-	}
-	/* パソコン用: 番号は見せるだけ（押せない）、押すのは下の白いメールボタン */
-	.cb-pc { cursor: default; }
-	.cb-pc .cb-num { font-size: 1em; letter-spacing: 0.06em; }
-	.cb-pc .cb-mail { display: flex; white-space: nowrap; align-items: center; justify-content: center; gap: 6px; align-self: stretch; margin-top: 8px; padding: 8px 12px; border-radius: 999px; background: var(--white); color: var(--color-orange-dark); font-size: 0.95rem; font-weight: bold; line-height: 1.4; letter-spacing: 0.04em; text-decoration: none; }
-	.cb-pc .cb-mail:hover { background: var(--color-orange-soft); }
-	.cb-pc .cb-mail svg { width: 1.3em; height: 1.3em; flex: none; fill: currentColor; }
 
 	.site-footer { margin-top: 80px; padding: 48px 0 40px; background: var(--color-brown-dark); color: var(--gray-200); font-size: 0.9rem; border-radius: 48px 48px 0 0; }
 	.site-footer a { color: var(--white); }
