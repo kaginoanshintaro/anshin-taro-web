@@ -1,0 +1,71 @@
+---
+// 鍵屋さんを呼ぶ前に 必ずチェックしたい5つのポイント（新しいページ。トップのバナーの行き先、2026-11-06 佐藤さん）。
+// 中身は今の WordPress のトップページにある同じ見出しの文（src/data/check-points.ts）。
+// 形は利用規約・プライバシーポリシーと同じ（細い帯＋左の追従目次＋右の白カード）。CSS も privacy.css を使う。
+import Base from "../layouts/Base.astro";
+import { checkTitle, checkIntro, checkPoints } from "../data/check-points";
+import "../styles/privacy.css";
+---
+
+<Base title={checkTitle}>
+	<div class="privacy-page check-page">
+		<header class="pv-head">
+			<div class="wrap">
+				<h1>{checkTitle}</h1>
+				<nav class="pv-crumb" aria-label="現在地"><a href="/">ホーム</a><span aria-hidden="true">›</span>5つのポイント</nav>
+			</div>
+		</header>
+
+		<div class="wrap pv-layout">
+			<aside class="pv-side">
+				<nav aria-label="項目">
+					<details class="pv-toc" open>
+						<summary class="pv-toc-title">目次</summary>
+						<ol>
+							{checkPoints.map((s) => <li><a href={`#${s.id}`}>{s.title.replace(/^その[０-９\d]、/, "")}</a></li>)}
+						</ol>
+					</details>
+				</nav>
+			</aside>
+
+			<article class="pv-card">
+				<div class="tm-intro">
+					<p set:html={checkIntro} />
+				</div>
+				{checkPoints.map((s) => (
+					<section id={s.id}>
+						<h2>{s.title}</h2>
+						<Fragment set:html={s.html} />
+					</section>
+				))}
+			</article>
+		</div>
+
+		<div class="pv-cta">
+			<a class="pv-cta-home" href="/">ホームに戻る</a>
+		</div>
+	</div>
+</Base>
+
+<style is:global>
+	/* 今のサイトの黄色いマーカーと画像 */
+	.check-page mark { background: linear-gradient(transparent 55%, #fff27a 55%); color: inherit; padding: 0 1px; }
+	.check-page .pv-card figure { margin: 0 0 1.2em; }
+	.check-page .pv-card figure img { display: block; width: 100%; max-width: 600px; height: auto; border-radius: 12px; }
+</style>
+
+<script>
+	// スマホでは目次を閉じた状態から始め、項目を押したら閉じる。パソコンは開いたまま（利用規約と同じ）
+	const toc = document.querySelector<HTMLDetailsElement>(".pv-toc");
+	const phone = window.matchMedia("(max-width: 767px)");
+	if (toc) {
+		toc.open = !phone.matches;
+		phone.addEventListener("change", () => (toc.open = !phone.matches));
+		toc.querySelector("summary")?.addEventListener("click", (e) => {
+			if (!phone.matches) e.preventDefault();
+		});
+		toc.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => {
+			if (phone.matches) toc.open = false;
+		}));
+	}
+</script>
