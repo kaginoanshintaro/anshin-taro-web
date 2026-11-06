@@ -16,7 +16,7 @@ interface Props {
 	lead: string;
 	mailLead?: string;
 }
-const { class: cls, lead, mailLead = "メールで見積もり・お問い合わせ" } = Astro.props;
+const { class: cls, lead, mailLead = "メールで見積もり" } = Astro.props;
 ---
 <a class:list={[cls, "only-phone"]} href={site.tel.href}><small>{lead}</small>{site.tel.label}</a>
 <div class:list={[cls, "cb-pc", "not-phone"]}>
