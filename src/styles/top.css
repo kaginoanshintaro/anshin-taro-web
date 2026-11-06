@@ -406,3 +406,16 @@
 .fa-sp .page2 { overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
 /* 入力欄の下にあった注意書きは、名前の帯の3行目にまとめる（2026-10-27 佐藤さん） */
 .fa .chat-warn { margin-top: 2px; color: var(--color-brown); font-weight: 700; }
+/* サービス3ボタンをもっとボタンらしく: 太いオレンジ枠＋下に濃い影（押すと沈む）、文字はできるだけ大きく（2026-11-06 佐藤さん） */
+.fa-pc .svc-row a {
+	border: 5px solid #D85D0F; border-radius: 18px; gap: 4px; padding: 0 2px;
+	box-shadow: 0 6px 0 #9c420a, 0 10px 18px rgb(0 0 0 / 0.3);
+	transition: transform 0.1s, box-shadow 0.1s;
+}
+.fa-pc .svc-row a:hover { transform: translateY(-2px); box-shadow: 0 8px 0 #9c420a, 0 12px 20px rgb(0 0 0 / 0.3); }
+.fa-pc .svc-row a:active { transform: translateY(5px); box-shadow: 0 1px 0 #9c420a, 0 3px 8px rgb(0 0 0 / 0.3); }
+.fa-pc .svc-row img { width: 40px; height: 40px; }
+/* 「鍵の修理・交換」は7文字あるので真ん中だけ少し広くして、3つとも同じ大きさの文字にする */
+.fa-pc .svc-row { grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr) minmax(0, 1fr); gap: 10px; }
+.fa-pc .svc-row b { font-size: 1.5rem; line-height: 1.15; white-space: nowrap; letter-spacing: -0.02em; }
+.fa-pc .svc-row b wbr { display: none; }
