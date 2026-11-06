@@ -140,7 +140,7 @@ const dateFormat = new Intl.DateTimeFormat("ja-JP", {
 					<a class="bank-banner" href="#"><img loading="lazy" decoding="async" src="/images/top/line-v3-600.webp" srcset="/images/top/line-v3-600.webp 600w, /images/top/line-v3-1200.webp 1200w" sizes="600px" width="1200" height="379" alt="LINE 公式アカウント 友だち追加で10%オフクーポン" /></a>
 					<div class="small-row">
 						<a class="panel banner" href="#" style="background:#f5ff93"><img loading="lazy" decoding="async" src="/images/top/takagaku.webp" alt="高額請求にご注意" /></a>
-						<div class="panel"><img loading="lazy" decoding="async" src="/images/top/sa2.webp" alt="SECURITY ACTION 二つ星" /></div>
+						<button class="panel prof-btn-pc" type="button" aria-label="佐藤のプロフィールを見る"><span aria-hidden="true">佐</span></button>
 						<a class="panel insta" href="#" aria-label="佐藤の Instagram"><svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="ig" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#f9a23b"/><stop offset=".45" stop-color="#e1306c"/><stop offset="1" stop-color="#7a3cc4"/></linearGradient></defs><rect x="2" y="2" width="60" height="60" rx="16" fill="url(#ig)"/><rect x="14" y="14" width="36" height="36" rx="11" fill="none" stroke="#fff" stroke-width="4"/><circle cx="32" cy="32" r="8.5" fill="none" stroke="#fff" stroke-width="4"/><circle cx="43" cy="21" r="2.6" fill="#fff"/></svg></a>
 					</div>
 					<a class="bank-banner" href="/tipshints/"><img loading="lazy" decoding="async" src="/images/top/otasuke-v2-600.webp" srcset="/images/top/otasuke-v2-600.webp 600w, /images/top/otasuke-v2-1200.webp 1200w" sizes="600px" width="1200" height="442" alt="お役立ち情報 鍵の技術・防犯・コラムの一覧" /></a>
@@ -234,16 +234,16 @@ const dateFormat = new Intl.DateTimeFormat("ja-JP", {
 				<span class="cap"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></span>
 				<span class="num">1 / 2</span>
 			</button>
-			<div class="prof" role="dialog" aria-label="佐藤のプロフィール">
-				<div class="prof-card">
-					<button class="close" type="button" aria-label="閉じる">×</button>
-					<img decoding="async" src="/images/top/sato.webp" alt="代表の佐藤" />
-					<h2>代表　佐藤 翔平</h2>
-					<p class="kana">さとう しょうへい</p>
-					<dl><dt>会社</dt><dd>カギの安心太郎株式会社</dd><dt>創業</dt><dd>2024年1月1日</dd><dt>従業員</dt><dd>1人（一人社長の鍵屋さん）</dd></dl>
-					<p>弊社では従業員を置かず代表の私、佐藤が直接電話応対から作業までを一手に担います。</p>
-					<a class="to-profile" href="/profile/">会社概要・アクセスを見る →</a>
-				</div>
+		</div>
+		<div class="prof" role="dialog" aria-label="佐藤のプロフィール">
+			<div class="prof-card">
+				<button class="close" type="button" aria-label="閉じる">×</button>
+				<img decoding="async" src="/images/top/sato.webp" alt="代表の佐藤" />
+				<h2>代表　佐藤 翔平</h2>
+				<p class="kana">さとう しょうへい</p>
+				<dl><dt>会社</dt><dd>カギの安心太郎株式会社</dd><dt>創業</dt><dd>2024年1月1日</dd><dt>従業員</dt><dd>1人（一人社長の鍵屋さん）</dd></dl>
+				<p>弊社では従業員を置かず代表の私、佐藤が直接電話応対から作業までを一手に担います。</p>
+				<a class="to-profile" href="/profile/">会社概要・アクセスを見る →</a>
 			</div>
 		</div>
 	</section>
@@ -262,8 +262,12 @@ const dateFormat = new Intl.DateTimeFormat("ja-JP", {
 		// 止まったときに少し揺らして「カチッ」と噛み合った感じにする
 		track.addEventListener("transitionend", () => { track.parentElement.classList.remove("clunk"); void track.offsetWidth; track.parentElement.classList.add("clunk"); });
 		// 佐藤のプロフィールの小窓
-		sp.querySelector(".prof-btn").addEventListener("click", () => document.body.classList.add("prof-open"));
-		sp.querySelector(".prof .close").addEventListener("click", () => document.body.classList.remove("prof-open"));
+		// （パソコンの丸い「佐」ボタンも同じ小窓を開く。外側を押しても閉じる）
+		const prof = document.querySelector(".fa .prof");
+		document.querySelectorAll(".prof-btn, .prof-btn-pc").forEach((b) => b.addEventListener("click", () => document.body.classList.add("prof-open")));
+		prof.querySelector(".close").addEventListener("click", () => document.body.classList.remove("prof-open"));
+		prof.addEventListener("click", (e) => { if (e.target === prof) document.body.classList.remove("prof-open"); });
+		document.addEventListener("keydown", (e) => { if (e.key === "Escape") document.body.classList.remove("prof-open"); });
 	})();
 
 	// パソコン: 見本は 1440×900 の画面（ヘッダーの下 808px）で作ったので、ブラウザの表示の高さがそれより低いときは
