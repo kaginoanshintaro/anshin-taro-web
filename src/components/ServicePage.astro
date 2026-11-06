@@ -1,0 +1,149 @@
+---
+// サービス紹介の固定ページ（/lock-opening/ /repair/ /duplicate/）の共通の形。
+// 料金ページ（price.astro）と同じ見た目: 細いタイトルの帯、左に付いてくるメニューと電話、右に種類ごとのカード。
+// 一番下に、ほかのサービス（トップのボタンと同じ絵）とホーム・料金一覧へのボタン。
+// 文と金額は src/data/services.ts。
+import Base from "../layouts/Base.astro";
+import { site } from "../site";
+import { servicePages, type ServicePageData } from "../data/services";
+import "../styles/price.css";
+import "../styles/service.css";
+
+interface Props {
+	page: ServicePageData;
+}
+const { page } = Astro.props;
+const others = servicePages.filter((p) => p.slug !== page.slug);
+
+// 料金表の名前の（ ）の部分は小さく出して、1行に収まりやすくする（料金ページと同じ）
+const splitParen = (name: string) => name.split(/(（[^）]*）)/).filter(Boolean);
+// 文の中の **太字** と [[文字|/リンク先/]] を分ける
+type Piece = { text: string; bold?: boolean; href?: string };
+const pieces = (s: string): Piece[] =>
+	s
+		.split(/(\*\*[^*]+\*\*|\[\[[^\]]+\]\])/)
+		.filter(Boolean)
+		.map((t) => {
+			if (t.startsWith("**")) return { text: t.slice(2, -2), bold: true };
+			if (t.startsWith("[[")) {
+				const [text, href] = t.slice(2, -2).split("|");
+				return { text, href };
+			}
+			return { text: t };
+		});
+---
+
+<Base title={page.title} description={page.description}>
+	<link slot="head" rel="preload" href="/fonts/service-headings.woff2" as="font" type="font/woff2" crossorigin />
+	<div class="svc-page">
+		<header class="pp-head">
+			<div class="wrap">
+				<h1>{page.title}</h1>
+				<nav class="pp-crumb" aria-label="現在地"><a href="/">ホーム</a><span aria-hidden="true">›</span>{page.title}</nav>
+			</div>
+		</header>
+
+		<div class="wrap pp-layout">
+			<aside class="pp-side">
+				<nav class="pp-toc" aria-label="このページの内容">
+					<p class="pp-toc-title">このページの内容</p>
+					<ol>
+						{page.sections.map((s) => <li><a href={`#${s.id}`}>{s.short}</a></li>)}
+						{page.immobilizerCheck && <li class="pp-toc-sub"><a href="#immobilizer-check">イモビライザー搭載車の見分け方</a></li>}
+					</ol>
+				</nav>
+				<a class="pp-tel" href={site.tel.href}><small>電話で見積もり</small>{site.tel.label}</a>
+				<a class="sv-price-link" href="/price/">料金一覧を見る<span aria-hidden="true">›</span></a>
+			</aside>
+
+			<div class="pp-main">
+				{page.sections.map((s, i) => (
+					<section class="pp-card" id={s.id}>
+						<h2>{s.title}</h2>
+						<div class="pp-intro">
+							<img src={s.image.src} width={s.image.width} height={s.image.height} alt="" loading={i === 0 ? "eager" : "lazy"} fetchpriority={i === 0 ? "high" : undefined} decoding="async" />
+							<div class="pp-body">
+								{s.body.map((p) => (
+									<p>{pieces(p).map((x) => (x.href ? <a href={x.href}>{x.text}</a> : x.bold ? <strong>{x.text}</strong> : x.text))}</p>
+								))}
+							</div>
+						</div>
+						<div class:list={["pp-table-wrap", { "has-photo": s.photo }]}>
+							<div>
+								{s.tableTitle && <p class="pp-table-title">{s.tableTitle}</p>}
+								<dl class="pp-table">
+									{s.rows.map((r) => (
+										<div>
+											<dt>{splitParen(r.name).map((t, j, all) => (t.startsWith("（") ? <span class:list={["paren", { tail: j === all.length - 1 }]}>{t}</span> : t))}</dt>
+											<dd>{r.price}{r.note && <small>※</small>}</dd>
+										</div>
+									))}
+								</dl>
+								{[...new Set(s.rows.map((r) => r.note).filter(Boolean))].map((n) => <p class="pp-table-note">{n}</p>)}
+							</div>
+							{s.photo && (
+								<figure class="pp-photo">
+									<img src={s.photo.src} width="400" height="400" alt={s.photo.alt} loading="lazy" decoding="async" />
+									<figcaption>{s.photo.alt}</figcaption>
+								</figure>
+							)}
+						</div>
+					</section>
+				))}
+
+				{page.immobilizerCheck && (
+					<section class="pp-card pp-talk" id="immobilizer-check">
+						<h2 class="sv-talk-title">イモビライザー搭載車の見分け方</h2>
+						<div class="talk taro"><img src="/images/price/taro-teacher-face.webp" width="160" height="160" alt="安心太郎ちゃん" loading="lazy" /><p><strong>イモビライザー搭載車の見分け方について解説するよ</strong></p></div>
+
+						<h3>１、メーターパネルの警告灯で確認</h3>
+						<div class="talk baby"><img src="/images/top/baby-face.webp" width="160" height="160" alt="カギベイビー" loading="lazy" /><p><strong>これらの表示があればイモビライザーシステム搭載だね</strong></p></div>
+						<div class="pp-lamps">
+							<img src="/images/price/warn1.webp" width="218" height="100" alt="IMMOBILIZER の警告灯" loading="lazy" />
+							<img src="/images/price/warn2.webp" width="132" height="116" alt="錠前の形の警告灯" loading="lazy" />
+							<img src="/images/price/warn3.webp" width="226" height="138" alt="車と鍵の形の警告灯" loading="lazy" />
+							<img src="/images/price/warn4.webp" width="214" height="152" alt="SECURITY の警告灯" loading="lazy" />
+						</div>
+
+						<h3>2. 鍵自体を確認する</h3>
+						<ul class="pp-check">
+							<li>グリップ部分が<strong>厚め・プラスチック製</strong><span>→</span>イモビ内蔵の可能性あり</li>
+							<li>金属のみのシンプルな鍵<span>→</span>イモビなし</li>
+							<li>スマートキー<span>→</span>ほぼイモビあり</li>
+						</ul>
+						<div class="talk baby"><img src="/images/top/baby-face.webp" width="160" height="160" alt="カギベイビー" loading="lazy" /><p>見た目だけでの判断はちょっと難しいかもね〜</p></div>
+
+						<h3>3. 年式・車種で判断する</h3>
+						<table class="pp-year">
+							<tr><th>国産車</th><td>2000年代以降はほぼ標準搭載</td></tr>
+							<tr><th>輸入車</th><td>1990年代後半から搭載モデルあり</td></tr>
+							<tr><th>軽トラ・旧車・商用車</th><td>ほぼ搭載されていない（新車や上位グレードは要注意）</td></tr>
+						</table>
+						<div class="talk baby"><img src="/images/top/baby-face.webp" width="160" height="160" alt="カギベイビー" loading="lazy" /><p>最近の車はほぼイモビライザー搭載なんだね！</p></div>
+
+						<h3>4. 車検証・取扱説明書で確認</h3>
+						<ul class="pp-check">
+							<li>車検証または取説に「イモビライザー」「盗難防止装置」の記載があれば搭載あり　※表記がない場合もあり</li>
+						</ul>
+						<div class="talk baby"><img src="/images/top/baby-face.webp" width="160" height="160" alt="カギベイビー" loading="lazy" /><p>字を読むのがめんどくさい時ってあるよね〜！</p></div>
+						<div class="talk taro"><img src="/images/price/taro-teacher-face.webp" width="160" height="160" alt="安心太郎ちゃん" loading="lazy" /><p>総括すると少し年式の古い車か商用車、トラックなどはイモビライザー搭載車は少ない印象だね！</p></div>
+					</section>
+				)}
+
+				<!-- ほかのサービス（トップの「サービス紹介」のボタンと同じ絵） -->
+				<section class="sv-others" aria-labelledby="sv-others-title">
+					<h2 id="sv-others-title">ほかのサービス</h2>
+					<ul>
+						{others.map((o) => (
+							<li><a href={`/${o.slug}/`}><img src={o.icon} width="160" height="160" alt="" loading="lazy" decoding="async" /><b>{o.label}</b></a></li>
+						))}
+					</ul>
+				</section>
+
+				<div class="pp-cta">
+					<a class="pp-cta-home" href="/">ホームに戻る</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</Base>
