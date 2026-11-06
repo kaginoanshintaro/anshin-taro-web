@@ -28,7 +28,7 @@
 .ex-toc-num { flex: none; padding-top: 0.9em; color: var(--accent); font-size: 0.8rem; }
 .ex-tel { display: flex; flex-direction: column; align-items: center; padding: 12px; border-radius: 16px; background: var(--accent); color: var(--white); font-weight: bold; font-size: 1.3rem; line-height: 1.35; text-decoration: none; }
 .ex-tel small { font-size: 0.8rem; }
-a.ex-tel:hover { background: var(--accent-dark); }
+.ex-tel:hover { background: var(--accent-dark); }
 
 .ex-main { display: grid; gap: 32px; min-width: 0; }
 
