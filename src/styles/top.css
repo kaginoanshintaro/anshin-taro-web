@@ -384,12 +384,12 @@
 .fa-pc .svc-row svg { width: 38px; height: 38px; stroke: currentColor; stroke-width: 1.9; fill: none; stroke-linecap: round; stroke-linejoin: round; }
 .fa-pc .svc-row b { font-size: 0.95rem; }
 .fa-pc .svc-row img { width: 46px; height: 46px; object-fit: contain; }
-/* 会社情報は佐藤さんの木の枠（鍵の飾り付き、2026-10-25）。正方形の元画像から横長に組み直した frame-company.webp を枠に使う */
+/* 会社情報の木の枠をやめて、無地のクリーム色の窓に（2026-11-06 佐藤さん）。大きさは枠があったときと同じ */
 .fa-pc .panel.company {
-	background: none !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; box-shadow: none !important;
-	border: 22px solid transparent; border-radius: 0; border-image: url("/images/top/frame-company.webp") 44 fill / 22px stretch;
-	padding: 2px 14px; filter: drop-shadow(0 4px 10px rgb(0 0 0 / 0.3));
-	color: #3d2716;
+	border: none; border-image: none; border-radius: 18px;
+	background: var(--color-cream) !important; padding: 24px 36px;
+	filter: none; box-shadow: 0 6px 20px rgb(0 0 0 / 0.25) !important;
+	backdrop-filter: none !important; -webkit-backdrop-filter: none !important; color: #3d2716;
 }
 .fa-pc .company a { color: #6b4429; }
 /* サービス3ボタン: ジェミーの画像に合わせたオレンジの角丸枠（2026-10-26 佐藤さん） */
