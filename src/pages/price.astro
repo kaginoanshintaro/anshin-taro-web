@@ -4,7 +4,7 @@
 // パソコン版: 左に料金メニュー（スクロールしても付いてくる）、右に種類ごとのカード。
 import Base from "../layouts/Base.astro";
 import { site } from "../site";
-import { priceNotes, priceSections } from "../data/price";
+import { paymentMethods, priceNotes, priceSections } from "../data/price";
 import "../styles/price.css";
 
 // 料金表の名前の（ ）の部分は小さく出して、1行に収まりやすくする
@@ -43,6 +43,25 @@ const splitParen = (name: string) => name.split(/(（[^）]*）)/).filter(Boolea
 						<dl>
 							{priceNotes.cancelFees.map((f) => <div><dt>{f.label}</dt><dd>{f.price}</dd></div>)}
 						</dl>
+					</div>
+				</section>
+
+				<!-- お支払い方法（AirPay の加盟店ページで確かめたものだけ。src/data/price.ts） -->
+				<section class="pp-pay" id="payment" aria-labelledby="pp-pay-title">
+					<h2 id="pp-pay-title">お支払い方法</h2>
+					<div class="pp-pay-groups">
+						<div class="pp-pay-group">
+							<p class="pp-pay-label is-now">ご利用いただけます</p>
+							{paymentMethods.available.map((g) => (
+								<div class="pp-pay-row"><span class="pp-pay-kind">{g.group}</span><ul>{g.brands.map((b) => <li>{b}</li>)}</ul></div>
+							))}
+						</div>
+						<div class="pp-pay-group">
+							<p class="pp-pay-label is-soon">近日対応予定</p>
+							{paymentMethods.soon.map((g) => (
+								<div class="pp-pay-row"><span class="pp-pay-kind">{g.group}</span><ul>{g.brands.map((b) => <li>{b}</li>)}</ul></div>
+							))}
+						</div>
 					</div>
 				</section>
 
