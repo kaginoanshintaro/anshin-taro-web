@@ -64,7 +64,7 @@
 /* お支払い方法（AirPay で使えるもの。2026-11-07） */
 .pp-pay { scroll-margin-top: calc(var(--header-h) + 20px); padding: 22px 24px 24px; border-radius: var(--radius); background: var(--white); border: 1px solid var(--line); }
 .pp-pay h2 { margin: 0 0 14px; padding-left: 14px; border-left: 5px solid var(--accent); font-size: 1.2rem; line-height: 1.5; color: var(--heading); letter-spacing: 0.06em; }
-.pp-pay-groups { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 28px; }
+.pp-pay-groups { display: grid; gap: 18px; }
 .pp-pay-label { display: inline-block; margin: 0 0 8px; padding: 2px 12px; border-radius: 999px; font-size: 0.78rem; font-weight: bold; line-height: 1.7; }
 .pp-pay-label.is-now { background: var(--accent); color: var(--white); }
 .pp-pay-label.is-soon { background: var(--gray-100); color: var(--gray-700); border: 1px solid var(--gray-200); }
@@ -72,9 +72,6 @@
 .pp-pay-kind { flex: none; min-width: 8.5em; white-space: nowrap; font-size: 0.82rem; font-weight: bold; color: var(--heading); }
 .pp-pay-row ul { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
 .pp-pay-row li { padding: 2px 10px; border: 1px solid var(--gray-200); border-radius: 8px; background: var(--color-cream); font-size: 0.85rem; line-height: 1.6; white-space: nowrap; }
-@media (max-width: 1023px) {
-	.pp-pay-groups { grid-template-columns: 1fr; }
-}
 @media (max-width: 767px) {
 	.pp-pay { padding: 18px 16px 18px; border-radius: 16px; }
 	.pp-pay h2 { padding-left: 12px; border-left-width: 4px; font-size: 1.05rem; }
