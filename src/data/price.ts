@@ -38,7 +38,7 @@ export const priceNotes = {
 	] as { strong: string; rest: string; strong2?: string; tail?: string }[],
 	cancelFees: [
 		{ label: "日中（8:00〜20:00）", price: "5,500円" },
-		{ label: "夜間早朝（20:00〜8:00）", price: "8,800円" },
+		{ label: "深夜早朝（20:00〜8:00）", price: "8,800円" },
 	],
 };
 
@@ -56,7 +56,7 @@ export const priceSections: PriceSection[] = [
 		],
 		rows: [
 			{ name: "標準的なセキュリティーキーの玄関開錠", price: "15,400円" },
-			{ name: "カードキーなどの電子錠タイプの玄関開錠", price: "17,600円" },
+			{ name: "カードキーなどの電子錠タイプの玄関開錠", price: "22,000円" },
 			{ name: "スイッチ式ツマミ（防犯サムターン）の玄関開錠", price: "22,000円" },
 			{ name: "破壊開錠（防犯性能により異なる）", price: "22,000 〜 33,000円" },
 		],
@@ -87,7 +87,7 @@ export const priceSections: PriceSection[] = [
 		],
 		rows: [
 			{ name: "手提げ金庫の開錠（ダイヤルのみ、または鍵とダイヤル式）", price: "8,800円〜11,000円" },
-			{ name: "家庭用耐火金庫の破壊開錠", price: "18,700円" },
+			{ name: "家庭用耐火金庫の破壊開錠", price: "15,400円" },
 			{ name: "非破壊開錠", price: "要お見積もり" },
 		],
 	},
