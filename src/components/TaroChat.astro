@@ -6,7 +6,7 @@
  * JS で入れる日本語でも単語の途中で改行されない（src/utils/phrase-break.ts）。
  * 入力欄の文字はどこにも送らない。ブラウザの中で質問のキーワードを探すだけ。
  */
-import { taroGreeting, taroMenu, taroNoMatch, taroQA } from "../data/taro-chat";
+import { taroGreeting, taroMenu, taroNoMatch, taroOtherFaces, taroQA } from "../data/taro-chat";
 import "../styles/taro-chat.css";
 
 interface Props {
@@ -22,10 +22,10 @@ const toHtml = (p: string) =>
 		return `<a class="qa-link" href="${href}"${ext}>${text}</a>`;
 	});
 const isLinks = (p: string) => /^(\s*\[\[.+?\]\]\s*)+$/.test(p);
-const qaJson = JSON.stringify(taroQA.map(({ id, q, next, words }) => ({ id, q, next: next ?? null, words })));
+const qaJson = JSON.stringify(taroQA.map(({ id, q, next, words, face }) => ({ id, q, next: next ?? null, words, face })));
 ---
 
-<section class="panel chat taro-chat" data-menu={taroMenu.join(" ")} data-qa={qaJson} aria-label="安心太郎ちゃんに質問する">
+<section class="panel chat taro-chat" data-menu={taroMenu.join(" ")} data-qa={qaJson} data-faces={JSON.stringify(taroOtherFaces)} aria-label="安心太郎ちゃんに質問する">
 	{variant === "pc" ? (
 		<div class="chat-head-label">
 			<p class="chat-name">安心太郎ちゃん</p>
@@ -37,7 +37,7 @@ const qaJson = JSON.stringify(taroQA.map(({ id, q, next, words }) => ({ id, q, n
 		</div>
 	)}
 	<div class="chat-body">
-		<img loading={variant === "pc" ? "lazy" : undefined} decoding="async" class="taro" src="/images/top/taro-full.webp" alt="安心太郎ちゃん" />
+		<img loading={variant === "pc" ? "lazy" : undefined} decoding="async" class="taro" src="/images/top/taro-walk.webp" width="624" height="1000" alt="安心太郎ちゃん" />
 		<div class="msgs" aria-live="polite">
 			<div class="msg bot"><div class="bubble">{taroGreeting}</div></div>
 		</div>
@@ -66,7 +66,29 @@ const qaJson = JSON.stringify(taroQA.map(({ id, q, next, words }) => ({ id, q, n
 		const chips = chat.querySelector<HTMLElement>(".chips")!;
 		const form = chat.querySelector<HTMLFormElement>(".input")!;
 		const store = chat.querySelector<HTMLElement>(".qa-store")!;
-		const qa: { id: string; q: string; next: string[] | null; words: string[] }[] = JSON.parse(chat.dataset.qa!);
+		const qa: { id: string; q: string; next: string[] | null; words: string[]; face: string }[] = JSON.parse(chat.dataset.qa!);
+		const otherFaces: Record<string, string> = JSON.parse(chat.dataset.faces!);
+		const taro = chat.querySelector<HTMLImageElement>(".taro")!;
+		// 表情の絵は、チャットに触れたときに先に読み込んでおく（ページを開いたときの表示を遅くしないため）
+		let preloaded = false;
+		const preload = () => {
+			if (preloaded) return;
+			preloaded = true;
+			new Set([...qa.map((x) => x.face), ...Object.values(otherFaces)]).forEach((f) => { new Image().src = `/images/top/taro-${f}.webp`; });
+		};
+		chat.addEventListener("pointerenter", preload, { once: true });
+		chat.addEventListener("touchstart", preload, { once: true, passive: true });
+		chat.addEventListener("focusin", preload, { once: true });
+		// 答えに合わせて太郎ちゃんの表情を替える（絵はどれも同じ大きさ・同じ足元の位置）
+		const setFace = (face: string | undefined) => {
+			if (!face) return;
+			const src = `/images/top/taro-${face}.webp`;
+			if (taro.getAttribute("src") === src) return;
+			taro.src = src;
+			taro.classList.remove("face-pop");
+			void taro.offsetWidth;
+			taro.classList.add("face-pop");
+		};
 		const menu = chat.dataset.menu!.split(" ");
 		const byId = new Map(qa.map((x) => [x.id, x]));
 
@@ -91,6 +113,7 @@ const qaJson = JSON.stringify(taroQA.map(({ id, q, next, words }) => ({ id, q, n
 		const answer = (key: string) => {
 			const src = store.querySelector(`[data-a="${key}"]`);
 			if (src) add("bot", fragment(src));
+			setFace(byId.get(key)?.face ?? otherFaces[key]);
 		};
 		const fragment = (src: Element) => {
 			const f = document.createDocumentFragment();
@@ -113,7 +136,7 @@ const qaJson = JSON.stringify(taroQA.map(({ id, q, next, words }) => ({ id, q, n
 			return b;
 		};
 		// 太郎ちゃんのパトロールのあいさつは、質問が始まったら止める（index.astro）
-		const started = () => chat.classList.add("qa-started");
+		const started = () => { chat.classList.add("qa-started"); chat.classList.remove("walking"); };
 
 		chips.addEventListener("click", (e) => {
 			const b = (e.target as Element).closest<HTMLButtonElement>("button[data-q]");

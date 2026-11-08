@@ -10,9 +10,17 @@
  *   a     … 答えの吹き出し。配列の1つが1段落。[[文字|/path/]] はリンクのボタンになる。
  *   next  … 答えのあとに出す次の質問（id）。無ければ最初の質問一覧に戻る。
  *   words … 入力欄の文字に、これのどれかが入っていたらこの質問を候補に出す。
+ *   face  … 答えるときの太郎ちゃんの絵（taroFaces の名前）。
  */
 import { paymentMethods, priceNotes, priceSections } from "./price";
 import { site } from "../site";
+
+/**
+ * 太郎ちゃんの絵（public/images/top/taro-<名前>.webp）。佐藤さんが Gemini で作った表情（2026-11-08）を、
+ * 背景を抜いて 624×1000 の同じ大きさ・同じ足元の位置にそろえたもの。walk は質問の前のパトロール中。
+ */
+export const taroFaces = ["walk", "hello", "point", "salute", "serious", "key"] as const;
+export type TaroFace = (typeof taroFaces)[number];
 
 export interface TaroQA {
 	id: string;
@@ -21,6 +29,7 @@ export interface TaroQA {
 	a: string[];
 	next?: string[];
 	words: string[];
+	face: TaroFace;
 }
 
 const row = (sectionId: string, name: string) => {
@@ -47,6 +56,7 @@ export const taroMenu = ["price", "area", "car", "duplicate", "stiff", "place", 
 export const taroQA: TaroQA[] = [
 	{
 		id: "price",
+		face: "point",
 		q: "料金を知りたい",
 		words: ["料金", "値段", "いくら", "費用", "金額", "価格", "見積"],
 		a: [
@@ -58,6 +68,7 @@ export const taroQA: TaroQA[] = [
 	},
 	{
 		id: "cancel",
+		face: "point",
 		q: "キャンセル料は？",
 		words: ["キャンセル", "取り消", "やめ"],
 		a: [
@@ -67,6 +78,7 @@ export const taroQA: TaroQA[] = [
 	},
 	{
 		id: "area",
+		face: "salute",
 		q: "対応エリアは？",
 		words: ["エリア", "地域", "場所", "どこまで", "出張", "来て", "熊本", "大分", "別府", "中津", "日田", "佐伯", "臼杵", "津久見", "竹田", "豊後", "杵築", "宇佐", "由布", "国東", "日出", "九重", "玖珠", "阿蘇"],
 		a: [
@@ -77,6 +89,7 @@ export const taroQA: TaroQA[] = [
 	},
 	{
 		id: "car",
+		face: "salute",
 		q: "車の鍵をなくした",
 		words: ["車", "自動車", "バイク", "スマートキー", "イモビ", "インロック", "閉じ込"],
 		a: [
@@ -89,6 +102,7 @@ export const taroQA: TaroQA[] = [
 	},
 	{
 		id: "duplicate",
+		face: "key",
 		q: "合鍵を作りたい",
 		words: ["合鍵", "スペア", "コピー", "複製", "ディンプル"],
 		a: [
@@ -100,6 +114,7 @@ export const taroQA: TaroQA[] = [
 	},
 	{
 		id: "stiff",
+		face: "point",
 		q: "鍵が回りにくい",
 		words: ["回りにく", "回らな", "かたい", "固い", "硬い", "引っかか", "折れ", "壊れ", "修理", "交換"],
 		a: [
@@ -111,6 +126,7 @@ export const taroQA: TaroQA[] = [
 	},
 	{
 		id: "place",
+		face: "hello",
 		q: "お店の場所",
 		words: ["住所", "店", "場所", "アクセス", "地図", "どこ"],
 		a: [
@@ -120,6 +136,7 @@ export const taroQA: TaroQA[] = [
 	},
 	{
 		id: "pay",
+		face: "point",
 		q: "支払い方法は？",
 		words: ["支払", "カード", "クレジット", "電子マネー", "決済", "払"],
 		a: [`クレジットカードは${cards}が使えるよ。${soon}は、いま使えるように準備しているところだよ。`, "[[料金ページの支払い方法を見る|/price/#payment]]"],
@@ -127,6 +144,7 @@ export const taroQA: TaroQA[] = [
 	},
 	{
 		id: "hurry",
+		face: "salute",
 		q: "すぐ来てほしい",
 		words: ["すぐ", "急ぎ", "今から", "至急", "依頼", "頼み", "電話", "連絡", "LINE", "ライン", "相談"],
 		a: [
@@ -137,11 +155,15 @@ export const taroQA: TaroQA[] = [
 	},
 	{
 		id: "choose",
+		face: "serious",
 		q: "鍵屋さん選びの注意",
 		words: ["高額", "ぼったくり", "注意", "選び", "悪徳", "詐欺"],
 		a: ["鍵屋さんを呼ぶ前に、ぜひチェックしてほしいポイントをまとめたよ。", "[[5つのポイントを見る|/check-points/]]"],
 	},
 ];
+
+/** 質問の答え以外の吹き出しのときの絵 */
+export const taroOtherFaces: Record<string, TaroFace> = { nomatch: "serious", found: "point", menu: "hello" };
 
 /** どの質問にも当てはまらない文字が入力されたとき */
 export const taroNoMatch = "ごめんね、その質問にはまだ答えられないよ。下のボタンからえらぶか、電話かLINEで佐藤に聞いてね。";

@@ -45,3 +45,8 @@
 /* スマホは画面が狭いので、質問が始まったら太郎ちゃんを小さくして吹き出しの幅を広げる */
 .fa-sp .taro-chat.qa-started .chat-body { grid-template-columns: 84px 1fr; }
 .fa-sp .taro-chat.qa-started .taro { max-width: 84px; height: auto; }
+
+/* 表情が替わるときに、太郎ちゃんが小さく跳ねる */
+.fa .taro-chat .taro.face-pop { animation: taro-pop 0.35s ease-out; }
+@keyframes taro-pop { 0% { transform: translateY(0); } 40% { transform: translateY(-8px); } 100% { transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) { .fa .taro-chat .taro.face-pop { animation: none; } }
