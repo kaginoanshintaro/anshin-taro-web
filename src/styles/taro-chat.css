@@ -1,0 +1,47 @@
+/* 安心太郎ちゃんの Q&A チャット（src/components/TaroChat.astro）。見た目の土台は top.css の .fa .chat。ここは Q&A で足した所だけ */
+
+/* 吹き出しは上へスクロールして読み返せるようにする（top.css では隠すだけだった）。
+   justify-content: flex-end だとスクロールで上まで戻れないので、先頭の吹き出しの上を空けて下に寄せる */
+.fa .taro-chat .msgs {
+	overflow-y: auto; overscroll-behavior: contain; justify-content: flex-start;
+	scrollbar-width: none; padding-top: 24px;
+}
+.fa .taro-chat .msgs::-webkit-scrollbar { display: none; }
+.fa .taro-chat .msgs > :first-child { margin-top: auto; }
+.fa .taro-chat .msg { flex: none; }
+.fa .taro-chat .msg.bot .bubble { background: rgb(255 255 255 / 0.92); box-shadow: 0 2px 8px rgb(0 0 0 / 0.12); }
+.fa .taro-chat .msg.user .bubble { box-shadow: 0 2px 8px rgb(0 0 0 / 0.12); }
+.fa .taro-chat .bubble p { margin: 0; }
+.fa .taro-chat .bubble p + p { margin-top: 6px; }
+
+/* 答えの中のリンクはボタンにする */
+.fa .taro-chat .qa-links { display: flex; flex-wrap: wrap; gap: 6px; }
+.fa .taro-chat .qa-link {
+	display: inline-block; padding: 5px 12px; border-radius: 40px; text-decoration: none;
+	background: var(--color-orange); color: var(--white); font-weight: 700; font-size: 0.85rem;
+}
+.fa .taro-chat .qa-link:hover { background: var(--color-orange-dark); }
+
+/* 質問のボタン（top.css の .chip は span 用なので button の既定の見た目を消す） */
+.fa .taro-chat .chip { font: inherit; font-size: 0.82rem; line-height: 1.5; cursor: pointer; }
+.fa .taro-chat .chip:hover { background: var(--color-orange-soft); }
+.fa .taro-chat .chip-back { border-color: var(--gray-300); color: var(--gray-700); }
+
+/* 入力欄（キーワードで質問をさがす。文字はどこにも送らない） */
+.fa .taro-chat .input input {
+	flex: 1; min-width: 0; border: 0; background: transparent; font: inherit; font-size: 0.88rem; color: var(--gray-900); outline: none;
+}
+.fa .taro-chat .input input::placeholder { color: var(--gray-500); }
+.fa .taro-chat .input:focus-within { border-color: var(--color-orange); }
+.fa .taro-chat .send { border: 0; padding: 0; cursor: pointer; }
+
+/* 画面の低いスマホ: top.css では質問のボタンを隠していたが、Q&A ではボタンが無いと聞けないので、
+   代わりに入力欄を隠す */
+@media (max-height: 700px) {
+	.fa-sp .taro-chat .chips { display: flex; }
+	.fa-sp .taro-chat .input { display: none; }
+}
+
+/* スマホは画面が狭いので、質問が始まったら太郎ちゃんを小さくして吹き出しの幅を広げる */
+.fa-sp .taro-chat.qa-started .chat-body { grid-template-columns: 84px 1fr; }
+.fa-sp .taro-chat.qa-started .taro { max-width: 84px; height: auto; }

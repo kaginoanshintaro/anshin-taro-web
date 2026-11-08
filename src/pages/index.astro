@@ -2,6 +2,7 @@
 import { getEmDashCollection } from "emdash";
 import Base from "../layouts/Base.astro";
 import { site } from "../site";
+import TaroChat from "../components/TaroChat.astro";
 import "../styles/top.css";
 
 const { entries: latest, cacheHint } = await getEmDashCollection("posts", {
@@ -105,28 +106,8 @@ const dateFormat = new Intl.DateTimeFormat("ja-JP", {
 				</div>
 
 				<div class="center">
-					<section class="panel chat">
-						<div class="chat-head-label">
-							<p class="chat-name">安心太郎ちゃん <span class="tag-sample">見本</span></p>
-							<p class="chat-sub">AIエージェント／サイトの案内と質問の受付</p>
-							<p class="chat-sub chat-warn">電話番号やメールアドレスは入力しないでね（送る前にお知らせします）</p>
-						</div>
-						<div class="chat-body">
-							<img loading="lazy" decoding="async" class="taro" src="/images/top/taro-full.webp" alt="安心太郎ちゃん" />
-							<div class="msgs">
-								<div class="msg bot"><div class="bubble">こんにちは、安心太郎だよ！<br />鍵のことやこのサイトのこと、なんでも聞いてね。</div></div>
-								<div class="msg user"><div class="bubble">家の鍵をなくしちゃいました。来てもらえますか？</div></div>
-								<div class="msg bot"><div class="bubble">大分県内なら佐藤が出張するよ。急ぎのときは電話がいちばん早いよ！<br />左のカレンダーで佐藤の空き具合も見られるよ。</div></div>
-							</div>
-						</div>
-						<div class="chips">
-							<span class="chip">料金を知りたい</span>
-							<span class="chip">対応エリアは？</span>
-							<span class="chip">車の鍵も作れる？</span>
-							<span class="chip">会社の場所</span>
-						</div>
-						<div class="input"><span>安心太郎ちゃんに質問する…</span><span class="send" aria-hidden="true"><svg class="padlock" viewBox="0 0 24 24"><path class="shackle" d="M8 11V8a4 4 0 0 1 8 0v3" /><rect x="5.5" y="11" width="13" height="9" rx="2" /><circle class="keyhole" cx="12" cy="15.5" r="1.4" /></svg></span></div>
-					</section>
+					<!-- 安心太郎ちゃんの Q&A チャット（質問と答えは src/data/taro-chat.ts） -->
+					<TaroChat variant="pc" />
 					<section class="panel company" aria-label="会社情報">
 						<p class="co-head"><span>{site.name}</span><span>〒{site.postalCode}</span></p>
 						<p class="co-addr">{site.addressLine}</p>
@@ -159,25 +140,7 @@ const dateFormat = new Intl.DateTimeFormat("ja-JP", {
 			<div class="viewport">
 				<div class="track">
 					<div class="page page1">
-				<section class="panel chat">
-					<div>
-						<p class="chat-name">安心太郎ちゃん <span class="tag-sample">見本</span></p>
-					</div>
-					<div class="chat-body">
-						<img decoding="async" class="taro" src="/images/top/taro-full.webp" alt="安心太郎ちゃん" />
-						<div class="msgs">
-							<div class="msg bot"><div class="bubble">こんにちは、安心太郎だよ！鍵のこと、なんでも聞いてね。</div></div>
-							<div class="msg user"><div class="bubble">家の鍵をなくしちゃいました</div></div>
-							<div class="msg bot"><div class="bubble">大分県内なら佐藤が出張するよ。急ぎなら下の電話からどうぞ！</div></div>
-						</div>
-					</div>
-					<div class="chips">
-						<span class="chip">料金を知りたい</span>
-						<span class="chip">対応エリアは？</span>
-						<span class="chip">車の鍵も作れる？</span>
-					</div>
-					<div class="input"><span>質問する…</span><span class="send" aria-hidden="true"><svg class="padlock" viewBox="0 0 24 24"><path class="shackle" d="M8 11V8a4 4 0 0 1 8 0v3" /><rect x="5.5" y="11" width="13" height="9" rx="2" /><circle class="keyhole" cx="12" cy="15.5" r="1.4" /></svg></span></div>
-				</section>
+				<TaroChat variant="sp" />
 				<a class="panel mini-cal" href="#" aria-label="佐藤の予定（7日分）">
 					<p class="cal-cap"><b>佐藤の予定</b><span><i class="key"></i>予定あり　9時〜18時</span></p>
 					<div class="days"><div class="sat"><span>24<small>土</small></span><i><b style="top:0%;height:25%"></b></i></div><div class="sun"><span>25<small>日</small></span><i></i></div><div class=""><span>26<small>月</small></span><i><b style="top:20%;height:35%"></b><b style="top:70%;height:15%"></b></i></div><div class=""><span>27<small>火</small></span><i><b style="top:35%;height:20%"></b></i></div><div class=""><span>28<small>水</small></span><i><b style="top:0%;height:45%"></b><b style="top:60%;height:35%"></b></i></div><div class=""><span>29<small>木</small></span><i></i></div><div class=""><span>30<small>金</small></span><i><b style="top:50%;height:25%"></b></i></div></div>
@@ -291,9 +254,11 @@ const dateFormat = new Intl.DateTimeFormat("ja-JP", {
 		const msgs = chat.querySelector(".msgs");
 		const hellos = ["こんにちは！今日も街をパトロール中だよ。", "戸締まりはしっかりね！", "鍵のことで困ったら話しかけてね。", "鍵がまわりにくい時は無理しないで相談してね。"];
 		let i = 0;
-		const walk = () => { chat.classList.add("walking"); setTimeout(stop, 9000); };
+		const walk = () => { if (chat.classList.contains("qa-started")) return; chat.classList.add("walking"); setTimeout(stop, 9000); };
 		const stop = () => {
 			chat.classList.remove("walking");
+			// 質問のボタンが押されたら、あいさつは出さずに立ち止まったままにする（Q&A の答えを流さないため）
+			if (chat.classList.contains("qa-started")) return;
 			const m = document.createElement("div");
 			m.className = "msg bot hello";
 			m.innerHTML = '<div class="bubble"></div>';
