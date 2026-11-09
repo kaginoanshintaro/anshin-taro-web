@@ -123,6 +123,9 @@
 	color: var(--accent);
 }
 .tp-group h2 { margin: 0 0 4px; font-size: 1.35rem; line-height: 1.5; color: var(--heading); letter-spacing: 0.06em; }
+/* 見出しのすぐ後ろにカギベイビーを小さく（カードごとに傾きを左右交互に） */
+.tp-baby { display: inline-block; width: auto; height: 1.9em; margin: -0.5em 0 -0.3em 0.4em; vertical-align: middle; transform: rotate(12deg); }
+.tp-group:nth-of-type(even) .tp-baby { transform: rotate(-12deg); }
 .tp-group-head p:not(.tp-num) { margin: 0; font-size: 0.88rem; line-height: 1.8; color: var(--gray-700); }
 
 .tp-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 32px; margin: 0; padding: 0; list-style: none; }
