@@ -4,7 +4,7 @@
 // パソコン: 細い帯（パンくず・カテゴリ・題名）＋左に目次（付いてくる）＋右に白いカード。
 // スマホ: 目次は押すと開く箱。パンくずは出さない（Base の共通ルール）。
 // 目次は本文の大見出し（h2）と小見出し（h3）から作り、見出しに id を付けてジャンプできるようにする。
-import { findTip } from "../data/tips";
+import { findTip, tipStars } from "../data/tips";
 import "../styles/tip-article.css";
 
 interface Props {
@@ -31,6 +31,22 @@ const body = bodyHtml.replace(/<h([23])([^>]*)>([\s\S]*?)<\/h\1>/g, (_m, lv: str
 const fixedBody = body
 	.replace(/src="\/wp-content\/uploads\/2024\/09\/([^"\/]+)\.(?:jpe?g|png)"/g, 'src="/images/tips/column/$1.webp" loading="lazy" decoding="async"')
 	.replace(/src="\/wp-content\//g, 'src="https://kagino-anshin-taro.com/wp-content/');
+
+// 今のサイトでパソコン用・スマホ用に分けていた同じ段落（取り込みで両方出てしまう）は、2つ目を消す
+let tidyBody = fixedBody.replace(
+	/(<p[^>]*>\s*<strong>([０-９0-9]+、)[\s\S]*?<\/p>)\s*<p[^>]*>\s*<strong>\2[\s\S]*?<\/p>/g,
+	"$1",
+);
+// 難易度の星（src/data/tips.ts の tipStars）を「難易度」の段落の後ろに足す
+const stars = tipStars[path];
+if (stars) {
+	let i = 0;
+	tidyBody = tidyBody.replace(/(<p[^>]*>\s*<strong>[^<]*?(?:<\/strong>[\s　]*<strong>)?[^<]*?難易度[\s　]*<\/strong>)[\s　]*<\/p>/g, (m, head: string) => {
+		const n = stars[i++];
+		if (!n) return m;
+		return `${head}<span class="ta-stars" role="img" aria-label="難易度 5段階中${n}">${"★".repeat(n)}<span class="off">${"★".repeat(5 - n)}</span></span></p>`;
+	});
+}
 
 const enc = (p: string) => p.split("/").map((s) => encodeURIComponent(s)).join("/");
 const others = tip.flat.filter((_, i) => i !== tip.index);
@@ -63,7 +79,7 @@ const next = tip.flat[tip.index + 1];
 
 		<div class="ta-main">
 			<article class="ta-card">
-				<div class="ta-body" set:html={fixedBody} />
+				<div class="ta-body" set:html={tidyBody} />
 			</article>
 
 			{(prev || next) && (

@@ -180,3 +180,10 @@
 
 /* 動画（YouTube）は角を丸める */
 .ta-body .emdash-embed-video { border-radius: 12px; }
+
+/* 難易度の星（「やってみよう！自分でできるカギ交換！〜STEP 1〜」など） */
+.ta-stars { display: inline-block; margin-left: 0.6em; color: #f2a516; font-size: 1.15em; letter-spacing: 0.08em; white-space: nowrap; vertical-align: -0.05em; }
+.ta-stars .off { color: var(--gray-200); }
+
+/* STEP 1 の最初のカギベイビーの絵は小さめに（パソコンで本文の約3分の1。2026-11-09 佐藤さん） */
+.ta-body img[src$="/wp-1590.webp"] { width: min(260px, 60%); }
