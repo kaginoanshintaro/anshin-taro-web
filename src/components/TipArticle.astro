@@ -1,0 +1,106 @@
+---
+// お役立ち情報の記事ページ（/tipshints/ の一覧に載っている固定ページ）の形。
+// 本文は EmDash の内容をそのまま出す（管理画面で直せる）。まわりの形はこのファイルと src/styles/tip-article.css。
+// パソコン: 細い帯（パンくず・カテゴリ・題名）＋左に目次（付いてくる）＋右に白いカード。
+// スマホ: 目次は押すと開く箱。パンくずは出さない（Base の共通ルール）。
+// 目次は本文の大見出し（h2）と小見出し（h3）から作り、見出しに id を付けてジャンプできるようにする。
+import { findTip } from "../data/tips";
+import "../styles/tip-article.css";
+
+interface Props {
+	path: string;
+	title: string;
+	edit?: Record<string, unknown>;
+}
+const { path, title, edit } = Astro.props;
+const tip = findTip(path)!;
+
+// 本文（呼び出し側が PortableText で描いたもの）を先に HTML にして、h2・h3 に順番の id を付ける（目次のリンク先）
+const bodyHtml = await Astro.slots.render("default");
+const toc: { id: string; level: 2 | 3; text: string }[] = [];
+let n = 0;
+const body = bodyHtml.replace(/<h([23])([^>]*)>([\s\S]*?)<\/h\1>/g, (_m, lv: string, attrs: string, inner: string) => {
+	const id = `sec-${++n}`;
+	const text = inner.replace(/<[^>]+>/g, "").replace(/&amp;/g, "&").trim();
+	if (text) toc.push({ id, level: Number(lv) as 2 | 3, text });
+	return `<h${lv}${attrs} id="${id}">${inner}</h${lv}>`;
+});
+
+// 本文の HTML ブロックに入っている WordPress の画像（/wp-content/uploads/...）。
+// コラムの写真（2024/09）はこちらに WebP で移した（public/images/tips/column/）。それ以外は本番から読む
+const fixedBody = body
+	.replace(/src="\/wp-content\/uploads\/2024\/09\/([^"\/]+)\.(?:jpe?g|png)"/g, 'src="/images/tips/column/$1.webp" loading="lazy" decoding="async"')
+	.replace(/src="\/wp-content\//g, 'src="https://kagino-anshin-taro.com/wp-content/');
+
+const enc = (p: string) => p.split("/").map((s) => encodeURIComponent(s)).join("/");
+const others = tip.flat.filter((_, i) => i !== tip.index);
+const prev = tip.flat[tip.index - 1];
+const next = tip.flat[tip.index + 1];
+---
+
+<div class="tip-article">
+	<header class="ta-head">
+		<div class="wrap">
+			<nav class="ta-crumb" aria-label="現在地"><a href="/">ホーム</a><span aria-hidden="true">›</span><a href="/tipshints/">お役立ち情報</a><span aria-hidden="true">›</span><a href={`/tipshints/#${tip.group.id}`}>{tip.group.title}</a></nav>
+			<p class="ta-cat"><a href={`/tipshints/#${tip.group.id}`}>{tip.group.title}</a></p>
+			<h1 {...edit}>{title}</h1>
+		</div>
+	</header>
+
+	<div class:list={["wrap ta-layout", { "no-toc": toc.length < 2 }]}>
+		{toc.length >= 2 && (
+			<aside class="ta-side">
+				<nav aria-label="目次">
+					<details class="ta-toc" open>
+						<summary class="ta-toc-title">目次</summary>
+						<ol>
+							{toc.map((t) => <li class:list={[`lv${t.level}`]}><a href={`#${t.id}`}>{t.text}</a></li>)}
+						</ol>
+					</details>
+				</nav>
+			</aside>
+		)}
+
+		<div class="ta-main">
+			<article class="ta-card">
+				<div class="ta-body" set:html={fixedBody} />
+			</article>
+
+			{(prev || next) && (
+				<nav class="ta-pager" aria-label="前後の記事">
+					{prev ? <a class="ta-prev" href={enc(prev.path)}><small>前の記事</small>{prev.title}</a> : <span />}
+					{next ? <a class="ta-next" href={enc(next.path)}><small>次の記事</small>{next.title}</a> : <span />}
+				</nav>
+			)}
+
+			{others.length > 0 && (
+				<section class="ta-related">
+					<h2>「{tip.group.title}」の記事<img src="/images/tips/kagi-baby.webp" width="132" height="180" alt="" loading="lazy" decoding="async" /></h2>
+					<ul>
+						{others.map((o) => <li><a href={enc(o.path)}>{o.title}</a></li>)}
+					</ul>
+				</section>
+			)}
+
+			<div class="ta-cta">
+				<a href="/tipshints/">お役立ち情報の一覧へ</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	// スマホでは目次を閉じた状態から始め、項目を押したら閉じる（利用規約と同じ）
+	const toc = document.querySelector<HTMLDetailsElement>(".ta-toc");
+	const phone = window.matchMedia("(max-width: 900px)");
+	if (toc) {
+		toc.open = !phone.matches;
+		phone.addEventListener("change", () => (toc.open = !phone.matches));
+		toc.querySelector("summary")?.addEventListener("click", (e) => {
+			if (!phone.matches) e.preventDefault();
+		});
+		toc.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => {
+			if (phone.matches) toc.open = false;
+		}));
+	}
+</script>

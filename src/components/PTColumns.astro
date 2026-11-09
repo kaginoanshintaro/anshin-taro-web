@@ -1,0 +1,29 @@
+---
+// WordPress から取り込んだ「カラム」（左に画像・右に文など）。
+// EmDash 標準の Columns は中の画像の部品を渡さないため、カラムの中の画像が出ない
+// （「PortableText [components.type] is missing」）。中身も本文と同じ部品で描くよう、ここで置き換える。
+import { PortableText } from "emdash/ui";
+import SizedImage from "./SizedImage.astro";
+import PTColumns from "./PTColumns.astro";
+
+const { node } = Astro.props;
+const columns: Array<{ _key: string; content: unknown[]; width?: string }> = node?.columns ?? [];
+---
+
+{columns.length > 0 && (
+	<div class="emdash-columns pt-columns" style={`--column-count: ${columns.length}`}>
+		{columns.map((column) => (
+			<div class="emdash-column" style={column.width ? `flex-basis: ${column.width}` : undefined}>
+				<PortableText value={column.content} components={{ type: { image: SizedImage, columns: PTColumns } }} />
+			</div>
+		))}
+	</div>
+)}
+
+<style>
+	.pt-columns { display: flex; gap: 2rem; margin: 1.5rem 0; }
+	.pt-columns > .emdash-column { flex: 1; min-width: 0; }
+	@media (max-width: 768px) {
+		.pt-columns { flex-direction: column; gap: 1rem; }
+	}
+</style>

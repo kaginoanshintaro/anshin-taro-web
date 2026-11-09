@@ -5,6 +5,10 @@
 import { getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
 import { PortableText } from "emdash/ui";
 import Base from "../layouts/Base.astro";
+import SizedImage from "../components/SizedImage.astro";
+import PTColumns from "../components/PTColumns.astro";
+import TipArticle from "../components/TipArticle.astro";
+import { findTip } from "../data/tips";
 import { resolveStarterSiteIdentity } from "../utils/site-identity";
 
 let segments: string[] = [];
@@ -27,16 +31,31 @@ if (!entry && !parent) {
 }
 if (!entry) return Astro.rewrite("/404");
 
-if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+// 固定ページ・投稿は Cloudflare の入口にキャッシュする（更新時は EmDash がタグで消す）
+if (Astro.cache?.enabled) {
+	Astro.cache.set({ maxAge: 3600, swr: 86400, tags: ["all"] });
+	Astro.cache.set(cacheHint);
+}
 const { siteTitle } = resolveStarterSiteIdentity(await getSiteSettings());
 const seo = getSeoMeta(entry, { siteTitle, siteUrl: Astro.url.origin, path: Astro.url.pathname });
 const categories = entry.data.terms?.category ?? [];
+// お役立ち情報の一覧（src/data/tips.ts）に載っている固定ページは、記事用の形で出す
+const tipPath = `/${segments.join("/")}/`;
+const isTip = collection === "pages" && findTip(tipPath) !== null;
+// カラム（左に画像・右に文など）の中の画像も出るよう、カラムの部品を置き換える
+const ptComponents = { type: { image: SizedImage, columns: PTColumns } };
 ---
 
 <Base title={seo.title} pageTitle={seo.ogTitle} description={seo.description} canonical={seo.canonical} content={{ collection, id: entry.data.id, slug }}>
-	<article data-collection={collection}>
-		<h1 {...entry.edit.title}>{entry.data.title}</h1>
-		{categories.map((c) => <a href={`/category/${c.slug}/`}>{c.label}</a>)}
-		<PortableText value={entry.data.content} />
-	</article>
+	{isTip ? (
+		<TipArticle path={tipPath} title={entry.data.title} edit={entry.edit.title}>
+			<PortableText value={entry.data.content} components={ptComponents} />
+		</TipArticle>
+	) : (
+		<article data-collection={collection}>
+			<h1 {...entry.edit.title}>{entry.data.title}</h1>
+			{categories.map((c) => <a href={`/category/${c.slug}/`}>{c.label}</a>)}
+			<PortableText value={entry.data.content} components={ptComponents} />
+		</article>
+	)}
 </Base>

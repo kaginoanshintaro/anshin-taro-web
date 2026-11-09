@@ -1,0 +1,200 @@
+/*
+ * お役立ち情報（/tipshints/、src/pages/tipshints.astro）
+ * 上: 佐藤さんの絵（左に太郎ちゃん・カギベイビー、右が無地）。パソコンは右の無地に見出しを重ね、
+ *     1000px より狭いときは絵の下に見出しを出す。絵の右に足りない分は、絵と同じ地色と床の線で伸ばす。
+ * 下: カテゴリごとに白いカード。中に記事の見出しのリンク（パソコンは2列、スマホは1列）。
+ */
+
+.tips-page { padding-bottom: 32px; }
+
+/* ---- 上の絵と見出し ---- */
+.tp-hero {
+	/* 絵の高さ。絵は 2000×1116（横:縦 ≒ 1.79:1） */
+	--h: clamp(230px, 62vw, 340px);
+	/* 広い画面では絵を中央寄りに置く */
+	--x: max(0px, calc((100vw - 1500px) / 2));
+	position: relative;
+	overflow: hidden; /* スマホでは絵が画面より少し広いので、右の無地をはみ出させない */
+}
+.tp-hero::before {
+	/* 絵の地色と床の線（絵の縦 81.45〜82.35% の位置）を横いっぱいに伸ばす */
+	content: "";
+	display: block;
+	height: var(--h);
+	background: linear-gradient(to bottom, #fff1da 81.45%, #704530 81.45%, #704530 82.35%, #fff1da 82.35%);
+}
+.tp-hero-img {
+	position: absolute;
+	top: 0;
+	left: var(--x);
+	width: auto;
+	max-width: none;
+	height: var(--h);
+	/* 絵の地色は少しむらがあるので、左右の端をぼかして伸ばした地色になじませる */
+	-webkit-mask-image: linear-gradient(to right, transparent, #000 4%, #000 66%, transparent);
+	mask-image: linear-gradient(to right, transparent, #000 4%, #000 66%, transparent);
+}
+.tp-hero-text { padding: 20px 16px 8px; }
+.tp-crumb { font-size: 0.8rem; color: var(--muted); }
+.tp-crumb a { color: var(--muted); text-decoration: none; }
+.tp-crumb span { margin: 0 8px; }
+.tp-hero h1 {
+	margin: 0 0 8px;
+	font-size: 1.6rem;
+	line-height: 1.4;
+	color: var(--heading);
+	letter-spacing: 0.08em;
+}
+.tp-hero h1::after {
+	content: "";
+	display: block;
+	width: 48px;
+	height: 4px;
+	margin-top: 8px;
+	border-radius: 2px;
+	background: var(--accent);
+}
+.tp-lead { margin: 0 0 14px; font-size: 0.92rem; line-height: 1.85; color: var(--gray-700); }
+
+/* カテゴリへのジャンプ */
+.tp-toc ul { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.tp-toc a {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 6px 8px 6px 14px;
+	border: 1px solid var(--color-brown-light);
+	border-radius: 999px;
+	background: var(--white);
+	color: var(--color-brown);
+	font-size: 0.85rem;
+	font-weight: bold;
+	line-height: 1.4;
+	text-decoration: none;
+}
+.tp-toc a:hover { border-color: var(--accent); color: var(--accent-dark); }
+.tp-count {
+	min-width: 1.7em;
+	padding: 1px 6px;
+	border-radius: 999px;
+	background: var(--accent-soft);
+	color: var(--accent-dark);
+	font-size: 0.75rem;
+	text-align: center;
+}
+
+@media (min-width: 1000px) {
+	.tp-hero { --h: clamp(360px, 34vw, 500px); }
+	/* 絵の右の無地（絵の幅の6割より右）、床の線より上に見出しを置く */
+	.tp-hero-text {
+		position: absolute;
+		top: 0;
+		left: calc(var(--x) + var(--h) * 1.08);
+		right: 32px;
+		height: calc(var(--h) * 0.8);
+		max-width: 640px;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		padding: 0;
+	}
+	.tp-hero h1 { font-size: 2.2rem; }
+	.tp-lead { font-size: 0.98rem; }
+}
+
+/* ---- カテゴリごとのカード ---- */
+.tp-body { max-width: 1100px; }
+.tips-page .tp-body { margin-top: 36px; }
+.tp-group {
+	scroll-margin-top: calc(var(--header-h) + 20px);
+	padding: 32px 40px 36px;
+	border-radius: var(--radius);
+	background: var(--white);
+	box-shadow: 0 2px 14px rgb(38 38 38 / 0.06);
+}
+.tp-group + .tp-group { margin-top: 28px; }
+.tp-group-head { display: flex; gap: 18px; align-items: flex-start; margin-bottom: 18px; }
+.tp-num {
+	margin: 0;
+	font-family: var(--font-serif);
+	font-weight: 700;
+	font-size: 2rem;
+	line-height: 1.1;
+	color: var(--accent);
+}
+.tp-group h2 { margin: 0 0 4px; font-size: 1.35rem; line-height: 1.5; color: var(--heading); letter-spacing: 0.06em; }
+/* 見出しのすぐ後ろにカギベイビーを小さく（カードごとに傾きを左右交互に） */
+.tp-baby { display: inline-block; width: auto; height: 1.9em; margin: -0.5em 0 -0.3em 0.4em; vertical-align: middle; transform: rotate(12deg); }
+.tp-group:nth-of-type(even) .tp-baby { transform: rotate(-12deg); }
+.tp-group-head p:not(.tp-num) { margin: 0; font-size: 0.88rem; line-height: 1.8; color: var(--gray-700); }
+
+.tp-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 32px; margin: 0; padding: 0; list-style: none; }
+.tp-list > li { border-bottom: 1px dashed var(--gray-200); }
+.tp-list a {
+	position: relative;
+	display: block;
+	padding: 12px 24px 12px 4px;
+	color: var(--gray-900);
+	font-size: 0.93rem;
+	line-height: 1.65;
+	text-decoration: none;
+}
+.tp-list a::after {
+	content: "›";
+	position: absolute;
+	right: 6px;
+	top: 50%;
+	transform: translateY(-52%);
+	color: var(--accent);
+	font-size: 1.3rem;
+	font-weight: bold;
+}
+.tp-list a:hover { color: var(--accent-dark); }
+.tp-list time { display: block; font-size: 0.78rem; color: var(--muted); letter-spacing: 0.02em; }
+
+/* シリーズ（注意事項編 → STEP 1 など）は横いっぱいに、続きを字下げして並べる */
+.tp-list > li.tp-series { grid-column: 1 / -1; }
+.tp-series > a { font-weight: bold; }
+.tp-children {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 0 32px;
+	margin: 0 0 12px 12px;
+	padding: 4px 0 4px 16px;
+	border-left: 3px solid var(--accent-soft);
+	list-style: none;
+}
+.tp-children a { padding: 8px 24px 8px 4px; font-size: 0.88rem; }
+
+/* 一番下のボタン（料金ページなどと同じ） */
+.tp-cta { display: flex; justify-content: center; margin-top: 32px; }
+.tp-cta a {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 240px;
+	padding: 12px 24px;
+	border: 2px solid var(--color-brown-light);
+	border-radius: 999px;
+	background: var(--white);
+	color: var(--color-brown);
+	font-weight: bold;
+	line-height: 1.4;
+	text-decoration: none;
+}
+
+/* スマホ: 1列。カードの余白を詰める */
+@media (max-width: 767px) {
+	.tp-hero h1 { font-size: 1.45rem; }
+	.tp-toc a { font-size: 0.8rem; padding: 5px 6px 5px 12px; }
+	.tips-page .tp-body { margin-top: 24px; }
+	.tp-group { padding: 22px 16px 20px; border-radius: 16px; }
+	.tp-group + .tp-group { margin-top: 18px; }
+	.tp-group-head { gap: 12px; margin-bottom: 8px; }
+	.tp-num { font-size: 1.5rem; }
+	.tp-group h2 { font-size: 1.12rem; }
+	.tp-list, .tp-children { grid-template-columns: 1fr; }
+	.tp-list a { font-size: 0.9rem; }
+	.tp-children { margin-left: 4px; padding-left: 12px; }
+	.tp-cta a { min-width: 0; width: 100%; max-width: 320px; }
+}
