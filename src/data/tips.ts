@@ -102,3 +102,21 @@ export const hintGroup = {
 	lead: "ブログの「ヒント」の記事です。現場で出会った鍵の不具合や、おすすめの錠前を紹介しています。",
 	category: "tips",
 };
+
+/**
+ * 記事用の形（src/components/TipArticle.astro）で出すページ。1ページずつ佐藤さんに確認してもらいながら増やす。
+ * ここに無いお役立ちのページは、今までどおりの素の形で出る。
+ */
+export const designedTips = new Set<string>([
+	"/錠前と鍵の基本のキ：初心者でもわかるカンタン/", // 2026-11-09
+]);
+
+/** 記事のパス（デコードした形）から、載っているカテゴリと同じカテゴリの記事（続きのページも含めた並び）を引く */
+export function findTip(path: string) {
+	for (const group of tipGroups) {
+		const flat = group.links.flatMap((l) => [l, ...(l.children ?? [])]);
+		const index = flat.findIndex((l) => l.path === path);
+		if (index >= 0) return { group, flat, index };
+	}
+	return null;
+}
