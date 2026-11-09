@@ -103,14 +103,6 @@ export const hintGroup = {
 	category: "tips",
 };
 
-/**
- * 記事用の形（src/components/TipArticle.astro）で出すページ。1ページずつ佐藤さんに確認してもらいながら増やす。
- * ここに無いお役立ちのページは、今までどおりの素の形で出る。
- */
-export const designedTips = new Set<string>([
-	"/錠前と鍵の基本のキ：初心者でもわかるカンタン/", // 2026-11-09
-]);
-
 /** 記事のパス（デコードした形）から、載っているカテゴリと同じカテゴリの記事（続きのページも含めた並び）を引く */
 export function findTip(path: string) {
 	for (const group of tipGroups) {

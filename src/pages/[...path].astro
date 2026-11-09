@@ -8,7 +8,7 @@ import Base from "../layouts/Base.astro";
 import SizedImage from "../components/SizedImage.astro";
 import PTColumns from "../components/PTColumns.astro";
 import TipArticle from "../components/TipArticle.astro";
-import { designedTips, findTip } from "../data/tips";
+import { findTip } from "../data/tips";
 import { resolveStarterSiteIdentity } from "../utils/site-identity";
 
 let segments: string[] = [];
@@ -41,7 +41,7 @@ const seo = getSeoMeta(entry, { siteTitle, siteUrl: Astro.url.origin, path: Astr
 const categories = entry.data.terms?.category ?? [];
 // お役立ち情報の一覧（src/data/tips.ts）に載っている固定ページは、記事用の形で出す
 const tipPath = `/${segments.join("/")}/`;
-const isTip = collection === "pages" && designedTips.has(tipPath) && findTip(tipPath) !== null;
+const isTip = collection === "pages" && findTip(tipPath) !== null;
 // カラム（左に画像・右に文など）の中の画像も出るよう、カラムの部品を置き換える
 const ptComponents = { type: { image: SizedImage, columns: PTColumns } };
 ---
