@@ -97,9 +97,10 @@ const qaJson = JSON.stringify(taroQA.map(({ id, q, next, words, face }) => ({ id
 			m.className = `msg ${who}`;
 			const b = document.createElement("div");
 			b.className = "bubble";
-			b.append(content);
-			m.append(b);
-			msgs.append(m);
+			// append() は Cloudflare の型（HTMLRewriter）と混ざって型エラーになるので appendChild を使う
+			b.appendChild(typeof content === "string" ? document.createTextNode(content) : content);
+			m.appendChild(b);
+			msgs.appendChild(m);
 			// 古い吹き出しは消す（上へスクロールすれば少し前までは読める）
 			while (msgs.children.length > 12) msgs.firstElementChild!.remove();
 			// 答えの頭が見えるところまでスクロール（長い答えでも1行目から読めるように）
