@@ -26,6 +26,12 @@ const body = bodyHtml.replace(/<h([23])([^>]*)>([\s\S]*?)<\/h\1>/g, (_m, lv: str
 	return `<h${lv}${attrs} id="${id}">${inner}</h${lv}>`;
 });
 
+// 本文の HTML ブロックに入っている WordPress の画像（/wp-content/uploads/...）。
+// コラムの写真（2024/09）はこちらに WebP で移した（public/images/tips/column/）。それ以外は本番から読む
+const fixedBody = body
+	.replace(/src="\/wp-content\/uploads\/2024\/09\/([^"\/]+)\.(?:jpe?g|png)"/g, 'src="/images/tips/column/$1.webp" loading="lazy" decoding="async"')
+	.replace(/src="\/wp-content\//g, 'src="https://kagino-anshin-taro.com/wp-content/');
+
 const enc = (p: string) => p.split("/").map((s) => encodeURIComponent(s)).join("/");
 const others = tip.flat.filter((_, i) => i !== tip.index);
 const prev = tip.flat[tip.index - 1];
@@ -41,8 +47,8 @@ const next = tip.flat[tip.index + 1];
 		</div>
 	</header>
 
-	<div class="wrap ta-layout">
-		{toc.length > 0 && (
+	<div class:list={["wrap ta-layout", { "no-toc": toc.length < 2 }]}>
+		{toc.length >= 2 && (
 			<aside class="ta-side">
 				<nav aria-label="目次">
 					<details class="ta-toc" open>
@@ -57,7 +63,7 @@ const next = tip.flat[tip.index + 1];
 
 		<div class="ta-main">
 			<article class="ta-card">
-				<div class="ta-body" set:html={body} />
+				<div class="ta-body" set:html={fixedBody} />
 			</article>
 
 			{(prev || next) && (
