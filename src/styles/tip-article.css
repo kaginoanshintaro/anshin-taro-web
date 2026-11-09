@@ -54,7 +54,7 @@
 /* ---- 本文のカード ---- */
 .ta-card { padding: 36px 44px 44px; border-radius: var(--radius); background: var(--white); box-shadow: 0 2px 14px rgb(38 38 38 / 0.06); }
 .ta-body { font-size: 0.95rem; line-height: 1.95; color: var(--gray-900); }
-.ta-body > :first-child { margin-top: 0; }
+.ta-body > :first-child, .ta-body > :first-child > :first-child { margin-top: 0; }
 .ta-body h2, .ta-body h3, .ta-body h4 { scroll-margin-top: calc(var(--header-h) + 20px); color: var(--heading); letter-spacing: 0.05em; }
 .ta-body h2 {
 	margin: 56px 0 18px;
@@ -171,6 +171,8 @@
 	.ta-body .emdash-table { min-width: 560px; }
 	.ta-body table { font-size: 0.84rem; }
 	.ta-body th { white-space: nowrap; }
+	/* HTML で書かれた表（コラム）は、長いカタカナで画面からはみ出すときだけ横にすべらせる */
+	.ta-body table:not(.emdash-table) { display: block; overflow-x: auto; }
 	.ta-pager { grid-template-columns: 1fr; gap: 10px; }
 	.ta-related { padding: 20px 16px; border-radius: 16px; }
 	.ta-cta a { min-width: 0; width: 100%; max-width: 320px; }
