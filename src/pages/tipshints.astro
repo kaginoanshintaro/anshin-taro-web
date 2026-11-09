@@ -1,0 +1,120 @@
+---
+// お役立ち情報（/tipshints/。URL は今の WordPress の「お役立ち」ページと同じ）。
+// 記事の見出しをカテゴリ別に並べ、各記事へリンクする。並べる記事とカテゴリは src/data/tips.ts。
+// 題名は EmDash のページ・投稿から読む（管理画面で直すと一覧にも反映）。ブログの「ヒント」カテゴリは新しい順に自動で並ぶ。
+// 上の絵は佐藤さんが Gemini で作った「お役立ち情報背景」（iCloud の HP用画像）。右側の無地の部分に見出しを重ねる。
+import { getEmDashCollection } from "emdash";
+import Base from "../layouts/Base.astro";
+import { tipsTitle, tipsLead, tipGroups, hintGroup, type TipLink } from "../data/tips";
+import "../styles/tips.css";
+
+// 固定ページは1回でまとめて読み、パス（親/スラッグ）から題名を引く
+const [{ entries: pages, cacheHint: pagesHint }, { entries: hints, cacheHint: hintsHint }] = await Promise.all([
+	getEmDashCollection("pages", { limit: 200 }),
+	getEmDashCollection("posts", { where: { category: hintGroup.category }, orderBy: { published_at: "desc" }, limit: 100 }),
+]);
+if (Astro.cache?.enabled) {
+	Astro.cache.set({ maxAge: 3600, swr: 86400, tags: ["posts", "pages", "all"] });
+	Astro.cache.set(pagesHint);
+	Astro.cache.set(hintsHint);
+}
+
+const pageTitles = new Map<string, string>();
+for (const p of pages) {
+	const parent = p.data.parent_slug ? `/${p.data.parent_slug}` : "";
+	pageTitles.set(`${parent}/${p.id}/`, p.data.title);
+}
+const titleOf = (l: TipLink) => pageTitles.get(l.path) ?? l.title;
+// 日本語のパスは今のサイトと同じくパーセントエンコードした形でリンクする
+const hrefOf = (path: string) => path.split("/").map((s) => encodeURIComponent(s)).join("/");
+
+const dateFormat = new Intl.DateTimeFormat("ja-JP", { year: "numeric", month: "2-digit", day: "2-digit", timeZone: "Asia/Tokyo" });
+
+const countOf = (links: TipLink[]) => links.reduce((n, l) => n + 1 + (l.children?.length ?? 0), 0);
+const toc = [
+	...tipGroups.map((g) => ({ id: g.id, title: g.title, count: countOf(g.links) })),
+	...(hints.length ? [{ id: hintGroup.id, title: hintGroup.title, count: hints.length }] : []),
+];
+
+const bg = (w: number) => `/images/tips/tips-bg-${w}.webp`;
+---
+
+<Base title={tipsTitle} description={tipsLead}>
+	<div class="tips-page">
+		<header class="tp-hero">
+			<img
+				class="tp-hero-img"
+				src={bg(1400)}
+				srcset={`${bg(800)} 800w, ${bg(1400)} 1400w, ${bg(2000)} 2000w`}
+				sizes="(max-width: 767px) 120vw, 860px"
+				width="2000"
+				height="1116"
+				alt=""
+				fetchpriority="high"
+				decoding="async"
+			/>
+			<div class="tp-hero-text">
+				<nav class="tp-crumb" aria-label="現在地"><a href="/">ホーム</a><span aria-hidden="true">›</span>{tipsTitle}</nav>
+				<h1>{tipsTitle}</h1>
+				<p class="tp-lead">{tipsLead}</p>
+				<nav class="tp-toc" aria-label="カテゴリ">
+					<ul>
+						{toc.map((t) => <li><a href={`#${t.id}`}>{t.title}<span class="tp-count">{t.count}</span></a></li>)}
+					</ul>
+				</nav>
+			</div>
+		</header>
+
+		<div class="wrap tp-body">
+			{tipGroups.map((g, i) => (
+				<section class="tp-group" id={g.id}>
+					<header class="tp-group-head">
+						<p class="tp-num">{String(i + 1).padStart(2, "0")}</p>
+						<div>
+							<h2>{g.title}</h2>
+							<p>{g.lead}</p>
+						</div>
+					</header>
+					<ul class="tp-list">
+						{g.links.map((l) => (
+							<li class:list={{ "tp-series": !!l.children }}>
+								<a href={hrefOf(l.path)}>{titleOf(l)}</a>
+								{l.children && (
+									<ol class="tp-children">
+										{l.children.map((c) => <li><a href={hrefOf(c.path)}>{titleOf(c)}</a></li>)}
+									</ol>
+								)}
+							</li>
+						))}
+					</ul>
+				</section>
+			))}
+
+			{hints.length > 0 && (
+				<section class="tp-group" id={hintGroup.id}>
+					<header class="tp-group-head">
+						<p class="tp-num">{String(tipGroups.length + 1).padStart(2, "0")}</p>
+						<div>
+							<h2>{hintGroup.title}</h2>
+							<p>{hintGroup.lead}</p>
+						</div>
+					</header>
+					<ul class="tp-list">
+						{hints.map((post) => (
+							<li>
+								<a href={hrefOf(`/${post.id}/`)}>
+									{post.data.publishedAt && <time datetime={post.data.publishedAt.toISOString()}>{dateFormat.format(post.data.publishedAt)}</time>}
+									{post.data.title}
+								</a>
+							</li>
+						))}
+					</ul>
+				</section>
+			)}
+
+			<div class="tp-cta">
+				<a href="/">ホームに戻る</a>
+			</div>
+		</div>
+	</div>
+</Base>
