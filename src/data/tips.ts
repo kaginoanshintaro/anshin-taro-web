@@ -112,3 +112,12 @@ export function findTip(path: string) {
 	}
 	return null;
 }
+
+/**
+ * 難易度の星（5段階）。今のサイトでは WordPress のテーマ（SWELL）のアイコンで出していて、取り込みで消えたため、
+ * 本文の「難易度」の段落の後ろにこちらで足す。数は今のサイトの星の数（上から順に）。2026-11-09 佐藤さんの依頼。
+ */
+export const tipStars: Record<string, number[]> = {
+	// シリンダー錠・面付箱錠・プッシュプル錠・サムラッチ錠・ドアノブ錠・引戸錠・電子錠
+	"/how-to-change-key-step1/": [1, 2, 3, 3, 4, 4, 5],
+};
