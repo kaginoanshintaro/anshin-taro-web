@@ -139,14 +139,8 @@ const dateFormat = new Intl.DateTimeFormat("ja-JP", {
 		<div class="fa-sp">
 			<div class="viewport">
 				<div class="track">
-					<div class="page page1">
-				<TaroChat variant="sp" />
-				<a class="panel mini-cal" href="#" aria-label="佐藤の予定（7日分）">
-					<p class="cal-cap"><b>佐藤の予定</b><span><i class="key"></i>予定あり　9時〜18時</span></p>
-					<div class="days"><div class="sat"><span>24<small>土</small></span><i><b style="top:0%;height:25%"></b></i></div><div class="sun"><span>25<small>日</small></span><i></i></div><div class=""><span>26<small>月</small></span><i><b style="top:20%;height:35%"></b><b style="top:70%;height:15%"></b></i></div><div class=""><span>27<small>火</small></span><i><b style="top:35%;height:20%"></b></i></div><div class=""><span>28<small>水</small></span><i><b style="top:0%;height:45%"></b><b style="top:60%;height:35%"></b></i></div><div class=""><span>29<small>木</small></span><i></i></div><div class=""><span>30<small>金</small></span><i><b style="top:50%;height:25%"></b></i></div></div>
-				</a>
-					</div>
-					<div class="page page2">
+					<!-- 左の画面（PCの左の列と同じ）: 最新の記事・ベビちゃんニュース・佐藤の予定 -->
+					<div class="page page-l" id="sp-left" aria-label="記事と予定">
 						<section class="panel links">
 					<div class="row-title"><h2 class="panel-title">最新の記事</h2><a href="/news/">もっと見る →</a></div>
 					<ul>
@@ -158,6 +152,17 @@ const dateFormat = new Intl.DateTimeFormat("ja-JP", {
 						<li><a href="#">先週のニュースの見出しが入ります</a></li>
 					</ul>
 				</section>
+						<a class="panel mini-cal" href="#" aria-label="佐藤の予定（7日分）">
+							<p class="cal-cap"><b>佐藤の予定</b><span><i class="key"></i>予定あり　9時〜18時</span></p>
+							<div class="days"><div class="sat"><span>24<small>土</small></span><i><b style="top:0%;height:25%"></b></i></div><div class="sun"><span>25<small>日</small></span><i></i></div><div class=""><span>26<small>月</small></span><i><b style="top:20%;height:35%"></b><b style="top:70%;height:15%"></b></i></div><div class=""><span>27<small>火</small></span><i><b style="top:35%;height:20%"></b></i></div><div class=""><span>28<small>水</small></span><i><b style="top:0%;height:45%"></b><b style="top:60%;height:35%"></b></i></div><div class=""><span>29<small>木</small></span><i></i></div><div class=""><span>30<small>金</small></span><i><b style="top:50%;height:25%"></b></i></div></div>
+						</a>
+					</div>
+					<!-- 真ん中の画面（最初に出る）: 安心太郎ちゃんのチャット -->
+					<div class="page page1 page-c" id="sp-center" aria-label="安心太郎ちゃん">
+				<TaroChat variant="sp" />
+					</div>
+					<!-- 右の画面（PCの右の列と同じ）: サービス・料金・LINE などのボタン -->
+					<div class="page page2 page-r" id="sp-right" aria-label="サービスとご案内">
 						<!-- ボタンは大きいアイコンと短い言葉だけ（佐藤さんの指示 2026-10-24: 小さい文字は読めないので極力シンプルに） -->
 						<section class="svc">
 							<div class="tiles3">
@@ -184,19 +189,17 @@ const dateFormat = new Intl.DateTimeFormat("ja-JP", {
 						<a class="warn2 kagiya-check" href="/check-points/"><img decoding="async" src="/images/top/kagiya-check-600.webp" srcset="/images/top/kagiya-check-600.webp 600w, /images/top/kagiya-check-1200.webp 1200w" sizes="(min-width: 1200px) 300px, 100vw" width="1200" height="333" alt="鍵屋さんを呼ぶ前にチェックしたい5つのポイント" /></a>
 					</div>
 				</div>
-				<div class="rack"></div>
 			</div>
 
 			<nav class="dock">
 				<a class="tel-icon" href={site.tel.href} aria-label={`電話する ${site.tel.label}`}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg></a>
-				<span class="gap"></span>
+				<span class="sp-dots" role="tablist" aria-label="画面の切り替え（左右にスワイプでも切り替わります）">
+					<button type="button" data-to="0" aria-label="記事と予定"></button>
+					<button type="button" data-to="1" aria-label="安心太郎ちゃん" aria-current="true"></button>
+					<button type="button" data-to="2" aria-label="サービスとご案内"></button>
+				</span>
 				<a class="line-min" href="#" aria-label="LINEで相談・友だち追加"><span class="line-mark big">LINE</span></a>
 			</nav>
-			<button class="switch" type="button" aria-label="2ページ目へ">
-				<img decoding="async" class="gear" src="/images/top/gear.svg" alt="" />
-				<span class="cap"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></span>
-				<span class="num">1 / 2</span>
-			</button>
 		</div>
 		<div class="prof" role="dialog" aria-label="佐藤のプロフィール">
 			<div class="prof-card">
@@ -213,17 +216,23 @@ const dateFormat = new Intl.DateTimeFormat("ja-JP", {
 </Base>
 
 <script is:inline>
-	// スマホ: 歯車ボタンで1ページ目と2ページ目を切り替える
+	// スマホ: PCの3つの列を左・真ん中・右の3画面にして、横スワイプで切り替える（2026-11-09 佐藤さん）。
+	// 最初は真ん中（チャット）。スワイプはブラウザの横スクロール（scroll-snap）なので指に素直についてくる。下の点を押しても移れる
 	(() => {
 		const sp = document.querySelector(".fa-sp");
-		const btn = sp.querySelector(".switch"), track = sp.querySelector(".track");
-		btn.addEventListener("click", () => {
-			const two = document.body.classList.toggle("on2");
-			btn.setAttribute("aria-label", two ? "1ページ目へ" : "2ページ目へ");
-			btn.querySelector(".num").textContent = two ? "2 / 2" : "1 / 2";
-		});
-		// 止まったときに少し揺らして「カチッ」と噛み合った感じにする
-		track.addEventListener("transitionend", () => { track.parentElement.classList.remove("clunk"); void track.offsetWidth; track.parentElement.classList.add("clunk"); });
+		const track = sp.querySelector(".track"), dots = [...sp.querySelectorAll(".sp-dots button")];
+		const go = (i, smooth) => track.scrollTo({ left: i * track.clientWidth, behavior: smooth ? "smooth" : "auto" });
+		go(1, false);
+		const mark = () => {
+			const i = Math.round(track.scrollLeft / track.clientWidth);
+			dots.forEach((d, k) => (k === i ? d.setAttribute("aria-current", "true") : d.removeAttribute("aria-current")));
+		};
+		track.addEventListener("scroll", () => requestAnimationFrame(mark), { passive: true });
+		dots.forEach((d, k) => d.addEventListener("click", () => go(k, !matchMedia("(prefers-reduced-motion: reduce)").matches)));
+		// 画面の幅が変わったら（縦横の回転など）今の画面にそろえ直す
+		let cur = 1;
+		track.addEventListener("scroll", () => { cur = Math.round(track.scrollLeft / track.clientWidth); }, { passive: true });
+		addEventListener("resize", () => go(cur, false));
 		// 佐藤のプロフィールの小窓
 		// （パソコンの丸い「佐」ボタンも同じ小窓を開く。外側を押しても閉じる）
 		const prof = document.querySelector(".fa .prof");
@@ -342,12 +351,11 @@ const dateFormat = new Intl.DateTimeFormat("ja-JP", {
 	}
 	.fixed-area > .fa-pc, .fixed-area > .fa-sp { position: relative; z-index: 1; height: 100%; }
 	.fa-pc .stage { height: 100%; padding-top: 16px; padding-bottom: 16px; }
-	/* スマホは2ページ切り替えの部品を、画面ではなくこのエリアの中に置く */
+	/* スマホは3画面切り替えの部品を、画面ではなくこのエリアの中に置く */
 	.fa-sp { max-width: 520px; margin: 0 auto; }
 	.fa-sp .viewport, .fa-sp .dock { position: absolute; }
 	.fa-sp .viewport { top: 0; }
 	.fa-sp .dock { z-index: 3; }
-	.fa-sp .switch { position: absolute; z-index: 5; }
 	.fa-pc { display: none; }
 	@media (min-width: 1200px) {
 		.fa-pc { display: block; }

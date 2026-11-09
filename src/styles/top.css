@@ -132,8 +132,9 @@
 .fa-sp .line-banner {background: #06c755;}
 .fa-sp .line-banner img {width: 100%; height: 100%; object-fit: contain;}
 .fa-sp .viewport {position: fixed; top: 0; left: 0; right: 0; bottom: 84px; overflow: hidden;}
-.fa-sp .track {display: flex; width: 200%; height: 100%;}
-.fa-sp .page {width: 50%; height: 100%; padding: 12px 14px 22px; display: flex; flex-direction: column; gap: 12px;}
+.fa-sp .track {display: flex; width: 100%; height: 100%; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; scrollbar-width: none;}
+.fa-sp .track::-webkit-scrollbar {display: none;}
+.fa-sp .page {flex: 0 0 100%; width: 100%; scroll-snap-align: start; scroll-snap-stop: always; height: 100%; padding: 12px 14px 22px; display: flex; flex-direction: column; gap: 12px;}
 .fa-sp .page > :not(.chat) {flex: none;}
 .fa-sp .page1 .chat-body {grid-template-columns: 160px 1fr;}
 .fa-sp .page1 .taro {max-width: 160px;}
@@ -141,30 +142,8 @@
 .fa-sp .page2 .banners {grid-template-columns: 64px 64px 64px 1fr;}
 .fa-sp .page2 .banners > * {height: 64px;}
 .fa-sp .page2 .banners .warn {height: 52px;}
-.fa-sp .rack {position: absolute; left: 0; bottom: 0; width: 200%; height: 12px;
-		background:
-			repeating-linear-gradient(90deg, transparent 0 4px, #8a8a8a 4px 11.7px, transparent 11.7px 15.708px) top / 100% 7px no-repeat,
-			linear-gradient(180deg, #bdbdbd, #8a8a8a) bottom / 100% 5px no-repeat;}
 .fa-sp .dock {height: 84px; padding-top: 10px;}
 .fa-sp .dock > a {height: 64px;}
-.fa-sp .dock .gap {flex: none; width: 84px;}
-.fa-sp .switch {position: fixed; left: 50%; bottom: 24px; width: 80px; height: 80px; margin-left: -40px; border: 0; padding: 0; background: none; cursor: pointer; z-index: 5;}
-.fa-sp .switch .gear {position: absolute; inset: 0; width: 80px; height: 80px; filter: drop-shadow(0 3px 4px rgb(38 38 38 / 0.35));}
-.fa-sp .switch .cap {position: absolute; inset: 21px; border-radius: 50%; background: var(--color-orange); color: var(--white); display: grid; place-items: center; box-shadow: inset 0 -3px 0 rgb(0 0 0 / 0.2), 0 0 0 2px var(--white);}
-.fa-sp .switch .cap svg {width: 24px; height: 24px; stroke: currentColor; stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round;}
-.fa-sp .switch .num {position: absolute; left: 0; right: 0; bottom: -18px; font-size: 0.68rem; color: var(--gray-700); text-align: center;}
-.fa-sp .track, .fa-sp .rack {transition: transform 900ms cubic-bezier(.7, 0, .25, 1.12);}
-.fa-sp .switch .gear {transition: transform 900ms cubic-bezier(.7, 0, .25, 1.12);}
-.fa-sp .switch .cap svg {transition: transform 300ms ease 600ms;}
-.on2 .fa-sp .track, .on2 .fa-sp .rack {transform: translateX(-50%);}
-.on2 .fa-sp .switch .gear {transform: rotate(-745deg);}
-.on2 .fa-sp .switch .cap svg {transform: scaleX(-1);}
-.fa-sp .clunk {animation: clunk 220ms ease-out;}
-@keyframes clunk { 0% { transform: translateY(0); } 30% { transform: translateY(2px); } 60% { transform: translateY(-1px); } 100% { transform: translateY(0); } }
-@media (prefers-reduced-motion: reduce) {
-.fa-sp .track, .fa-sp .rack, .fa-sp .switch .gear, .fa-sp .switch .cap svg {transition: none;}
-.fa-sp .clunk {animation: none;}
-}
 .fa-sp .services {display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;}
 .fa-sp .services a {position: relative; height: 76px; border-radius: 14px; overflow: hidden; box-shadow: 0 6px 16px rgb(38 38 38 / 0.1);}
 .fa-sp .services img {width: 100%; height: 100%; object-fit: cover;}
@@ -457,3 +436,10 @@
 .fa-pc .small-row > .kagiya-check { padding: 0; }
 .fa-sp .warn2.kagiya-check { height: auto; border-radius: 0; background: none; overflow: visible; }
 .fa-sp .warn2.kagiya-check img { width: auto; max-width: 100%; height: 72px; margin: 0 auto; }
+/* スマホの3画面（左=記事と予定、真ん中=チャット、右=サービスなど）。2026-11-09 歯車の切り替えをやめて横スワイプに */
+.fa-sp .page-l { overflow-y: auto; overscroll-behavior: contain; }
+.fa-sp .page-l .links { padding: 12px 16px; }
+.fa-sp .page-l .links li { padding: 8px 0; font-size: 0.95rem; }
+.fa-sp .sp-dots { flex: none; display: flex; align-items: center; justify-content: center; gap: 10px; width: 84px; }
+.fa-sp .sp-dots button { width: 12px; height: 12px; padding: 0; border: 2px solid var(--color-orange); border-radius: 50%; background: var(--white); cursor: pointer; transition: width 0.2s, background 0.2s; }
+.fa-sp .sp-dots button[aria-current="true"] { width: 26px; border-radius: 999px; background: var(--color-orange); }
