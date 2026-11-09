@@ -443,3 +443,33 @@
 .fa-sp .sp-dots { flex: none; display: flex; align-items: center; justify-content: center; gap: 10px; width: 84px; }
 .fa-sp .sp-dots button { width: 12px; height: 12px; padding: 0; border: 2px solid var(--color-orange); border-radius: 50%; background: var(--white); cursor: pointer; transition: width 0.2s, background 0.2s; }
 .fa-sp .sp-dots button[aria-current="true"] { width: 26px; border-radius: 999px; background: var(--color-orange); }
+
+/* スマホ・タブレット（1199px以下）: PCの3つの列をそのまま左・真ん中・右の3画面にして横スワイプ（2026-11-09 佐藤さん）。
+   スマホ専用の画面（.fa-sp .viewport）は使わず、下の電話・点・LINEの帯（.fa-sp .dock）だけ残す */
+@media (max-width: 1199px) {
+	.fa-sp { position: absolute !important; inset: 0; height: auto !important; z-index: 3 !important; pointer-events: none; }
+	.fa-sp .dock { pointer-events: auto; }
+	.fa-sp .viewport { display: none; }
+	.fa-pc { max-width: 520px; margin: 0 auto; }
+	.fa-pc .stage {
+		display: flex; height: 100%; padding: 0; gap: 0;
+		overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; scrollbar-width: none;
+	}
+	.fa-pc .stage::-webkit-scrollbar { display: none; }
+	.fa-pc .stage > * {
+		flex: 0 0 100%; width: 100%; min-width: 0; height: 100%; padding: 12px 14px 100px;
+		scroll-snap-align: start; scroll-snap-stop: always; overflow-y: auto; overscroll-behavior-y: contain;
+	}
+	/* 1画面の高さに押し込まず、中身の高さのまま縦に並べる（はみ出たら画面の中で縦スクロール） */
+	.fa-pc .stage > * > * { flex: none !important; }
+	.fa-pc .col > .panel.news-panel { overflow: visible; }
+	.fa-pc .chat { min-height: 440px; }
+	.fa-pc .btn-tel { font-size: 1.4rem; }
+	.fa-pc .btn-tel small { font-size: 1rem; }
+	.fa-pc .svc-block { margin-top: 4px; }
+	.fa-pc .svc-row b { font-size: 0.95rem; }
+	.fa-pc .col .cal .col-day .busy { font-size: 0.6rem; white-space: nowrap; overflow: hidden; }
+	/* 「5つのポイント」バナーは小さいと読めないので、スマホでは1行使う（佐・インスタはその下に並べる） */
+	.fa-pc .small-row { grid-template-columns: 1fr 1fr; }
+	.fa-pc .small-row > .kagiya-check { grid-column: 1 / -1; height: auto; }
+}

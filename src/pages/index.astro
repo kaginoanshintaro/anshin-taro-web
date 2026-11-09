@@ -220,7 +220,8 @@ const dateFormat = new Intl.DateTimeFormat("ja-JP", {
 	// 最初は真ん中（チャット）。スワイプはブラウザの横スクロール（scroll-snap）なので指に素直についてくる。下の点を押しても移れる
 	(() => {
 		const sp = document.querySelector(".fa-sp");
-		const track = sp.querySelector(".track"), dots = [...sp.querySelectorAll(".sp-dots button")];
+		// 2026-11-09 佐藤さん: PCの見た目をそのまま3分割。スマホでもPCの3つの列（.fa-pc .stage）を横に並べて使う
+		const track = document.querySelector(".fa-pc .stage"), dots = [...sp.querySelectorAll(".sp-dots button")];
 		const go = (i, smooth) => track.scrollTo({ left: i * track.clientWidth, behavior: smooth ? "smooth" : "auto" });
 		go(1, false);
 		const mark = () => {
@@ -249,6 +250,8 @@ const dateFormat = new Intl.DateTimeFormat("ja-JP", {
 		const DESIGN_H = 808;
 		const fit = () => {
 			if (getComputedStyle(pc).display === "none") return;
+			// スマホ・タブレットはPCの列を3画面に並べて使うので、縮めない
+			if (!matchMedia("(min-width: 1200px)").matches) { stage.style.zoom = ""; stage.style.height = ""; return; }
 			const avail = pc.clientHeight;
 			const s = Math.min(1, avail / DESIGN_H);
 			stage.style.zoom = String(s);
@@ -356,9 +359,7 @@ const dateFormat = new Intl.DateTimeFormat("ja-JP", {
 	.fa-sp .viewport, .fa-sp .dock { position: absolute; }
 	.fa-sp .viewport { top: 0; }
 	.fa-sp .dock { z-index: 3; }
-	.fa-pc { display: none; }
 	@media (min-width: 1200px) {
-		.fa-pc { display: block; }
 		.fa-sp { display: none; }
 	}
 </style>
