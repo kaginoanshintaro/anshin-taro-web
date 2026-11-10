@@ -187,3 +187,23 @@
 
 /* STEP 1 の最初のカギベイビーの絵は小さめに（パソコンで本文の約3分の1。2026-11-09 佐藤さん） */
 .ta-body img[src$="/wp-1590.webp"] { width: min(260px, 60%); }
+
+/*
+ * 横に並んだ写真と長い文を、写真を上（中央）・文を下にする（2026-11-10 佐藤さん）。
+ * 「錠前と鍵の基本のキ」の3つのシリンダー（wp-1865）・スイッチ付きサムターン（wp-1953）・最後の太郎ちゃん（wp-1950）。
+ * 増やすときは下の :has() に画像のファイル名を足す。
+ */
+.ta-body .pt-columns:has(img[src$="/wp-1865.webp"], img[src$="/wp-1953.webp"], img[src$="/wp-1950.webp"]) {
+	flex-direction: column;
+	align-items: stretch;
+	gap: 1rem;
+}
+.ta-body .pt-columns:has(img[src$="/wp-1865.webp"], img[src$="/wp-1953.webp"], img[src$="/wp-1950.webp"]) > .emdash-column:has(figure) {
+	order: -1;
+	flex-basis: auto !important;
+}
+.ta-body .pt-columns:has(img[src$="/wp-1865.webp"], img[src$="/wp-1953.webp"], img[src$="/wp-1950.webp"]) > .emdash-column:not(:has(figure)) {
+	flex-basis: auto !important;
+}
+.ta-body img[src$="/wp-1865.webp"], .ta-body img[src$="/wp-1953.webp"] { width: min(520px, 100%); }
+.ta-body img[src$="/wp-1950.webp"] { width: auto; max-height: 320px; }
