@@ -210,3 +210,10 @@
 
 /* 「シリンダー錠編」で1枚だけで出ている写真は半分の大きさに（2026-11-10 佐藤さん） */
 .ta-body img:is([src$="/wp-1378.webp"], [src$="/wp-1384.webp"], [src$="/wp-1387.webp"], [src$="/wp-1390.webp"]) { width: min(320px, 70%); }
+
+/* 「注意事項編」の写真3枚は、パソコンだけ半分の大きさに（2026-11-14 佐藤さん） */
+@media (min-width: 768px) {
+	.ta-body img[src$="/wp-1330.webp"] { width: 390px; }
+	.ta-body img[src$="/wp-1334.webp"] { width: 320px; }
+	.ta-body img[src$="/wp-1335.webp"] { width: 240px; }
+}
