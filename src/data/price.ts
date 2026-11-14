@@ -208,18 +208,23 @@ export const priceSections: PriceSection[] = [
 
 /**
  * お支払いに使える決済（AirPay）。
- * 2026-11-07 に佐藤さんの AirPay 加盟店ページ（契約情報の確認）で確かめたものだけを載せる。
- * - available: 画面の「ご利用可能な決済ブランド」に出ているもの
- * - soon: 審査完了・利用開始待ち（目安は審査完了から3週間）
- * iD（状態が画面から分からない）と QR コード（すべて審査中）はまだ載せない。
- * 使えるようになったら soon から available へ移す。
+ * AirPay から届いた審査結果のメール（2026-11-06〜11-12）で確かめたものだけを載せる。
+ * - 11/06 Visa/Mastercard/UnionPay(銀聯) 本番決済可
+ * - 11/11 JCB/American Express/Diners Club/Discover、QUICPay、楽天Edy 審査完了・利用可能
+ * - 10/29 iD は利用見合わせ（使えない）ので載せない
+ * - QR コードは 11/12 時点で審査中なので載せない。交通系電子マネーは契約なし（メールなし）
+ * soon が空のときは「近日対応予定」の欄を出さない。
  */
-export const paymentMethods = {
+export const paymentMethods: {
+	available: { group: string; brands: string[] }[];
+	soon: { group: string; brands: string[] }[];
+} = {
 	available: [
-		{ group: "クレジットカード", brands: ["Visa", "Mastercard", "銀聯（UnionPay）"] },
-	],
-	soon: [
-		{ group: "クレジットカード", brands: ["JCB", "American Express", "Diners Club", "Discover"] },
+		{
+			group: "クレジットカード",
+			brands: ["Visa", "Mastercard", "JCB", "American Express", "Diners Club", "Discover", "銀聯（UnionPay）"],
+		},
 		{ group: "電子マネー", brands: ["QUICPay", "楽天Edy"] },
 	],
+	soon: [],
 };

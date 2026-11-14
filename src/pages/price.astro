@@ -46,7 +46,7 @@ const splitParen = (name: string) => name.split(/(（[^）]*）)/).filter(Boolea
 					</div>
 				</section>
 
-				<!-- お支払い方法（AirPay の加盟店ページで確かめたものだけ。src/data/price.ts） -->
+				<!-- お支払い方法（AirPay の審査結果で確かめたものだけ。src/data/price.ts） -->
 				<section class="pp-pay" id="payment" aria-labelledby="pp-pay-title">
 					<h2 id="pp-pay-title">お支払い方法</h2>
 					<div class="pp-pay-groups">
@@ -56,12 +56,14 @@ const splitParen = (name: string) => name.split(/(（[^）]*）)/).filter(Boolea
 								<div class="pp-pay-row"><span class="pp-pay-kind">{g.group}</span><ul>{g.brands.map((b) => <li>{b}</li>)}</ul></div>
 							))}
 						</div>
-						<div class="pp-pay-group">
-							<p class="pp-pay-label is-soon">近日対応予定</p>
-							{paymentMethods.soon.map((g) => (
-								<div class="pp-pay-row"><span class="pp-pay-kind">{g.group}</span><ul>{g.brands.map((b) => <li>{b}</li>)}</ul></div>
-							))}
-						</div>
+						{paymentMethods.soon.length > 0 && (
+							<div class="pp-pay-group">
+								<p class="pp-pay-label is-soon">近日対応予定</p>
+								{paymentMethods.soon.map((g) => (
+									<div class="pp-pay-row"><span class="pp-pay-kind">{g.group}</span><ul>{g.brands.map((b) => <li>{b}</li>)}</ul></div>
+								))}
+							</div>
+						)}
 					</div>
 				</section>
 
