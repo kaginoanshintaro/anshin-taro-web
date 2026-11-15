@@ -217,3 +217,8 @@
 	.ta-body img[src$="/wp-1334.webp"] { width: 320px; }
 	.ta-body img[src$="/wp-1335.webp"] { width: 240px; }
 }
+
+/* コラムに足したイラスト（2026-11-15 佐藤さん、「スペアキーの種類と作成時の注意点」） */
+.ta-body .col-fig { margin: 1.2em auto 1.6em; text-align: center; }
+.ta-body .col-fig img { width: min(640px, 100%); height: auto; }
+.ta-body .col-fig-sq img { width: min(420px, 100%); }
