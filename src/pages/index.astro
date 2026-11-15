@@ -11,6 +11,16 @@ const { entries: latest, cacheHint } = await getEmDashCollection("posts", {
 });
 if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
 
+// ベビちゃんの鍵業界ニュース: 記事のカテゴリー「鍵業界ニュース」（key-news）の新しい3本（2026-11-15 佐藤さん）。
+// 1本も無いうちは欄ごと出さない
+const NEWS_CATEGORY = "key-news";
+const { entries: news, cacheHint: newsHint } = await getEmDashCollection("posts", {
+	where: { category: NEWS_CATEGORY },
+	orderBy: { published_at: "desc" },
+	limit: 3,
+});
+if (Astro.cache?.enabled) Astro.cache.set(newsHint);
+
 // ファーストビューの大きな画像（佐藤さん指定: シリンダー.jpg）。
 // 表示を速くするため、画面幅に合わせた WebP を img で最初に読み込む（背景CSSだと見つかるのが遅い）
 const fvImage = "/images/top/fv-cylinder-1800.webp";
@@ -61,7 +71,7 @@ const dateFormat = new Intl.DateTimeFormat("ja-JP", {
 		2人の紹介の下の「固定背景エリア」（2026-10-24 の見本 top-pc.html / top-sp.html と同じ）。
 		1画面ぴったりで、後ろの写真は画面に固定。窓はすりガラス、太郎ちゃんのチャットだけ透明。
 		広い画面は .fa-pc、それ以外はスマホの2ページ切り替え .fa-sp を出す。
-		「見本」の札が付いている所（ニュース・チャット・予定）は、まだ見た目だけ。
+		「見本」の札が付いている所（予定）は、まだ見た目だけ。ニュースは記事のカテゴリー key-news から出す。
 	-->
 	<section class="fixed-area fa" id="top-area" aria-label="安心太郎ちゃんと最新情報">
 		<div class="fa-bg"></div>
@@ -77,18 +87,20 @@ const dateFormat = new Intl.DateTimeFormat("ja-JP", {
 						</ul>
 						<p class="more"><a href="/news/">記事をもっと見る →</a></p>
 					</section>
-					<section class="panel news-panel">
-						<div class="news-head">
-							<img loading="lazy" decoding="async" src="/images/top/baby-face.webp" alt="" />
-							<div><h2 class="panel-title">ベビちゃんの鍵業界ニュース</h2><span class="tag-sample">見本</span></div>
-						</div>
-						<ul class="list">
-							<li><span class="date">10/20</span>今週のニュースの見出しが入ります</li>
-							<li><span class="date">10/13</span>先週のニュースの見出しが入ります</li>
-							<li><span class="date">10/06</span>先々週のニュースの見出しが入ります</li>
-						</ul>
-						<p class="more">ニュース一覧 →</p>
-					</section>
+					{news.length > 0 && (
+						<section class="panel news-panel">
+							<div class="news-head">
+								<img loading="lazy" decoding="async" src="/images/top/baby-face.webp" alt="" />
+								<div><h2 class="panel-title">ベビちゃんの鍵業界ニュース</h2></div>
+							</div>
+							<ul class="list">
+								{news.map((post) => (
+									<li>{post.data.publishedAt && <time class="date" datetime={post.data.publishedAt.toISOString()}>{dateFormat.format(post.data.publishedAt)}</time>}<a href={`/${post.id}/`}>{post.data.title}</a></li>
+								))}
+							</ul>
+							<p class="more"><a href={`/category/${NEWS_CATEGORY}/`}>ニュース一覧 →</a></p>
+						</section>
+					)}
 					<section class="panel cal">
 						<div class="cal-head"><h2 class="panel-title">佐藤の予定 <span class="tag-sample">見本</span></h2></div>
 						<div class="week">
@@ -146,11 +158,8 @@ const dateFormat = new Intl.DateTimeFormat("ja-JP", {
 					<ul>
 						{latest.map((post) => <li><a href={`/${post.id}/`}>{post.data.title}</a></li>)}
 					</ul>
-					<div class="row-title" style="margin-top:10px"><h2 class="panel-title">ベビちゃんの鍵業界ニュース <span class="tag-sample">見本</span></h2></div>
-					<ul>
-						<li><a href="#">今週のニュースの見出しが入ります</a></li>
-						<li><a href="#">先週のニュースの見出しが入ります</a></li>
-					</ul>
+					{news.length > 0 && <div class="row-title" style="margin-top:10px"><h2 class="panel-title">ベビちゃんの鍵業界ニュース</h2><a href={`/category/${NEWS_CATEGORY}/`}>一覧 →</a></div>}
+					{news.length > 0 && <ul>{news.map((post) => <li><a href={`/${post.id}/`}>{post.data.title}</a></li>)}</ul>}
 				</section>
 						<a class="panel mini-cal" href="#" aria-label="佐藤の予定（7日分）">
 							<p class="cal-cap"><b>佐藤の予定</b><span><i class="key"></i>予定あり　9時〜18時</span></p>

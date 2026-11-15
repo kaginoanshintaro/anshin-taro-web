@@ -30,4 +30,11 @@ jobs:
       - run: >-
           npx emdash migrate --from-config --wrangler-config=wrangler.jsonc
           --expected-target-fingerprint=bb4b75e6a77a58a592788c14833593ee7574be0be9ceaf78035e28e1dbbb83d8
+      # 記事カテゴリー「鍵業界ニュース」（key-news）を用意する。トップの「ベビちゃんの鍵業界ニュース」はこのカテゴリーの記事を出す（2026-11-15 佐藤さん）。
+      # すでにあれば何もしない。言語の値は既存の「Uncategorized」に合わせる。
+      - run: >-
+          npx wrangler d1 execute anshin-taro-web --remote --command
+          "INSERT OR IGNORE INTO taxonomies (id, name, slug, label, locale, translation_group, sort_order)
+          SELECT '01M7FXFF88AHVSNVVV0D67R2ZB', 'category', 'key-news', '鍵業界ニュース', locale, '01M7FXFF88AHVSNVVV0D67R2ZB', 4
+          FROM taxonomies WHERE name = 'category' AND slug = 'uncategorized' LIMIT 1"
       - run: npx wrangler deploy
