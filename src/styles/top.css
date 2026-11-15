@@ -526,3 +526,22 @@
 	.fa-pc .stage > .col:last-child .svc-row b { font-size: min(1.3rem, 4.6cqi); white-space: nowrap; }
 	.fa-pc .stage > .col:last-child .svc-row b wbr { display: none; }
 }
+
+/* 「左右にスワイプ」の札と、最初の一回だけ画面を少し左右に揺らす動き（2026-11-16 佐藤さん） */
+.swipe-hint { display: none; }
+@media (max-width: 1199px) {
+	.fa-sp .swipe-hint {
+		display: flex; align-items: center; gap: 6px; position: absolute; left: 50%; top: 46%; z-index: 4; margin: 0;
+		padding: 12px 20px; border-radius: 999px; background: rgb(38 38 38 / 0.8); color: #fff; font-size: 1.05rem; box-shadow: 0 6px 20px rgb(0 0 0 / 0.3); font-weight: 700; white-space: nowrap;
+		transform: translate(-50%, -50%); opacity: 0; transition: opacity 0.4s; pointer-events: none;
+	}
+	.fa-sp .swipe-hint wbr { display: none; }
+	.fa-sp .swipe-hint.show { opacity: 1; }
+	.fa-sp .swipe-hint svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+	.fa-sp .swipe-hint.show svg { animation: hint-hand 1.4s ease-in-out infinite; }
+	.fa-sp .swipe-hint .arw { font-size: 1.4rem; line-height: 1; opacity: 0.8; }
+	.fa-pc .stage.peek > * { animation: stage-peek 1.6s ease-in-out 0.3s 1; }
+}
+@keyframes hint-hand { 0%, 100% { transform: translateX(-6px); } 50% { transform: translateX(6px); } }
+@keyframes stage-peek { 0%, 100% { transform: translateX(0); } 30% { transform: translateX(-48px); } 65% { transform: translateX(48px); } }
+@media (prefers-reduced-motion: reduce) { .fa-sp .swipe-hint.show svg { animation: none; } }
