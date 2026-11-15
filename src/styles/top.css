@@ -527,7 +527,7 @@
 	.fa-pc .stage > .col:last-child .svc-row b wbr { display: none; }
 }
 
-/* 端のつまみ（左右にほかの画面があると常に分かるように）と、最初の一回だけ画面を少し左右に揺らす動き（2026-11-16 佐藤さん） */
+/* 端のつまみ（左右にほかの画面があると常に分かるように、2026-11-16 佐藤さん） */
 .fa-sp .edge { display: none; }
 @media (max-width: 1199px) {
 	.fa-sp .edge {
@@ -546,9 +546,7 @@
 	.fa-sp .edge .arw { font-size: 1.3rem; line-height: 0.8; }
 	.fa-sp .edge-l .arw { animation: edge-l 1.6s ease-in-out infinite; }
 	.fa-sp .edge-r .arw { animation: edge-r 1.6s ease-in-out infinite; }
-	.fa-pc .stage.peek > * { animation: stage-peek 1.6s ease-in-out 0.3s 1; }
 }
 @keyframes edge-l { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(-3px); } }
 @keyframes edge-r { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(3px); } }
-@keyframes stage-peek { 0%, 100% { transform: translateX(0); } 30% { transform: translateX(-48px); } 65% { transform: translateX(48px); } }
 @media (prefers-reduced-motion: reduce) { .fa-sp .edge .arw { animation: none !important; } }

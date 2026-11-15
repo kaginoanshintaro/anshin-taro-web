@@ -272,15 +272,6 @@ const dateFormat = new Intl.DateTimeFormat("ja-JP", {
 		setEdges();
 		track.addEventListener("scroll", () => requestAnimationFrame(setEdges), { passive: true });
 		edges.forEach((e) => e.addEventListener("click", () => go(cur + Number(e.dataset.dir), !matchMedia("(prefers-reduced-motion: reduce)").matches)));
-		// 最初にこのエリアを見たとき、画面を一度だけ少し左右に揺らす（2026-11-16 佐藤さん）
-		if ("IntersectionObserver" in window && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
-			const io = new IntersectionObserver((es) => {
-				if (!es[0].isIntersecting || !matchMedia("(max-width: 1199px)").matches) return;
-				io.disconnect();
-				track.classList.add("peek");
-			}, { threshold: 0.6 });
-			io.observe(document.querySelector(".fixed-area"));
-		}
 		// 佐藤のプロフィールの小窓
 		// （パソコンの丸い「佐」ボタンも同じ小窓を開く。外側を押しても閉じる）
 		const prof = document.querySelector(".fa .prof");
