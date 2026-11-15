@@ -52,14 +52,14 @@ const splitParen = (name: string) => name.split(/(（[^）]*）)/).filter(Boolea
 					<div class="pp-pay-groups">
 						<div class="pp-pay-group">
 							{paymentMethods.available.map((g) => (
-								<div class="pp-pay-row"><span class="pp-pay-kind">{g.group}</span><ul>{g.brands.map((b) => <li>{b}</li>)}</ul></div>
+								<div class="pp-pay-row"><span class="pp-pay-kind">{g.group}</span>{g.brands.length > 0 && <ul>{g.brands.map((b) => <li>{b}</li>)}</ul>}</div>
 							))}
 						</div>
 						{paymentMethods.soon.length > 0 && (
 							<div class="pp-pay-group">
 								<p class="pp-pay-label is-soon">近日対応予定</p>
 								{paymentMethods.soon.map((g) => (
-									<div class="pp-pay-row"><span class="pp-pay-kind">{g.group}</span><ul>{g.brands.map((b) => <li>{b}</li>)}</ul></div>
+									<div class="pp-pay-row"><span class="pp-pay-kind">{g.group}</span>{g.brands.length > 0 && <ul>{g.brands.map((b) => <li>{b}</li>)}</ul>}</div>
 								))}
 							</div>
 						)}
@@ -111,7 +111,7 @@ const splitParen = (name: string) => name.split(/(（[^）]*）)/).filter(Boolea
 
 					<h3>2. 鍵自体を確認する</h3>
 					<ul class="pp-check">
-						<li>グリップ部分が<strong>厚め・プラスチック製</strong><span>→</span>チップ内蔵の可能性あり</li>
+						<li>グリップ部分が<strong>厚め・プラスチック製</strong><span>→</span>イモビ内蔵の可能性あり</li>
 						<li>金属のみのシンプルな鍵<span>→</span>イモビなし</li>
 						<li>スマートキー<span>→</span>ほぼイモビあり</li>
 					</ul>
@@ -121,7 +121,7 @@ const splitParen = (name: string) => name.split(/(（[^）]*）)/).filter(Boolea
 					<table class="pp-year">
 						<tr><th>国産車</th><td>2000年代以降はほぼ標準搭載</td></tr>
 						<tr><th>輸入車</th><td>1990年代後半から搭載モデルあり</td></tr>
-						<tr><th>軽トラ・旧車</th><td>搭載されていないケースが多い</td></tr>
+						<tr><th>軽トラ・旧車・商用車</th><td>ほぼ搭載されていない（新車や上位グレードは要注意）</td></tr>
 					</table>
 					<div class="talk baby"><img src="/images/top/baby-face.webp" width="160" height="160" alt="カギベイビー" /><p>最近の車はほぼイモビライザー搭載なんだね！</p></div>
 
@@ -130,7 +130,7 @@ const splitParen = (name: string) => name.split(/(（[^）]*）)/).filter(Boolea
 						<li>車検証または取説に「イモビライザー」「盗難防止装置」の記載があれば搭載あり　※表記がない場合もあり</li>
 					</ul>
 					<div class="talk baby"><img src="/images/top/baby-face.webp" width="160" height="160" alt="カギベイビー" /><p>字を読むのがめんどくさい時ってあるよね〜！</p></div>
-					<div class="talk taro"><img src="/images/price/taro-teacher-face.webp" width="160" height="160" alt="安心太郎ちゃん" /><p>少し年式の古い車か商用車、トラックなどはイモビライザー搭載車は少ない印象だね！</p></div>
+					<div class="talk taro"><img src="/images/price/taro-teacher-face.webp" width="160" height="160" alt="安心太郎ちゃん" /><p>総括すると少し年式の古い車か商用車、トラックなどはイモビライザー搭載車は少ない印象だね！</p></div>
 				</section>
 
 				<div class="pp-cta">

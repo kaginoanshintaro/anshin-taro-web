@@ -45,7 +45,11 @@ const cancel = (label: string) => {
 };
 // 「・」は行の頭に来てしまうので、チャットでは「、」でつなぐ
 const [oitaAreas, kumamotoAreas] = site.areas.split("・熊本県一部地域").map((s) => s.replace(/・/g, "、"));
-const cards = paymentMethods.available.flatMap((g) => g.brands).join("・");
+const payGroups = paymentMethods.available
+	.filter((g) => g.brands.length > 0)
+	.map((g) => `${g.group}は${g.brands.join("・")}`)
+	.join("、");
+const hasCash = paymentMethods.available.some((g) => g.group === "現金");
 const soon = paymentMethods.soon.flatMap((g) => g.brands).join("・");
 
 export const taroGreeting = "こんにちは、安心太郎だよ！聞きたいことを下のボタンからえらんでね。";
@@ -72,7 +76,7 @@ export const taroQA: TaroQA[] = [
 		q: "キャンセル料は？",
 		words: ["キャンセル", "取り消", "やめ"],
 		a: [
-			`お見積もり以外のサービスで、佐藤が出発したあとのキャンセルはキャンセル料がかかるよ。日中（8時〜20時）は${cancel("日中")}、深夜早朝（20時〜8時）は${cancel("深夜早朝")}だよ。`,
+			`佐藤が出発したあとのキャンセルはキャンセル料がかかるよ。日中（8時〜20時）は${cancel("日中")}、深夜早朝（20時〜8時）は${cancel("深夜早朝")}だよ。`,
 			"[[料金ページの注意を見る|/price/]]",
 		],
 	},
@@ -106,7 +110,7 @@ export const taroQA: TaroQA[] = [
 		q: "合鍵を作りたい",
 		words: ["合鍵", "スペア", "コピー", "複製", "ディンプル"],
 		a: [
-			`元になる純正の鍵を持ってきてね。標準キー（ギザギザの鍵）は${row("duplicate", "標準キー（ギザギザの鍵）")}、ディンプルキーは${row("duplicate", "ディンプルキー（くぼみのある鍵）")}だよ。`,
+			`元になる純正の鍵をお預かりして作るよ。標準キー（ギザギザの鍵）は${row("duplicate", "標準キー（ギザギザの鍵）")}、ディンプルキーは${row("duplicate", "ディンプルキー（くぼみのある鍵）")}だよ。`,
 			"純正ではない鍵からは、精度が悪くなるので基本お断りしているよ。特殊な鍵は日数がかかることもあるから、急ぐときは先に聞いてね。",
 			"[[鍵の作成を見る|/duplicate/]]",
 		],
@@ -138,8 +142,8 @@ export const taroQA: TaroQA[] = [
 		id: "pay",
 		face: "point",
 		q: "支払い方法は？",
-		words: ["支払", "カード", "クレジット", "電子マネー", "決済", "払"],
-		a: [`クレジットカードは${cards}が使えるよ。${soon}は、いま使えるように準備しているところだよ。`, "[[料金ページの支払い方法を見る|/price/#payment]]"],
+		words: ["支払", "現金", "カード", "クレジット", "電子マネー", "決済", "払"],
+		a: [`${hasCash ? "現金のほか、" : ""}${payGroups}が使えるよ。${soon ? `${soon}は、いま使えるように準備しているところだよ。` : ""}`, "[[料金ページの支払い方法を見る|/price/#payment]]"],
 		next: ["price"],
 	},
 	{

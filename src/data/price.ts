@@ -153,8 +153,8 @@ export const priceSections: PriceSection[] = [
 		short: "合鍵の作成",
 		image: img("duplicate"),
 		body: [
-			"合鍵の作成はコピーする純正の鍵をお持ちいただいて、その鍵を元に合鍵を作成します。",
-			"お持ちいただいた鍵が純正の鍵でない場合は精度が悪くなるため、基本的には合鍵の作成をお断りさせていただいております。",
+			"合鍵の作成はコピーする純正の鍵をお預かりして、その鍵を元に合鍵を作成します。",
+			"お預かりした鍵が純正の鍵でない場合は精度が悪くなるため、基本的には合鍵の作成をお断りさせていただいております。",
 			"ディンプルキーやウェーブキーなど特殊キーの複製も可能ですが、品番によってはお渡しまでに日数がかかる場合もありますのでお急ぎの際は事前にご確認ください。",
 			"また、作った合鍵が回らない、回りにくい場合がございます。その際は再度調整しますのでお早めにお持ちください。",
 		],
@@ -221,6 +221,7 @@ export const paymentMethods: {
 	soon: { group: string; brands: string[] }[];
 } = {
 	available: [
+		{ group: "現金", brands: [] },
 		{
 			group: "クレジットカード",
 			brands: ["Visa", "Mastercard", "JCB", "American Express", "Diners Club", "Discover", "銀聯（UnionPay）"],
