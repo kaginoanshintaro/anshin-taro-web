@@ -210,8 +210,7 @@ const dateFormat = new Intl.DateTimeFormat("ja-JP", {
 			</div>
 
 			<nav class="dock">
-				<!-- 右の画面の光る電話ボタンをここにまとめた（2026-11-16 佐藤さん） -->
-				<a class="tel-icon btn-tel" href={site.tel.href} aria-label={`電話する ${site.tel.label}`}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg><span class="tel-txt"><b>電話で見積もりOK</b><small>24H受付</small></span></a>
+				<a class="tel-icon" href={site.tel.href} aria-label={`電話する ${site.tel.label}`}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg></a>
 				<span class="sp-dots" role="tablist" aria-label="画面の切り替え（左右にスワイプでも切り替わります）">
 					<button type="button" data-to="0" aria-label="記事と予定"></button>
 					<button type="button" data-to="1" aria-label="安心太郎ちゃん" aria-current="true"></button>
