@@ -68,6 +68,7 @@
 .pp-pay-label { display: inline-block; margin: 0 0 8px; padding: 2px 12px; border-radius: 999px; font-size: 0.78rem; font-weight: bold; line-height: 1.7; }
 .pp-pay-label.is-now { background: var(--accent); color: var(--white); }
 .pp-pay-label.is-soon { background: var(--gray-100); color: var(--gray-700); border: 1px solid var(--gray-200); }
+.pp-pay-group > .pp-pay-row:first-child { border-top: 0; padding-top: 0; }
 .pp-pay-row { display: flex; align-items: baseline; gap: 10px; padding: 6px 0; border-top: 1px dashed var(--gray-200); }
 .pp-pay-kind { flex: none; min-width: 8.5em; white-space: nowrap; font-size: 0.82rem; font-weight: bold; color: var(--heading); }
 .pp-pay-row ul { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }

@@ -34,7 +34,7 @@ export const priceNotes = {
 		{ strong: "出張料・税込み", rest: "の金額です" },
 		{ strong: "", rest: "料金項目にない場合などご不明点はお気軽にお問い合わせください。" },
 		{ strong: "深夜早朝は＋3,300円", rest: "の料金となります。(pm20:00〜am8:00)" },
-		{ strong: "", rest: "お見積もり以外のサービスについては出発してからのキャンセルは", strong2: "キャンセル料", tail: "が発生いたします。" },
+		{ strong: "", rest: "出動後のキャンセルは", strong2: "キャンセル料", tail: "が発生いたします。" },
 	] as { strong: string; rest: string; strong2?: string; tail?: string }[],
 	cancelFees: [
 		{ label: "日中（8:00〜20:00）", price: "5,500円" },

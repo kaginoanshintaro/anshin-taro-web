@@ -51,7 +51,6 @@ const splitParen = (name: string) => name.split(/(（[^）]*）)/).filter(Boolea
 					<h2 id="pp-pay-title">お支払い方法</h2>
 					<div class="pp-pay-groups">
 						<div class="pp-pay-group">
-							<p class="pp-pay-label is-now">ご利用いただけます</p>
 							{paymentMethods.available.map((g) => (
 								<div class="pp-pay-row"><span class="pp-pay-kind">{g.group}</span><ul>{g.brands.map((b) => <li>{b}</li>)}</ul></div>
 							))}
