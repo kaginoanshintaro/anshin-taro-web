@@ -22,7 +22,7 @@ const { title, pageTitle, description, image, canonical, content, hideFooter = f
 const settingsResult = await getSiteSettingsWithCacheHint();
 if (Astro.cache?.enabled) Astro.cache.set(settingsResult.cacheHint);
 
-const fullTitle = title === site.name ? title : `${title} | ${site.name}`;
+const fullTitle = title === site.name || title.endsWith(` | ${site.name}`) ? title : `${title} | ${site.name}`;
 const pageDescription = description ?? site.tagline;
 
 const pageCtx = createPublicPageContext({

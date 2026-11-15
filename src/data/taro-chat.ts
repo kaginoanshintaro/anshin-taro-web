@@ -132,9 +132,10 @@ export const taroQA: TaroQA[] = [
 		id: "place",
 		face: "hello",
 		q: "お店の場所",
-		words: ["住所", "店", "場所", "アクセス", "地図", "どこ"],
+		words: ["住所", "店", "場所", "アクセス", "地図", "どこ", "営業時間", "定休", "休み", "何時"],
 		a: [
 			`お店は〒${site.postalCode} ${site.addressLine}だよ。`,
+			`お店が開いているのは${site.shopHours}で、${site.closedDay}はお休みだよ（祝日などで休むこともあるよ）。電話は24時間受け付けているよ。`,
 			"[[会社概要・アクセスを見る|/profile/]]",
 		],
 	},
