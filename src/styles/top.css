@@ -477,6 +477,27 @@
 	/* 「5つのポイント」バナーは小さいと読めないので、スマホでは1行使う（佐・インスタはその下に並べる） */
 	.fa-pc .small-row { grid-template-columns: 1fr 1fr; }
 	.fa-pc .small-row > .kagiya-check { grid-column: 1 / -1; height: auto; }
+	/* 真ん中（太郎ちゃん）の画面は縦スクロールさせず、1画面に収める。会社情報はスマホでは出さない（2026-11-16 佐藤さん） */
+	.fa-pc .stage > .center { overflow: hidden; display: flex; flex-direction: column; gap: 0; padding-bottom: 96px; }
+	.fa-pc .stage > .center > .company { display: none; }
+	.fa-pc .stage > .center > .chat { flex: 1 1 auto !important; min-height: 0; padding: 8px 4px 0; gap: 8px; }
+	.fa-pc .center .chat-head-label { padding: 6px 14px; }
+	.fa-pc .center .chat-name { font-size: 1.1rem; }
+	.fa-pc .center .chat-sub { font-size: 0.72rem; }
+	.fa-pc .center .chat-body { grid-template-columns: minmax(0, 120px) 1fr; }
+	.fa-pc .center .taro { width: 100%; max-height: 100%; object-fit: contain; align-self: center; }
+	.fa-pc .center .chips { flex: none; gap: 6px; }
+	.fa-pc .center .chip { padding: 4px 10px; font-size: 0.8rem; }
+	.fa-pc .center .input { flex: none; }
+	/* 画面の中でスクロールが端まで行ったら、そのままページ全体が動くようにする（指で上に戻りやすく） */
+	.fa-pc .stage > * { overscroll-behavior-y: auto; }
+	.fa .taro-chat .msgs { overscroll-behavior: auto; }
+}
+/* 画面の低いスマホ（iPhone SE など）: 質問のボタンが多いので、太郎ちゃんの見出しの説明文と入力欄を省く */
+@media (max-width: 1199px) and (max-height: 620px) {
+	.fa-pc .center .chat-sub { display: none; }
+	.fa-pc .center .input { display: none; }
+	.fa-pc .center .chip { padding: 3px 9px; font-size: 0.76rem; }
 }
 /* 佐藤の予定（Googleカレンダーの「予定あり」だけ、2026-11-15）: 枠が細いので文字は入れず、茶色の帯と見出しの凡例で示す */
 .fa-pc .cal .busy { background: var(--color-brown); min-height: 3px; }

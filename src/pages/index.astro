@@ -354,7 +354,8 @@ const dateFormat = new Intl.DateTimeFormat("ja-JP", {
 	}
 
 	/* ここから下は固定背景エリア。部品の見た目は src/styles/top.css */
-	:global(html) { scroll-snap-type: y proximity; }
+	/* PCだけ、固定背景エリアの頭にピタッと止める。スマホは上に戻ろうとしても引き戻されて指で上がりにくいので止めない（2026-11-16 佐藤さん） */
+	@media (min-width: 1200px) { :global(html) { scroll-snap-type: y proximity; } }
 	/* 高さはブラウザのバーが引っ込んだときの大きさ（lvh）。svh だとバーが引っ込んだとき上が欠けて上の段落が見えてしまう（iPhone の Chrome、2026-10-26） */
 	.fixed-area { position: relative; height: 100vh; height: 100lvh; padding-top: var(--header-h); clip-path: inset(0); scroll-snap-align: start; }
 	/* 写真は画面に固定（新しい背景は佐藤さんが用意予定。今は作業風景の写真） */
