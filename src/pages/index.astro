@@ -209,8 +209,9 @@ const dateFormat = new Intl.DateTimeFormat("ja-JP", {
 				</div>
 			</div>
 
-			<!-- 最初に見たとき「左右にスワイプできる」と知らせる（2026-11-16 佐藤さん）。一度スワイプしたら次からは出さない -->
-			<p class="swipe-hint" aria-hidden="true"><span class="arw">‹</span><svg viewBox="0 0 24 24"><path d="M9 11V5.5a1.5 1.5 0 0 1 3 0V11m0-1.5a1.5 1.5 0 0 1 3 0V11m0-.5a1.5 1.5 0 0 1 3 0V15a6 6 0 0 1-6 6h-1a6 6 0 0 1-4.6-2.2L4 15.5a1.5 1.5 0 0 1 2.3-1.9L9 16"/></svg>左右にスワイプ<span class="arw">›</span></p>
+			<!-- 左右にほかの画面があることを常に知らせる端のつまみ（2026-11-16 佐藤さん）。押してもその画面へ移る -->
+			<button class="edge edge-l" type="button" data-dir="-1"><span class="arw" aria-hidden="true">‹</span><span class="lbl">記事・予定</span></button>
+			<button class="edge edge-r" type="button" data-dir="1"><span class="lbl">サービス</span><span class="arw" aria-hidden="true">›</span></button>
 			<nav class="dock">
 				<a class="tel-icon" href={site.tel.href} aria-label={`電話する ${site.tel.label}`}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg></a>
 				<span class="sp-dots" role="tablist" aria-label="画面の切り替え（左右にスワイプでも切り替わります）">
@@ -254,23 +255,29 @@ const dateFormat = new Intl.DateTimeFormat("ja-JP", {
 		let cur = 1;
 		track.addEventListener("scroll", () => { cur = Math.round(track.scrollLeft / track.clientWidth); }, { passive: true });
 		addEventListener("resize", () => go(cur, false));
-		// 最初にこのエリアを見たとき、画面を少し左右に揺らして「スワイプできる」の札を出す（2026-11-16 佐藤さん）。
-		// 一度でも左右に動かしたら、次に来たときからは出さない
-		const hint = sp.querySelector(".swipe-hint");
-		let seen = false;
-		try { seen = localStorage.getItem("swipeHintDone") === "1"; } catch (e) {}
-		const done = () => {
-			hint.classList.remove("show");
-			try { localStorage.setItem("swipeHintDone", "1"); } catch (e) {}
+		// 端のつまみ: 今の画面の左右にある画面の名前を出す。端の画面では外側のつまみを隠す
+		const names = ["記事・予定", "太郎ちゃん", "サービス"];
+		const edges = [...sp.querySelectorAll(".edge")];
+		const setEdges = () => {
+			edges.forEach((e) => {
+				const to = cur + Number(e.dataset.dir);
+				e.hidden = to < 0 || to > 2;
+				if (!e.hidden) {
+					// 縦書き（writing-mode）は端末によって字が重なるので、1文字ずつ縦に積む。長音「ー」は90度回す
+					e.querySelector(".lbl").innerHTML = [...names[to]].map((c) => (c === "ー" ? `<i class="cho">ー</i>` : `<i>${c}</i>`)).join("");
+					e.setAttribute("aria-label", `${names[to]}の画面へ`);
+				}
+			});
 		};
-		if (!seen && "IntersectionObserver" in window) {
-			track.addEventListener("scroll", () => { if (cur !== 1) done(); }, { passive: true });
+		setEdges();
+		track.addEventListener("scroll", () => requestAnimationFrame(setEdges), { passive: true });
+		edges.forEach((e) => e.addEventListener("click", () => go(cur + Number(e.dataset.dir), !matchMedia("(prefers-reduced-motion: reduce)").matches)));
+		// 最初にこのエリアを見たとき、画面を一度だけ少し左右に揺らす（2026-11-16 佐藤さん）
+		if ("IntersectionObserver" in window && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
 			const io = new IntersectionObserver((es) => {
 				if (!es[0].isIntersecting || !matchMedia("(max-width: 1199px)").matches) return;
 				io.disconnect();
-				hint.classList.add("show");
-				if (!matchMedia("(prefers-reduced-motion: reduce)").matches) track.classList.add("peek");
-				setTimeout(() => hint.classList.remove("show"), 4500);
+				track.classList.add("peek");
 			}, { threshold: 0.6 });
 			io.observe(document.querySelector(".fixed-area"));
 		}

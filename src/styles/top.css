@@ -527,21 +527,28 @@
 	.fa-pc .stage > .col:last-child .svc-row b wbr { display: none; }
 }
 
-/* 「左右にスワイプ」の札と、最初の一回だけ画面を少し左右に揺らす動き（2026-11-16 佐藤さん） */
-.swipe-hint { display: none; }
+/* 端のつまみ（左右にほかの画面があると常に分かるように）と、最初の一回だけ画面を少し左右に揺らす動き（2026-11-16 佐藤さん） */
+.fa-sp .edge { display: none; }
 @media (max-width: 1199px) {
-	.fa-sp .swipe-hint {
-		display: flex; align-items: center; gap: 6px; position: absolute; left: 50%; top: 46%; z-index: 4; margin: 0;
-		padding: 12px 20px; border-radius: 999px; background: var(--color-brown); color: #fff; font-size: 1.05rem; box-shadow: 0 6px 20px rgb(0 0 0 / 0.3); font-weight: 700; white-space: nowrap;
-		transform: translate(-50%, -50%); opacity: 0; transition: opacity 0.4s; pointer-events: none;
+	.fa-sp .edge {
+		position: absolute; top: 50%; z-index: 4; display: flex; flex-direction: column; align-items: center; gap: 4px;
+		width: 28px; padding: 10px 0; border: 0; background: var(--color-brown); color: #fff; cursor: pointer;
+		font: inherit; font-size: 0.78rem; font-weight: 700; line-height: 1; pointer-events: auto;
+		box-shadow: 0 3px 10px rgb(0 0 0 / 0.3); transform: translateY(-50%); opacity: 0.88;
 	}
-	.fa-sp .swipe-hint wbr { display: none; }
-	.fa-sp .swipe-hint.show { opacity: 1; }
-	.fa-sp .swipe-hint svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-	.fa-sp .swipe-hint.show svg { animation: hint-hand 1.4s ease-in-out infinite; }
-	.fa-sp .swipe-hint .arw { font-size: 1.4rem; line-height: 1; opacity: 0.8; }
+	.fa-sp .edge[hidden] { display: none; }
+	.fa-sp .edge-l { left: 0; border-radius: 0 12px 12px 0; }
+	.fa-sp .edge-r { right: 0; border-radius: 12px 0 0 12px; }
+	.fa-sp .edge .lbl { display: flex; flex-direction: column; align-items: center; line-height: 1.15; }
+	.fa-sp .edge .lbl i { font-style: normal; display: block; }
+	.fa-sp .edge .lbl .cho { transform: rotate(90deg); }
+	.fa-sp .edge .lbl wbr { display: none; }
+	.fa-sp .edge .arw { font-size: 1.3rem; line-height: 0.8; }
+	.fa-sp .edge-l .arw { animation: edge-l 1.6s ease-in-out infinite; }
+	.fa-sp .edge-r .arw { animation: edge-r 1.6s ease-in-out infinite; }
 	.fa-pc .stage.peek > * { animation: stage-peek 1.6s ease-in-out 0.3s 1; }
 }
-@keyframes hint-hand { 0%, 100% { transform: translateX(-6px); } 50% { transform: translateX(6px); } }
+@keyframes edge-l { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(-3px); } }
+@keyframes edge-r { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(3px); } }
 @keyframes stage-peek { 0%, 100% { transform: translateX(0); } 30% { transform: translateX(-48px); } 65% { transform: translateX(48px); } }
-@media (prefers-reduced-motion: reduce) { .fa-sp .swipe-hint.show svg { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .fa-sp .edge .arw { animation: none !important; } }
