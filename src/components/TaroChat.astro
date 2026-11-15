@@ -1,0 +1,180 @@
+---
+/**
+ * トップの固定背景エリアの「安心太郎ちゃん」チャット（Q&A のテンプレート型）。PC版とスマホ版で同じものを使う。
+ * 質問と答えは src/data/taro-chat.ts。答えの文はここで HTML に書いておき（隠しておく）、
+ * ボタンが押されたら JS で吹き出しに写す。こうするとサーバーで文節の切れ目（<wbr>）が入るので、
+ * JS で入れる日本語でも単語の途中で改行されない（src/utils/phrase-break.ts）。
+ * 入力欄の文字はどこにも送らない。ブラウザの中で質問のキーワードを探すだけ。
+ */
+import { taroGreeting, taroMenu, taroNoMatch, taroOtherFaces, taroQA } from "../data/taro-chat";
+import "../styles/taro-chat.css";
+
+interface Props {
+	variant: "pc" | "sp";
+}
+const { variant } = Astro.props;
+
+const esc = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+// [[文字|/path/]] をリンクのボタンにする。外のサイト（LINE）は新しいタブで開く
+const toHtml = (p: string) =>
+	esc(p).replace(/\[\[(.+?)\|(.+?)\]\]/g, (_, text: string, href: string) => {
+		const ext = /^https?:/.test(href) ? ' target="_blank" rel="noopener"' : "";
+		return `<a class="qa-link" href="${href}"${ext}>${text}</a>`;
+	});
+const isLinks = (p: string) => /^(\s*\[\[.+?\]\]\s*)+$/.test(p);
+const qaJson = JSON.stringify(taroQA.map(({ id, q, next, words, face }) => ({ id, q, next: next ?? null, words, face })));
+---
+
+<section class="panel chat taro-chat" data-menu={taroMenu.join(" ")} data-qa={qaJson} data-faces={JSON.stringify(taroOtherFaces)} aria-label="安心太郎ちゃんに質問する">
+	{variant === "pc" ? (
+		<div class="chat-head-label">
+			<p class="chat-name">安心太郎ちゃん</p>
+			<p class="chat-sub">サイトの案内と、よくある質問に答えるよ</p>
+		</div>
+	) : (
+		<div>
+			<p class="chat-name">安心太郎ちゃん</p>
+		</div>
+	)}
+	<div class="chat-body">
+		<img loading={variant === "pc" ? "lazy" : undefined} decoding="async" class="taro" src="/images/top/taro-walk.webp" width="624" height="1000" alt="安心太郎ちゃん" />
+		<div class="msgs" aria-live="polite">
+			<div class="msg bot"><div class="bubble">{taroGreeting}</div></div>
+		</div>
+	</div>
+	<div class="chips" role="group" aria-label="質問をえらぶ">
+		{taroMenu.map((id) => <button class="chip" type="button" data-q={id}>{taroQA.find((x) => x.id === id)!.q}</button>)}
+	</div>
+	<form class="input" role="search">
+		<input type="text" name="q" enterkeyhint="search" autocomplete="off" maxlength="40" placeholder={variant === "pc" ? "キーワードで質問をさがす（例: 合鍵）" : "キーワードでさがす"} aria-label="キーワードで質問をさがす" />
+		<button class="send" type="submit" aria-label="さがす"><svg class="padlock" viewBox="0 0 24 24" aria-hidden="true"><path class="shackle" d="M8 11V8a4 4 0 0 1 8 0v3" /><rect x="5.5" y="11" width="13" height="9" rx="2" /><circle class="keyhole" cx="12" cy="15.5" r="1.4" /></svg></button>
+	</form>
+	<div class="qa-store" hidden>
+		{taroQA.map((x) => (
+			<div data-a={x.id}>{x.a.map((p) => <p class={isLinks(p) ? "qa-links" : undefined} set:html={toHtml(p)} />)}</div>
+		))}
+		<div data-a="nomatch"><p>{taroNoMatch}</p></div>
+		<div data-a="found"><p>この中にあるかな？ボタンをえらんでね。</p></div>
+		<div data-a="menu"><p>ほかに聞きたいことはあるかな？</p></div>
+	</div>
+</section>
+
+<script>
+	// 質問のボタンを押すと、隠してある答えを吹き出しにして出す。次の質問のボタンに入れ替える
+	document.querySelectorAll<HTMLElement>(".taro-chat").forEach((chat) => {
+		const msgs = chat.querySelector<HTMLElement>(".msgs")!;
+		const chips = chat.querySelector<HTMLElement>(".chips")!;
+		const form = chat.querySelector<HTMLFormElement>(".input")!;
+		const store = chat.querySelector<HTMLElement>(".qa-store")!;
+		const qa: { id: string; q: string; next: string[] | null; words: string[]; face: string }[] = JSON.parse(chat.dataset.qa!);
+		const otherFaces: Record<string, string> = JSON.parse(chat.dataset.faces!);
+		const taro = chat.querySelector<HTMLImageElement>(".taro")!;
+		// 表情の絵は、チャットに触れたときに先に読み込んでおく（ページを開いたときの表示を遅くしないため）
+		let preloaded = false;
+		const preload = () => {
+			if (preloaded) return;
+			preloaded = true;
+			new Set([...qa.map((x) => x.face), ...Object.values(otherFaces)]).forEach((f) => { new Image().src = `/images/top/taro-${f}.webp`; });
+		};
+		chat.addEventListener("pointerenter", preload, { once: true });
+		chat.addEventListener("touchstart", preload, { once: true, passive: true });
+		chat.addEventListener("focusin", preload, { once: true });
+		// 答えに合わせて太郎ちゃんの表情を替える（絵はどれも同じ大きさ・同じ足元の位置）
+		const setFace = (face: string | undefined) => {
+			if (!face) return;
+			const src = `/images/top/taro-${face}.webp`;
+			if (taro.getAttribute("src") === src) return;
+			taro.src = src;
+			taro.classList.remove("face-pop");
+			void taro.offsetWidth;
+			taro.classList.add("face-pop");
+		};
+		const menu = chat.dataset.menu!.split(" ");
+		const byId = new Map(qa.map((x) => [x.id, x]));
+
+		const add = (who: "bot" | "user", content: Node | string) => {
+			const m = document.createElement("div");
+			m.className = `msg ${who}`;
+			const b = document.createElement("div");
+			b.className = "bubble";
+			// append() は Cloudflare の型（HTMLRewriter）と混ざって型エラーになるので appendChild を使う
+			b.appendChild(typeof content === "string" ? document.createTextNode(content) : content);
+			m.appendChild(b);
+			msgs.appendChild(m);
+			// 古い吹き出しは消す（上へスクロールすれば少し前までは読める）
+			while (msgs.children.length > 12) msgs.firstElementChild!.remove();
+			// 答えの頭が見えるところまでスクロール（長い答えでも1行目から読めるように）
+			requestAnimationFrame(() => {
+				// 上の 30px は薄く消える（top.css の mask）ので、その下から読めるようにする
+				const top = msgs.scrollTop + m.getBoundingClientRect().top - msgs.getBoundingClientRect().top - 30;
+				msgs.scrollTo({ top: Math.max(0, top), behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+			});
+			return m;
+		};
+		const answer = (key: string) => {
+			const src = store.querySelector(`[data-a="${key}"]`);
+			if (src) add("bot", fragment(src));
+			setFace(byId.get(key)?.face ?? otherFaces[key]);
+		};
+		const fragment = (src: Element) => {
+			const f = document.createDocumentFragment();
+			src.childNodes.forEach((n) => f.append(n.cloneNode(true)));
+			return f;
+		};
+		const setChips = (ids: string[], withMenu: boolean) => {
+			chips.replaceChildren(
+				...ids.filter((id) => byId.has(id)).map((id) => chip(id, byId.get(id)!.q)),
+				...(withMenu ? [chip("__menu", "ほかの質問")] : []),
+			);
+			chips.scrollLeft = 0;
+		};
+		const chip = (id: string, label: string) => {
+			const b = document.createElement("button");
+			b.type = "button";
+			b.className = id === "__menu" ? "chip chip-back" : "chip";
+			b.dataset.q = id;
+			b.textContent = label;
+			return b;
+		};
+		// 太郎ちゃんのパトロールのあいさつは、質問が始まったら止める（index.astro）
+		const started = () => { chat.classList.add("qa-started"); chat.classList.remove("walking"); };
+
+		chips.addEventListener("click", (e) => {
+			const b = (e.target as Element).closest<HTMLButtonElement>("button[data-q]");
+			if (!b) return;
+			started();
+			const id = b.dataset.q!;
+			if (id === "__menu") {
+				add("user", "ほかの質問");
+				answer("menu");
+				setChips(menu, false);
+				return;
+			}
+			const x = byId.get(id);
+			if (!x) return;
+			add("user", x.q);
+			answer(x.id);
+			setChips(x.next ?? [], true);
+		});
+
+		// 入力欄: 文字を送らず、キーワードに合う質問のボタンを出すだけ
+		form.addEventListener("submit", (e) => {
+			e.preventDefault();
+			const input = form.elements.namedItem("q") as HTMLInputElement;
+			const text = input.value.trim();
+			if (!text) return;
+			started();
+			input.value = "";
+			input.blur();
+			add("user", text);
+			const hits = qa.filter((x) => x.words.some((w) => text.includes(w)) || text.includes(x.q));
+			if (hits.length) {
+				answer("found");
+				setChips(hits.slice(0, 4).map((x) => x.id), true);
+			} else {
+				answer("nomatch");
+				setChips(["hurry"], true);
+			}
+		});
+	});
+</script>

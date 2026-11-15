@@ -1,0 +1,73 @@
+/*
+ * 会社概要・アクセス（/profile/）
+ * 色と見出しの形は料金ページ（price.css）と同じ。パソコン版を先に作る。
+ */
+
+.profile-page { padding-bottom: 24px; }
+
+/*
+ * 見出しのフォント: しっぽり明朝（太字）から、このページの見出しの文字だけを取り出した小さいファイル（約3KB）。
+ * サイト共通のしっぽり明朝のファイルは読みに行かない。見出しの文字を変えたら scripts/make-profile-font.py を実行し直す。
+ */
+@font-face {
+	font-family: "Profile Headings";
+	font-style: normal;
+	font-weight: 700;
+	font-display: swap;
+	src: url("/fonts/profile-headings.woff2") format("woff2");
+}
+.profile-page h1, .profile-page h2 { font-family: "Profile Headings", var(--font-serif); }
+
+/* ページの見出し（料金ページと同じ細い帯） */
+.pf-head { padding: 12px 0; border-bottom: 1px solid var(--line); background: var(--white); }
+.pf-head .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; max-width: 1200px; }
+.pf-crumb { font-size: 0.8rem; color: var(--muted); }
+.pf-crumb a { color: var(--muted); text-decoration: none; }
+.pf-crumb span { margin: 0 8px; }
+.pf-head h1 { margin: 0; padding-left: 16px; border-left: 5px solid var(--accent); font-size: 1.6rem; line-height: 1.4; color: var(--heading); letter-spacing: 0.08em; }
+
+/* 写真2枚と表を同じ幅にそろえて中央に置く */
+.pf-body { max-width: 760px; margin-top: 40px; display: grid; gap: 32px; }
+
+/* 外観と地図: 今の半分くらいの大きさで横並び。枠の高さをそろえ、地図は切らずに収める */
+.pf-photos { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.pf-photos figure { margin: 0; }
+.pf-frame { display: block; aspect-ratio: 3 / 2; overflow: hidden; border-radius: 16px; background: var(--white); box-shadow: 0 2px 14px rgb(38 38 38 / 0.08); }
+.pf-frame img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.pf-map { border: 1px solid var(--line); box-shadow: none; }
+.pf-map img { object-fit: contain; padding: 6px; transition: transform 0.2s; }
+.pf-map:hover img { transform: scale(1.03); }
+.pf-photos figcaption { margin-top: 8px; text-align: center; font-size: 0.85rem; color: var(--gray-700); }
+.pf-photos figcaption span { font-size: 0.78rem; color: var(--muted); }
+
+/* 会社概要の表 */
+.pf-card { padding: 32px 40px 36px; border-radius: var(--radius); background: var(--white); box-shadow: 0 2px 14px rgb(38 38 38 / 0.06); }
+.pf-card h2 { margin: 0 0 20px; padding-left: 16px; border-left: 5px solid var(--accent); font-size: 1.45rem; line-height: 1.5; color: var(--heading); letter-spacing: 0.06em; }
+.pf-table { margin: 0; border-top: 2px solid var(--color-brown-light); }
+.pf-table > div { display: grid; grid-template-columns: 140px minmax(0, 1fr); gap: 20px; padding: 14px 12px; border-bottom: 1px solid var(--gray-200); }
+.pf-table > div:nth-child(even) { background: var(--color-cream); }
+.pf-table dt { font-weight: bold; color: var(--heading); font-size: 0.95rem; line-height: 1.75; }
+.pf-table dd { margin: 0; font-size: 0.95rem; line-height: 1.75; color: var(--gray-900); overflow-wrap: anywhere; }
+.pf-maplink { display: table; margin-top: 6px; padding: 2px 12px; border: 1px solid var(--color-brown-light); border-radius: 999px; font-size: 0.8rem; line-height: 1.6; color: var(--color-brown); text-decoration: none; background: var(--white); white-space: nowrap; }
+.pf-maplink:hover { border-color: var(--accent); color: var(--accent-dark); }
+
+/* 一番下のボタン（料金ページと同じ） */
+.pf-cta { display: flex; justify-content: center; }
+.pf-cta a { display: inline-flex; align-items: center; justify-content: center; min-width: 240px; padding: 12px 24px; border-radius: 999px; font-weight: bold; text-decoration: none; line-height: 1.4; }
+.pf-cta-home { border: 2px solid var(--color-brown-light); color: var(--color-brown); background: var(--white); font-size: 1rem; }
+
+/* スマホ: パソコン版を元に、写真は横並びのまま幅いっぱい、表は項目名を上に */
+@media (max-width: 767px) {
+	.pf-head .wrap { flex-direction: column; align-items: flex-start; gap: 4px; }
+	.pf-head h1 { font-size: 1.3rem; }
+	.pf-body { margin-top: 20px; gap: 24px; }
+	.pf-photos { gap: 10px; }
+	.pf-frame { border-radius: 12px; }
+	.pf-map img { padding: 3px; }
+	.pf-photos figcaption { font-size: 0.78rem; }
+	.pf-photos figcaption span { display: block; font-size: 0.7rem; }
+	.pf-card { padding: 22px 16px 24px; }
+	.pf-card h2 { font-size: 1.2rem; }
+	.pf-table > div { grid-template-columns: 1fr; gap: 2px; padding: 12px 8px; }
+	.pf-table dt { font-size: 0.85rem; }
+}

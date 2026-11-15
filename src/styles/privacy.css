@@ -1,0 +1,86 @@
+/*
+ * プライバシーポリシー（/privacy-policy/）
+ * 見出しの帯・左のメニュー・白いカードは料金ページ（price.css）と同じ形。パソコン版を先に作る。
+ * 利用規約（/terms/、src/pages/terms.astro）も同じ形なのでこのファイルを使う。tm- で始まるものは利用規約だけのもの。
+ */
+
+.privacy-page { padding-bottom: 24px; }
+
+/* ページの見出し（料金ページと同じ細い帯） */
+.pv-head { padding: 12px 0; border-bottom: 1px solid var(--line); background: var(--white); }
+.pv-head .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; max-width: 1100px; }
+.pv-crumb { font-size: 0.8rem; color: var(--muted); }
+.pv-crumb a { color: var(--muted); text-decoration: none; }
+.pv-crumb span { margin: 0 8px; }
+.pv-head h1 { margin: 0; padding-left: 16px; border-left: 5px solid var(--accent); font-size: 1.6rem; line-height: 1.4; color: var(--heading); letter-spacing: 0.08em; }
+
+/* 左に目次、右に本文 */
+.pv-layout { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: clamp(24px, 2.5vw, 32px); align-items: start; max-width: 1100px; }
+/* .wrap（Base.astro）の margin: 0 auto に負けないよう、ページ名を付けて上の余白を指定 */
+.privacy-page .pv-layout { margin-top: 40px; }
+
+.pv-side { position: sticky; top: calc(var(--header-h) + 24px); }
+.pv-toc { padding: 20px 18px; border-radius: var(--radius); background: var(--white); border: 1px solid var(--line); }
+.pv-toc-title { margin: 0 0 8px; font-family: var(--font-serif); font-weight: 700; color: var(--heading); list-style: none; cursor: default; }
+.pv-toc-title::-webkit-details-marker { display: none; }
+.pv-toc ol { list-style: none; margin: 0; padding: 0; counter-reset: toc; }
+.pv-toc li a { display: flex; gap: 10px; padding: 6px 4px; border-bottom: 1px dashed var(--gray-200); font-size: 0.85rem; line-height: 1.5; color: var(--gray-900); text-decoration: none; }
+.pv-toc li a::before { counter-increment: toc; content: counter(toc, decimal-leading-zero); color: var(--accent); font-weight: bold; font-size: 0.78rem; padding-top: 1px; }
+.pv-toc li:last-child a { border-bottom: 0; }
+.pv-toc li a:hover { color: var(--accent-dark); }
+
+/* 本文は白いカード1枚に、項目ごとの見出し */
+.pv-card { min-width: 0; padding: 36px 44px 40px; border-radius: var(--radius); background: var(--white); box-shadow: 0 2px 14px rgb(38 38 38 / 0.06); }
+.pv-card section { scroll-margin-top: calc(var(--header-h) + 20px); }
+.pv-card section + section { margin-top: 36px; padding-top: 32px; border-top: 1px solid var(--gray-200); }
+.pv-card h2 { margin: 0 0 14px; padding-left: 16px; border-left: 5px solid var(--accent); font-size: 1.3rem; line-height: 1.5; color: var(--heading); letter-spacing: 0.06em; }
+.pv-card p { margin: 0 0 0.7em; font-size: 0.93rem; line-height: 1.95; color: var(--gray-900); }
+.pv-card p:last-child { margin-bottom: 0; }
+.pv-card a { color: var(--accent-dark); overflow-wrap: anywhere; }
+.pv-card ul { margin: 4px 0 0.9em; padding: 14px 20px 14px 2.2em; border-radius: 12px; background: var(--color-cream); font-size: 0.93rem; line-height: 1.9; color: var(--gray-900); }
+.pv-card ul:last-child { margin-bottom: 0; }
+.pv-card li::marker { color: var(--accent); }
+
+/* 利用規約: 前書き・項目番号・制定日 */
+.tm-intro { margin-bottom: 32px; padding: 18px 22px; border-radius: 12px; background: var(--color-cream); }
+.tm-num { margin-right: 0.5em; color: var(--accent); }
+.pv-card .tm-enacted { margin-top: 36px; padding-top: 20px; border-top: 1px solid var(--gray-200); text-align: right; font-size: 0.85rem; color: var(--muted); }
+
+/* 一番下のボタン（料金ページと同じ） */
+.pv-cta { display: flex; justify-content: center; margin-top: 32px; }
+.pv-cta a { display: inline-flex; align-items: center; justify-content: center; min-width: 240px; padding: 12px 24px; border-radius: 999px; font-weight: bold; text-decoration: none; line-height: 1.4; }
+.pv-cta-home { border: 2px solid var(--color-brown-light); color: var(--color-brown); background: var(--white); font-size: 1rem; }
+
+/* タブレット: 目次を上に、本文を下に1列で */
+@media (max-width: 900px) {
+	.pv-layout { grid-template-columns: 1fr; }
+	.pv-side { position: static; }
+}
+
+/* スマホ: パソコン版を元に。目次は押すと開く箱、本文の白カードは余白を詰める */
+@media (max-width: 767px) {
+	.pv-head .wrap { flex-direction: column; align-items: flex-start; gap: 4px; }
+	.pv-head h1 { font-size: 1.3rem; }
+	.privacy-page .pv-layout { margin-top: 16px; gap: 16px; }
+
+	.pv-toc { padding: 0; }
+	.pv-toc-title { display: flex; align-items: center; justify-content: space-between; margin: 0; padding: 14px 16px; cursor: pointer; }
+	.pv-toc-title::after { content: ""; width: 9px; height: 9px; border-right: 2px solid var(--accent); border-bottom: 2px solid var(--accent); transform: rotate(45deg) translateY(-3px); transition: transform 0.2s; }
+	.pv-toc[open] .pv-toc-title::after { transform: rotate(-135deg) translate(-2px, -2px); }
+	.pv-toc[open] .pv-toc-title { border-bottom: 1px solid var(--gray-200); }
+	.pv-toc ol { padding: 4px 14px 10px; }
+	.pv-toc li a { padding: 10px 4px; font-size: 0.88rem; }
+
+	.pv-card { padding: 24px 18px 28px; border-radius: 16px; }
+	.pv-card section { scroll-margin-top: calc(var(--header-h) + 12px); }
+	.pv-card section + section { margin-top: 28px; padding-top: 24px; }
+	.pv-card h2 { margin-bottom: 12px; padding-left: 12px; border-left-width: 4px; font-size: 1.12rem; }
+	.pv-card p { font-size: 0.9rem; line-height: 1.9; }
+	.pv-card ul { padding: 12px 14px 12px 1.8em; font-size: 0.9rem; line-height: 1.8; }
+	.pv-card li + li { margin-top: 4px; }
+	.tm-intro { margin-bottom: 24px; padding: 14px 16px; }
+	.pv-card .tm-enacted { margin-top: 28px; }
+
+	.pv-cta { margin-top: 24px; }
+	.pv-cta a { min-width: 0; width: 100%; max-width: 320px; }
+}

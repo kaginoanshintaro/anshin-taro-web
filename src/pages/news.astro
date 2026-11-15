@@ -1,0 +1,75 @@
+---
+// 記事の一覧（/news/。URL は今の WordPress の「NEWS」ページと同じ。今のサイトでは本文が空の、記事一覧用のページ）。
+// 全部の記事を新しい順に並べる。トップの「記事をもっと見る →」の行き先（2026-11-15 佐藤さん）。
+// 形は利用規約などと同じ細い帯＋白いカード（privacy.css）。20本ずつ、続きは ?cursor= で読む。
+import { getEmDashCollection } from "emdash";
+import Base from "../layouts/Base.astro";
+import "../styles/privacy.css";
+
+const cursor = Astro.url.searchParams.get("cursor") || undefined;
+const { entries: posts, cacheHint, nextCursor } = await getEmDashCollection("posts", {
+	orderBy: { published_at: "desc" },
+	limit: 20,
+	cursor,
+});
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+
+const dateFormat = new Intl.DateTimeFormat("ja-JP", { year: "numeric", month: "2-digit", day: "2-digit", timeZone: "Asia/Tokyo" });
+---
+
+<Base title="記事一覧" description="カギの安心太郎の記事の一覧です。現場レポや鍵のヒントを新しい順に並べています。">
+	<div class="privacy-page news-page">
+		<header class="pv-head">
+			<div class="wrap">
+				<h1>記事一覧</h1>
+				<nav class="pv-crumb" aria-label="現在地"><a href="/">ホーム</a><span aria-hidden="true">›</span>記事一覧</nav>
+			</div>
+		</header>
+
+		<div class="wrap nw-wrap">
+			<ul class="nw-list">
+				{posts.map((post) => (
+					<li>
+						<a href={`/${post.id}/`}>
+							{post.data.publishedAt && <time datetime={post.data.publishedAt.toISOString()}>{dateFormat.format(post.data.publishedAt)}</time>}
+							<span class="nw-title">{post.data.title}</span>
+							{post.data.excerpt && <span class="nw-excerpt">{post.data.excerpt}</span>}
+						</a>
+					</li>
+				))}
+			</ul>
+			{posts.length === 0 && <p class="nw-empty">記事はまだありません。</p>}
+
+			{(cursor || nextCursor) && (
+				<nav class="nw-pager" aria-label="ページ送り">
+					{cursor && <a href="/news/">← 最新の記事へ</a>}
+					{nextCursor && <a href={`/news/?cursor=${encodeURIComponent(nextCursor)}`}>もっと前の記事 →</a>}
+				</nav>
+			)}
+		</div>
+
+		<div class="pv-cta">
+			<a class="pv-cta-home" href="/">ホームに戻る</a>
+		</div>
+	</div>
+</Base>
+
+<style>
+	.nw-wrap { max-width: 860px; margin-top: 32px; }
+	.nw-list { list-style: none; margin: 0; padding: 8px 32px; border-radius: var(--radius); background: var(--white); box-shadow: 0 2px 14px rgb(38 38 38 / 0.06); }
+	.nw-list li + li { border-top: 1px solid var(--gray-200); }
+	.nw-list a { display: grid; gap: 4px; padding: 18px 0; color: var(--gray-900); text-decoration: none; }
+	.nw-list time { font-size: 0.8rem; color: var(--muted); }
+	.nw-title { font-weight: bold; font-size: 1.02rem; line-height: 1.6; color: var(--heading); }
+	.nw-list a:hover .nw-title { color: var(--accent-dark); text-decoration: underline; }
+	.nw-excerpt { font-size: 0.88rem; line-height: 1.8; color: var(--gray-700); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+	.nw-empty { text-align: center; color: var(--muted); }
+	.nw-pager { display: flex; justify-content: space-between; gap: 12px; margin-top: 20px; }
+	.nw-pager a { padding: 10px 18px; border-radius: 999px; border: 2px solid var(--color-brown-light); background: var(--white); color: var(--color-brown); font-weight: bold; text-decoration: none; }
+	.nw-pager a:last-child { margin-left: auto; }
+	@media (max-width: 767px) {
+		.nw-wrap { margin-top: 20px; }
+		.nw-list { padding: 4px 18px; }
+		.nw-list a { padding: 14px 0; }
+	}
+</style>

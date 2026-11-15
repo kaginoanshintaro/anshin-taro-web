@@ -34,12 +34,12 @@ if (Astro.cache?.enabled) {
 }
 ---
 
-<Base title={`${term.label} posts`} description={`Posts in ${term.label}`}>
+<Base title={`${term.label}の記事`} description={`「${term.label}」の記事の一覧です。`}>
 	<h1>{term.label}</h1>
 
 	{
 		posts.length === 0 ? (
-			<p>No posts in this category yet.</p>
+			<p>この分類の記事はまだありません。</p>
 		) : (
 			<ul>
 				{posts.map((post) => (

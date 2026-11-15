@@ -1,0 +1,10 @@
+---
+// /duplicate/（URL は今の WordPress と同じ）。トップの「サービス紹介」のボタンの行き先。
+// 形は src/components/ServicePage.astro、文と金額は src/data/services.ts。
+import ServicePage from "../components/ServicePage.astro";
+import { servicePages } from "../data/services";
+
+const page = servicePages.find((p) => p.slug === "duplicate")!;
+---
+
+<ServicePage page={page} />

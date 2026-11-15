@@ -1,0 +1,111 @@
+/*
+ * お問い合わせ（/contact/）
+ * 色と見出しの形は料金ページ・会社概要ページと同じ。パソコン版を先に作る。
+ */
+
+.contact-page { padding-bottom: 24px; }
+
+/* ページの見出し（料金ページと同じ細い帯） */
+.ct-head { padding: 12px 0; border-bottom: 1px solid var(--line); background: var(--white); }
+.ct-head .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; max-width: 1200px; }
+.ct-crumb { font-size: 0.8rem; color: var(--muted); }
+.ct-crumb a { color: var(--muted); text-decoration: none; }
+.ct-crumb span { margin: 0 8px; }
+.ct-head h1 { margin: 0; padding-left: 16px; border-left: 5px solid var(--accent); font-size: 1.6rem; line-height: 1.4; color: var(--heading); letter-spacing: 0.08em; }
+
+/* 左にフォーム、右に連絡先 */
+.ct-body { max-width: 1000px; margin-top: 40px; display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 28px; align-items: start; }
+.ct-side { display: grid; gap: 20px; }
+
+.ct-card { padding: 28px 32px 30px; border-radius: var(--radius); background: var(--white); box-shadow: 0 2px 14px rgb(38 38 38 / 0.06); }
+.ct-card h2 { margin: 0 0 16px; padding-left: 14px; border-left: 5px solid var(--accent); font-size: 1.3rem; line-height: 1.5; color: var(--heading); letter-spacing: 0.06em; }
+.ct-side .ct-card { padding: 20px 22px 22px; }
+.ct-side .ct-card h2 { margin-bottom: 12px; font-size: 1.1rem; border-left-width: 4px; padding-left: 12px; }
+.ct-card p { margin: 0; }
+
+/* フォーム */
+.ct-form-card h2 { margin-bottom: 22px; }
+.ct-form { display: grid; gap: 18px; }
+.ct-field { display: grid; gap: 6px; }
+.ct-field > span { font-weight: bold; font-size: 0.95rem; color: var(--heading); }
+.ct-field em { margin-left: 8px; padding: 1px 8px; border-radius: 4px; font-style: normal; font-size: 0.72rem; font-weight: bold; color: var(--white); background: var(--accent-dark); vertical-align: 1px; }
+.ct-field input, .ct-field textarea {
+	width: 100%; padding: 11px 14px; border: 1px solid var(--gray-300); border-radius: 10px;
+	font: inherit; font-size: 1rem; line-height: 1.6; color: var(--gray-900); background: var(--color-cream);
+}
+.ct-field textarea { resize: vertical; min-height: 180px; }
+.ct-field input:focus, .ct-field textarea:focus { outline: none; border-color: var(--accent); background: var(--white); box-shadow: 0 0 0 3px var(--accent-soft); }
+.was-checked .ct-field :invalid { border-color: var(--accent-dark); background: var(--white); }
+.ct-hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+/* 白文字×オレンジはボタン文字を太字19.2px以上（color-palette.md） */
+.ct-submit {
+	justify-self: center; min-width: 240px; margin-top: 6px; padding: 12px 32px; border: 0; border-radius: 999px;
+	font: inherit; font-size: 1.2rem; font-weight: bold; letter-spacing: 0.2em; color: var(--white); background: var(--accent); cursor: pointer;
+}
+.ct-submit:hover { background: var(--accent-dark); }
+.ct-submit:disabled { background: var(--gray-300); cursor: wait; }
+.ct-status { text-align: center; font-size: 0.9rem; }
+.ct-status:empty { display: none; }
+.ct-status.is-ok { color: var(--gray-700); }
+.ct-status.is-error { color: var(--accent-dark); font-weight: bold; }
+
+/* メール */
+.ct-address { display: grid; gap: 2px; }
+.ct-address span { font-size: 0.8rem; color: var(--muted); }
+.ct-address a { font-size: 1rem; font-weight: bold; overflow-wrap: anywhere; }
+.ct-note { margin-top: 12px !important; padding: 10px 12px; border-radius: 10px; font-size: 0.82rem; line-height: 1.7; color: var(--gray-900); background: var(--accent-soft); }
+
+/* 電話 */
+.ct-tel-btn { display: flex; align-items: center; justify-content: center; gap: 12px; padding: 12px 16px; box-shadow: 0 2px 14px rgb(38 38 38 / 0.08); border-radius: 999px; color: var(--white); background: var(--accent); text-decoration: none; }
+.ct-tel-btn:hover { background: var(--accent-dark); }
+.ct-tel-btn svg { width: 26px; height: 26px; fill: currentColor; flex: none; }
+.ct-tel-btn span { display: grid; line-height: 1.3; font-weight: bold; font-size: 1.3rem; letter-spacing: 0.06em; }
+.ct-tel-btn small { font-size: 0.78rem; letter-spacing: 0.04em; }
+
+/* LINE */
+.ct-line-banner { display: block; border-radius: 14px; overflow: hidden; box-shadow: 0 2px 14px rgb(38 38 38 / 0.08); }
+.ct-line-banner img { display: block; width: 100%; height: auto; transition: opacity 0.2s; }
+.ct-line-banner:hover img { opacity: 0.88; }
+
+/* 所在地 */
+.ct-place p { font-size: 0.88rem; line-height: 1.75; }
+.ct-place-tel { margin-top: 6px !important; }
+.ct-maplink { display: table; margin-top: 10px; padding: 2px 12px; border: 1px solid var(--color-brown-light); border-radius: 999px; font-size: 0.8rem; line-height: 1.6; color: var(--color-brown); text-decoration: none; background: var(--white); white-space: nowrap; }
+.ct-maplink:hover { border-color: var(--accent); color: var(--accent-dark); }
+
+/* 一番下のボタン（料金ページと同じ） */
+.ct-cta { display: flex; justify-content: center; margin-top: 32px; }
+.ct-cta a { display: inline-flex; align-items: center; justify-content: center; min-width: 240px; padding: 12px 24px; border-radius: 999px; font-weight: bold; text-decoration: none; line-height: 1.4; }
+.ct-cta-home { border: 2px solid var(--color-brown-light); color: var(--color-brown); background: var(--white); font-size: 1rem; }
+
+/* 幅が狭いパソコン・タブレット: 右の列を少し細く */
+@media (max-width: 960px) {
+	.ct-body { grid-template-columns: minmax(0, 1fr) 300px; gap: 20px; }
+}
+
+/*
+ * スマホ: パソコン版を元に1列。急ぎの人のために電話と LINE のボタンを一番上に置き、
+ * その下にフォーム → メール（迷惑メールの注意） → 所在地。
+ */
+@media (max-width: 767px) {
+	.ct-head .wrap { flex-direction: column; align-items: flex-start; gap: 4px; }
+	.ct-head h1 { font-size: 1.3rem; }
+	.ct-body { grid-template-columns: 1fr; margin-top: 16px; gap: 16px; }
+	.ct-side { display: contents; }
+	.ct-tel-btn { order: 1; }
+	.ct-line-banner { order: 2; margin-top: -4px; }
+	.ct-form-card { order: 3; margin-top: 8px; }
+	.ct-mail { order: 4; }
+	.ct-place { order: 5; }
+	.ct-card, .ct-side .ct-card { padding: 20px 16px 22px; border-radius: 16px; }
+	.ct-card h2 { font-size: 1.15rem; }
+	.ct-side .ct-card h2 { font-size: 1.05rem; }
+	.ct-form-card h2 { margin-bottom: 16px; }
+	.ct-form { gap: 14px; }
+	/* 文字の大きさは 16px 以上（iPhone で入力欄に触れたとき画面が拡大されないように） */
+	.ct-field input, .ct-field textarea { font-size: 16px; padding: 10px 12px; }
+	.ct-field textarea { min-height: 150px; }
+	.ct-submit { width: 100%; }
+	.ct-tel-btn span { font-size: 1.35rem; }
+	.ct-cta { margin-top: 24px; }
+}
