@@ -503,3 +503,26 @@
 .fa-pc .cal .busy { background: var(--color-brown); min-height: 3px; }
 .fa-pc .cal-head small { display: flex; align-items: center; gap: 4px; }
 .fa-pc .busy-key { display: inline-block; width: 10px; height: 10px; border-radius: 2px; background: var(--color-brown); }
+
+/* スマホの右の画面も縦スクロールさせず1画面に収める（2026-11-16 佐藤さん）。
+   バナー画像は空きの高さに合わせて縦横比のまま縮む。5つのポイント・佐・インスタは1段、サービス3つは低めにする */
+@media (max-width: 1199px) {
+	.fa-pc .stage > .col:last-child { overflow: hidden; display: flex; flex-direction: column; gap: 10px; padding-bottom: 96px; }
+	.fa-pc .stage > .col:last-child > * { flex: none !important; }
+	.fa-pc .stage > .col:last-child > .bank-banner { flex: 0 1 auto !important; min-height: 0; display: flex; justify-content: center; }
+	.fa-pc .stage > .col:last-child > .bank-banner img,
+	.fa-pc .stage > .col:last-child .kagiya-check img { width: auto; max-width: 100%; height: auto; max-height: 100%; object-fit: contain; }
+	/* 「5つのポイント」バナー・佐・インスタを1段に並べる */
+	.fa-pc .stage > .col:last-child > .small-row { display: grid; grid-template-columns: minmax(0, 1fr) 60px 60px; gap: 8px; align-items: center; }
+	.fa-pc .stage > .col:last-child .small-row > * { height: 60px; padding: 0; }
+	.fa-pc .stage > .col:last-child .small-row > .kagiya-check { grid-column: auto; height: auto; }
+	.fa-pc .stage > .col:last-child .small-row > .kagiya-check img { max-height: 70px; }
+	.fa-pc .stage > .col:last-child .prof-btn-pc span { width: 54px; height: 54px; border-width: 4px; font-size: 1.6rem; }
+	.fa-pc .stage > .col:last-child .insta svg { width: 40px; height: 40px; }
+	.fa-pc .stage > .col:last-child .svc-title { margin-bottom: 6px; padding: 2px 14px; font-size: 1rem; }
+	.fa-pc .stage > .col:last-child .svc-row a { height: 72px; border-width: 4px; box-shadow: 0 4px 0 #9c420a, 0 6px 12px rgb(0 0 0 / 0.3); }
+	.fa-pc .stage > .col:last-child .svc-row img { width: 30px; height: 30px; }
+	/* 幅の狭いスマホでも「鍵の修理・交換」を1行に（枠からはみ出さない大きさに） */
+	.fa-pc .stage > .col:last-child .svc-row b { font-size: min(1.3rem, 4.6cqi); white-space: nowrap; }
+	.fa-pc .stage > .col:last-child .svc-row b wbr { display: none; }
+}
