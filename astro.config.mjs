@@ -16,7 +16,8 @@ export default defineConfig({
 		provider: cacheCloudflare(),
 	},
 	routeRules: {
-		"/": { maxAge: 3600, swr: 86400, tags: ["posts", "pages", "all"] },
+		// トップは「佐藤の予定」（Googleカレンダー）を出すので10分ごとに作り直す（2026-11-15）
+		"/": { maxAge: 600, swr: 86400, tags: ["posts", "pages", "all"] },
 		"/price": { maxAge: 3600, swr: 86400, tags: ["all"] },
 		"/profile": { maxAge: 3600, swr: 86400, tags: ["all"] },
 		"/contact": { maxAge: 3600, swr: 86400, tags: ["all"] },

@@ -478,3 +478,7 @@
 	.fa-pc .small-row { grid-template-columns: 1fr 1fr; }
 	.fa-pc .small-row > .kagiya-check { grid-column: 1 / -1; height: auto; }
 }
+/* 佐藤の予定（Googleカレンダーの「予定あり」だけ、2026-11-15）: 枠が細いので文字は入れず、茶色の帯と見出しの凡例で示す */
+.fa-pc .cal .busy { background: var(--color-brown); min-height: 3px; }
+.fa-pc .cal-head small { display: flex; align-items: center; gap: 4px; }
+.fa-pc .busy-key { display: inline-block; width: 10px; height: 10px; border-radius: 2px; background: var(--color-brown); }

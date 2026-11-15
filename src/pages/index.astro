@@ -3,6 +3,7 @@ import { getEmDashCollection } from "emdash";
 import Base from "../layouts/Base.astro";
 import { site } from "../site";
 import TaroChat from "../components/TaroChat.astro";
+import { fetchBusyWeek, BUSY_START_HOUR, BUSY_END_HOUR } from "../utils/busy-calendar";
 import "../styles/top.css";
 
 const { entries: latest, cacheHint } = await getEmDashCollection("posts", {
@@ -20,6 +21,11 @@ const { entries: news, cacheHint: newsHint } = await getEmDashCollection("posts"
 	limit: 3,
 });
 if (Astro.cache?.enabled) Astro.cache.set(newsHint);
+
+// 佐藤の予定: いつものGoogleカレンダー（一般公開・予定の有無のみ）から7日分の「予定あり」だけを出す（2026-11-15 佐藤さん）。
+// 読めなかったときは欄ごと出さない（空いているように見せないため）
+const busyWeek = await fetchBusyWeek(site.email);
+const busyHours = `${BUSY_START_HOUR}時〜${BUSY_END_HOUR}時`;
 
 // ファーストビューの大きな画像（佐藤さん指定: シリンダー.jpg）。
 // 表示を速くするため、画面幅に合わせた WebP を img で最初に読み込む（背景CSSだと見つかるのが遅い）
@@ -71,7 +77,7 @@ const dateFormat = new Intl.DateTimeFormat("ja-JP", {
 		2人の紹介の下の「固定背景エリア」（2026-10-24 の見本 top-pc.html / top-sp.html と同じ）。
 		1画面ぴったりで、後ろの写真は画面に固定。窓はすりガラス、太郎ちゃんのチャットだけ透明。
 		広い画面は .fa-pc、それ以外はスマホの2ページ切り替え .fa-sp を出す。
-		「見本」の札が付いている所（予定）は、まだ見た目だけ。ニュースは記事のカテゴリー key-news から出す。
+		ニュースは記事のカテゴリー key-news、予定は Googleカレンダーの公開アドレス（予定の有無のみ）から出す。
 	-->
 	<section class="fixed-area fa" id="top-area" aria-label="安心太郎ちゃんと最新情報">
 		<div class="fa-bg"></div>
@@ -101,20 +107,21 @@ const dateFormat = new Intl.DateTimeFormat("ja-JP", {
 							<p class="more"><a href={`/category/${NEWS_CATEGORY}/`}>ニュース一覧 →</a></p>
 						</section>
 					)}
-					<section class="panel cal">
-						<div class="cal-head"><h2 class="panel-title">佐藤の予定 <span class="tag-sample">見本</span></h2></div>
-						<div class="week">
-							<span></span><span class="day sat">10/24 土</span><span class="day sun">25 日</span><span class="day">26 月</span><span class="day">27 火</span><span class="day">28 水</span><span class="day">29 木</span><span class="day">30 金</span>
-							<div class="hours"><span>9時</span><span>11時</span><span>13時</span><span>15時</span><span>17時</span></div>
-							<div class="col-day"><span class="busy" style="top:3px;height:25px">予定あり</span></div>
-							<div class="col-day"></div>
-							<div class="col-day"><span class="busy" style="top:18px;height:33px">予定あり</span><span class="busy" style="top:59px;height:16px"></span></div>
-							<div class="col-day"><span class="busy" style="top:33px;height:18px">予定あり</span></div>
-							<div class="col-day"><span class="busy" style="top:3px;height:41px">予定あり</span><span class="busy" style="top:54px;height:29px">予定あり</span></div>
-							<div class="col-day"></div>
-							<div class="col-day"><span class="busy" style="top:46px;height:25px">予定あり</span></div>
-						</div>
-					</section>
+					{busyWeek && (
+						<section class="panel cal">
+							<div class="cal-head"><h2 class="panel-title">佐藤の予定</h2><small>{busyWeek[0].month}月　<i class="busy-key"></i>予定あり　{busyHours}</small></div>
+							<div class="week">
+								<span></span>
+								{busyWeek.map((d) => <span class={`day ${d.cls}`}>{d.day} {d.weekday}</span>)}
+								<div class="hours"><span>9時</span><span>11時</span><span>13時</span><span>15時</span><span>17時</span></div>
+								{busyWeek.map((d) => (
+									<div class="col-day">
+										{d.blocks.map((b) => <span class="busy" style={`top:${b.top}%;height:${b.height}%`}></span>)}
+									</div>
+								))}
+							</div>
+						</section>
+					)}
 				</div>
 
 				<div class="center">
@@ -161,10 +168,12 @@ const dateFormat = new Intl.DateTimeFormat("ja-JP", {
 					{news.length > 0 && <div class="row-title" style="margin-top:10px"><h2 class="panel-title">ベビちゃんの鍵業界ニュース</h2><a href={`/category/${NEWS_CATEGORY}/`}>一覧 →</a></div>}
 					{news.length > 0 && <ul>{news.map((post) => <li><a href={`/${post.id}/`}>{post.data.title}</a></li>)}</ul>}
 				</section>
-						<a class="panel mini-cal" href="#" aria-label="佐藤の予定（7日分）">
-							<p class="cal-cap"><b>佐藤の予定</b><span><i class="key"></i>予定あり　9時〜18時</span></p>
-							<div class="days"><div class="sat"><span>24<small>土</small></span><i><b style="top:0%;height:25%"></b></i></div><div class="sun"><span>25<small>日</small></span><i></i></div><div class=""><span>26<small>月</small></span><i><b style="top:20%;height:35%"></b><b style="top:70%;height:15%"></b></i></div><div class=""><span>27<small>火</small></span><i><b style="top:35%;height:20%"></b></i></div><div class=""><span>28<small>水</small></span><i><b style="top:0%;height:45%"></b><b style="top:60%;height:35%"></b></i></div><div class=""><span>29<small>木</small></span><i></i></div><div class=""><span>30<small>金</small></span><i><b style="top:50%;height:25%"></b></i></div></div>
-						</a>
+						{busyWeek && (
+							<a class="panel mini-cal" href="#" aria-label="佐藤の予定（7日分）">
+								<p class="cal-cap"><b>佐藤の予定</b><span><i class="key"></i>予定あり　{busyHours}</span></p>
+								<div class="days">{busyWeek.map((d) => <div class={d.cls}><span>{d.day}<small>{d.weekday}</small></span><i>{d.blocks.map((b) => <b style={`top:${b.top}%;height:${b.height}%`}></b>)}</i></div>)}</div>
+							</a>
+						)}
 					</div>
 					<!-- 真ん中の画面（最初に出る）: 安心太郎ちゃんのチャット -->
 					<div class="page page1 page-c" id="sp-center" aria-label="安心太郎ちゃん">
