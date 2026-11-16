@@ -14,7 +14,9 @@
 
 /* ニュース1本 */
 .kn-item { padding: 26px 32px 28px; border-radius: var(--radius); background: var(--white); box-shadow: 0 2px 14px rgb(38 38 38 / 0.06); }
-.kn-no { margin: 0 0 6px; color: var(--accent); font-size: 0.78rem; font-weight: bold; letter-spacing: 0.14em; }
+/* 箱の頭: ベビちゃんの顔と「ベビちゃんの調べ」 */
+.kn-body .kn-head { display: flex; align-items: center; gap: 10px; margin: 0 0 14px; padding: 0; border: 0; border-radius: 0; background: none; font-family: var(--font-serif); font-size: 1.15rem; font-weight: 700; line-height: 1.4; color: var(--heading); letter-spacing: 0.05em; }
+.kn-body .kn-head img { width: 40px; height: 40px; border-radius: 50%; }
 .kn-body .kn-item h2 { margin: 0 0 16px; padding: 0; border: 0; border-radius: 0; background: none; font-size: 1.25rem; line-height: 1.55; }
 .kn-label { display: flex; align-items: center; gap: 8px; margin: 0 0 8px !important; font-size: 0.8rem; font-weight: bold; color: var(--color-brown); letter-spacing: 0.05em; }
 .kn-label img { width: 28px; height: 28px; border-radius: 50%; }
@@ -41,6 +43,8 @@
 	.kn-intro-text { padding: 12px 14px; }
 	.kn-item { padding: 20px 16px 22px; border-radius: 16px; }
 	.kn-body .kn-item h2 { font-size: 1.08rem; }
+	.kn-body .kn-head { font-size: 1.05rem; }
+	.kn-body .kn-head img { width: 34px; height: 34px; }
 	.kn-research { padding: 12px 14px 14px; }
 	.kn-comment > img { width: 40px; height: 40px; }
 	.kn-bubble { padding: 10px 14px 12px; }
