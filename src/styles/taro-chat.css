@@ -50,3 +50,7 @@
 .fa .taro-chat .taro.face-pop { animation: taro-pop 0.35s ease-out; }
 @keyframes taro-pop { 0% { transform: translateY(0); } 40% { transform: translateY(-8px); } 100% { transform: translateY(0); } }
 @media (prefers-reduced-motion: reduce) { .fa .taro-chat .taro.face-pop { animation: none; } }
+
+/* 質問の選択肢はフキダシの形にする（セリフが「下のフキダシからえらんでね」なので。2026-11-16 佐藤さん）。
+   押すと自分の発言になるので、右下だけ角を立てた「自分の吹き出し」と同じ形 */
+.fa .taro-chat .chip { border-radius: 14px 14px 4px 14px; }

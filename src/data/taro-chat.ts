@@ -52,7 +52,7 @@ const payGroups = paymentMethods.available
 const hasCash = paymentMethods.available.some((g) => g.group === "現金");
 const soon = paymentMethods.soon.flatMap((g) => g.brands).join("・");
 
-export const taroGreeting = "こんにちは、安心太郎だよ！聞きたいことを下のボタンからえらんでね。";
+export const taroGreeting = "こんにちは、安心太郎だよ！聞きたいことを下のフキダシからえらんでね。";
 
 /** 最初に並べる質問（並び順どおり） */
 export const taroMenu = ["price", "area", "car", "duplicate", "stiff", "place", "pay", "hurry"];
@@ -171,4 +171,4 @@ export const taroQA: TaroQA[] = [
 export const taroOtherFaces: Record<string, TaroFace> = { nomatch: "serious", found: "point", menu: "hello" };
 
 /** どの質問にも当てはまらない文字が入力されたとき */
-export const taroNoMatch = "ごめんね、その質問にはまだ答えられないよ。下のボタンからえらぶか、電話かLINEで佐藤に聞いてね。";
+export const taroNoMatch = "ごめんね、その質問にはまだ答えられないよ。下のフキダシからえらぶか、電話かLINEで佐藤に聞いてね。";

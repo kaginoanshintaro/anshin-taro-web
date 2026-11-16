@@ -54,7 +54,7 @@ const qaJson = JSON.stringify(taroQA.map(({ id, q, next, words, face }) => ({ id
 			<div data-a={x.id}>{x.a.map((p) => <p class={isLinks(p) ? "qa-links" : undefined} set:html={toHtml(p)} />)}</div>
 		))}
 		<div data-a="nomatch"><p>{taroNoMatch}</p></div>
-		<div data-a="found"><p>この中にあるかな？ボタンをえらんでね。</p></div>
+		<div data-a="found"><p>この中にあるかな？フキダシをえらんでね。</p></div>
 		<div data-a="menu"><p>ほかに聞きたいことはあるかな？</p></div>
 	</div>
 </section>
