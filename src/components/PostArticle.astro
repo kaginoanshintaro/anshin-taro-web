@@ -1,0 +1,86 @@
+---
+// ブログの投稿（お役立ちの「現場からのヒント」以外。鍵業界ニュース・現場レポなど）の形。
+// お役立ち記事（TipArticle）と同じ見た目: 上に細い帯（パンくず・カテゴリ・題名・日付）、見出しが2つ以上なら左に目次、右に白いカード。
+// スマホ: パンくずは出さない（Base の共通ルール）、目次は押すと開く箱。本文の文字はそのまま。
+import "../styles/tip-article.css";
+
+interface Props {
+	title: string;
+	edit?: Record<string, unknown>;
+	categories: { slug: string; label: string }[];
+	date?: Date | null;
+}
+const { title, edit, categories, date } = Astro.props;
+const cat = categories[0];
+
+// 本文の h2・h3 に順番の id を付けて目次を作る（TipArticle と同じ）
+const bodyHtml = await Astro.slots.render("default");
+const toc: { id: string; level: 2 | 3; text: string }[] = [];
+let n = 0;
+const body = bodyHtml.replace(/<h([23])([^>]*)>([\s\S]*?)<\/h\1>/g, (_m, lv: string, attrs: string, inner: string) => {
+	const id = `sec-${++n}`;
+	// 目次の文字は見出しのまま。単語の切れ目（<wbr>）だけ残して、単語の途中で改行しないようにする
+	const text = inner.replace(/<(?!wbr\b)[^>]+>/g, "").trim();
+	if (text.replace(/<wbr>/g, "")) toc.push({ id, level: Number(lv) as 2 | 3, text });
+	return `<h${lv}${attrs} id="${id}">${inner}</h${lv}>`;
+});
+const dateText = date ? `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日` : "";
+---
+
+<div class="tip-article post-article">
+	<header class="ta-head">
+		<div class="wrap">
+			<nav class="ta-crumb" aria-label="現在地"><a href="/">ホーム</a>{cat && <><span aria-hidden="true">›</span><a href={`/category/${cat.slug}/`}>{cat.label}</a></>}</nav>
+			{categories.length > 0 && <p class="ta-cat">{categories.map((c) => <a href={`/category/${c.slug}/`}>{c.label}</a>)}</p>}
+			<h1 {...edit}>{title}</h1>
+			{dateText && <p class="ta-date"><time datetime={date!.toISOString().slice(0, 10)}>{dateText}</time></p>}
+		</div>
+	</header>
+
+	<div class:list={["wrap ta-layout", { "no-toc": toc.length < 2 }]}>
+		{toc.length >= 2 && (
+			<aside class="ta-side">
+				<nav aria-label="目次">
+					<details class="ta-toc" open>
+						<summary class="ta-toc-title">目次</summary>
+						<ol>
+							{toc.map((t) => <li class:list={[`lv${t.level}`]}><a href={`#${t.id}`} set:html={t.text} /></li>)}
+						</ol>
+					</details>
+				</nav>
+			</aside>
+		)}
+
+		<div class="ta-main">
+			<article class="ta-card" data-collection="posts">
+				<div class="ta-body" set:html={body} />
+			</article>
+			{cat && (
+				<div class="ta-cta">
+					<a href={`/category/${cat.slug}/`}>「{cat.label}」の記事一覧へ</a>
+				</div>
+			)}
+		</div>
+	</div>
+</div>
+
+<script>
+	// スマホでは目次を閉じた状態から始め、項目を押したら閉じる（お役立ち記事と同じ）
+	const toc = document.querySelector<HTMLDetailsElement>(".ta-toc");
+	const phone = window.matchMedia("(max-width: 900px)");
+	if (toc) {
+		toc.open = !phone.matches;
+		phone.addEventListener("change", () => (toc.open = !phone.matches));
+		toc.querySelector("summary")?.addEventListener("click", (e) => {
+			if (!phone.matches) e.preventDefault();
+		});
+		toc.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => {
+			if (phone.matches) toc.open = false;
+		}));
+	}
+</script>
+
+<style is:global>
+	/* カテゴリが2つ以上のときは横に並べる */
+	.post-article .ta-cat { display: flex; flex-wrap: wrap; gap: 6px; }
+</style>

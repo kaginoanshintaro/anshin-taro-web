@@ -8,6 +8,7 @@ import Base from "../layouts/Base.astro";
 import SizedImage from "../components/SizedImage.astro";
 import PTColumns from "../components/PTColumns.astro";
 import TipArticle from "../components/TipArticle.astro";
+import PostArticle from "../components/PostArticle.astro";
 import { findTip, hintGroup } from "../data/tips";
 import { resolveStarterSiteIdentity } from "../utils/site-identity";
 
@@ -68,6 +69,11 @@ const ptComponents = { type: { image: SizedImage, columns: PTColumns } };
 		<TipArticle path={tipPath} title={entry.data.title} edit={entry.edit.title}>
 			<PortableText value={entry.data.content} components={ptComponents} />
 		</TipArticle>
+	) : collection === "posts" ? (
+		<PostArticle title={entry.data.title} edit={entry.edit.title} categories={categories} date={entry.data.publishedAt ?? null}>
+			{featuredSrc && <figure class="post-eyecatch" {...entry.edit.featured_image}><img src={featuredSrc} alt="" decoding="async" fetchpriority="high" /></figure>}
+			<PortableText value={entry.data.content} components={ptComponents} />
+		</PostArticle>
 	) : (
 		<article data-collection={collection}>
 			<h1 {...entry.edit.title}>{entry.data.title}</h1>
