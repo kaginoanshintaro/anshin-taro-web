@@ -51,13 +51,17 @@ if (collection === "posts" && categories.some((c) => c.slug === hintGroup.catego
 	const index = flat.findIndex((h) => h.path === tipPath);
 	if (index >= 0) hintTip = { group: hintGroup, flat, index };
 }
+// アイキャッチ（投稿のみ。2026-11-16 佐藤さん: 記事の一番上と SNS 共有の画像にも出す）
+const featured = collection === "posts" ? (entry.data.featured_image ?? null) : null;
+const featuredSrc: string | null = featured && typeof featured === "object" && "src" in featured && featured.src ? String(featured.src).replace(/^http:\/\//, "https://") : null;
 // カラム（左に画像・右に文など）の中の画像も出るよう、カラムの部品を置き換える
 const ptComponents = { type: { image: SizedImage, columns: PTColumns } };
 ---
 
-<Base title={seo.title} pageTitle={seo.ogTitle} description={seo.description} canonical={seo.canonical} content={{ collection, id: entry.data.id, slug }}>
+<Base title={seo.title} pageTitle={seo.ogTitle} description={seo.description} canonical={seo.canonical} image={featuredSrc} content={{ collection, id: entry.data.id, slug }}>
 	{hintTip ? (
 		<TipArticle path={tipPath} title={entry.data.title} edit={entry.edit.title} tip={hintTip} date={entry.data.publishedAt ?? null}>
+			{featuredSrc && <figure class="post-eyecatch" {...entry.edit.featured_image}><img src={featuredSrc} alt="" decoding="async" fetchpriority="high" /></figure>}
 			<PortableText value={entry.data.content} components={ptComponents} />
 		</TipArticle>
 	) : isTip ? (
@@ -68,7 +72,14 @@ const ptComponents = { type: { image: SizedImage, columns: PTColumns } };
 		<article data-collection={collection}>
 			<h1 {...entry.edit.title}>{entry.data.title}</h1>
 			{categories.map((c) => <a href={`/category/${c.slug}/`}>{c.label}</a>)}
+			{featuredSrc && <figure class="post-eyecatch" {...entry.edit.featured_image}><img src={featuredSrc} alt="" decoding="async" fetchpriority="high" /></figure>}
 			<PortableText value={entry.data.content} components={ptComponents} />
 		</article>
 	)}
 </Base>
+
+<style is:global>
+	/* アイキャッチ: 本文の幅いっぱい、縦長でも高くなりすぎないように */
+	.post-eyecatch { margin: 1rem 0 1.5rem; }
+	.post-eyecatch img { display: block; width: 100%; height: auto; max-height: 70vh; object-fit: contain; border-radius: 8px; background: #f4f1ee; }
+</style>
