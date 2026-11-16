@@ -9,8 +9,8 @@ export const site = {
 	tel: { label: "097-560-0687", href: "tel:0975600687" },
 	/** 公式LINE（今のトップの「友だち追加」ボタンのリンク） */
 	line: "https://lin.ee/Ilys8UT",
-	/** 佐藤の Instagram（2026-11-16 佐藤さん指定。綴りは kaginono） */
-	instagram: "https://www.instagram.com/kaginono.anshin.taro/",
+	/** 佐藤の Instagram（2026-11-16 佐藤さんの画面で確認。kagino.anshin.taro） */
+	instagram: "https://www.instagram.com/kagino.anshin.taro/",
 	address: "〒870-1177 大分県大分市富士見が丘西1-3-1第一グリーンプラザビル東側簡易店舗",
 	postalCode: "870-1177",
 	addressLine: "大分県大分市富士見が丘西1-3-1 第一グリーンプラザビル東側簡易店舗",
