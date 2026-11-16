@@ -11,6 +11,8 @@ export const site = {
 	line: "https://lin.ee/Ilys8UT",
 	/** 佐藤の Instagram（2026-11-16 佐藤さんの画面で確認。kagino.anshin.taro） */
 	instagram: "https://www.instagram.com/kagino.anshin.taro/",
+	/** 佐藤の Substack（2026-11-16 佐藤さん指定） */
+	substack: "https://justalocksmith.substack.com/",
 	address: "〒870-1177 大分県大分市富士見が丘西1-3-1第一グリーンプラザビル東側簡易店舗",
 	postalCode: "870-1177",
 	addressLine: "大分県大分市富士見が丘西1-3-1 第一グリーンプラザビル東側簡易店舗",

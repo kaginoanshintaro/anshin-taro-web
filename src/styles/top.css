@@ -562,3 +562,14 @@
 	.fa-sp .dock .line-min {gap: 4px; padding: 0 3px;}
 	.fa-sp .dock .line-min b {font-size: 0.8rem;}
 }
+
+/* 佐藤アイコンの小窓: Substack の紹介（2026-11-16 佐藤さん）。ボタンは Substack のオレンジ */
+.fa .prof-card .substack { margin: 6px 0 12px; padding-top: 12px; border-top: 1px solid var(--gray-300); }
+.fa .prof-card .substack p { text-align: center; }
+.fa .prof-card .ss-lead { margin: 0 0 6px; font-size: 0.85rem; color: var(--color-brown); }
+.fa .prof-card .ss-name { margin: 0 0 8px; line-height: 1.4; }
+.fa .prof-card .ss-name b { display: block; font-size: 1.05rem; }
+.fa .prof-card .ss-name span { display: block; font-size: 0.78rem; color: var(--gray-500); }
+.fa .prof-card p.ss-text { margin: 0 0 14px; font-size: 0.85rem; text-align: left; }
+.fa .prof-card .ss-btn { display: block; padding: 12px 16px; border-radius: 999px; background: #ff6719; color: #fff; font-weight: 800; text-decoration: none; }
+.fa .prof-card .ss-btn:hover { background: #e95a10; }
