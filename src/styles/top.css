@@ -244,11 +244,11 @@
 .fa-sp .coupon2 b {font-size: 1.3rem; color: var(--color-orange-dark);}
 .fa-sp .warn2 {display: block; height: 44px; border-radius: 14px; background: #f5ff93; overflow: hidden; text-align: center;}
 .fa-sp .warn2 img {height: 100%; width: auto; display: inline-block;}
-/* 下の帯のLINEボタン（2026-11-16）: LINE公式のブランドアイコンを加工せずに置き、横に「友だち追加」。
-   アイコンは緑の上に置くと見えにくいので、ボタンは白地＋LINEの緑の枠。アイコンはスマホの最小40px以上 */
-.fa-sp .dock .line-min {display: flex; align-items: center; justify-content: center; gap: 6px; padding: 0 4px; background: #fff; border: 2px solid #06c755; color: #06c755; text-decoration: none;}
-.fa-sp .dock .line-min img {flex: none; width: 40px; height: 40px;}
-.fa-sp .dock .line-min b {font-family: system-ui, sans-serif; font-size: 0.9rem; font-weight: 800; letter-spacing: 0; white-space: nowrap;}
+/* 下の帯のLINEボタン（2026-11-16 佐藤さん）: ボタン全体をLINEの緑、文字は白で「公式LINE／友達追加」の2行。
+   LINE公式のブランドアイコンは加工せずに置く。緑の上だと見えにくいので、アイコンの後ろだけ白い角丸の台を敷く（スマホ最小40px以上） */
+.fa-sp .dock .line-min {display: flex; align-items: center; justify-content: center; gap: 8px; padding: 0 6px; background: #06c755; color: #fff; text-decoration: none;}
+.fa-sp .dock .line-min img {flex: none; width: 40px; height: 40px; padding: 3px; box-sizing: content-box; background: #fff; border-radius: 12px;}
+.fa-sp .dock .line-min b {font-family: system-ui, sans-serif; font-size: 0.92rem; font-weight: 800; line-height: 1.25; letter-spacing: 0; white-space: nowrap; text-align: left;}
 .fa-sp .line-mark.big {font-size: 1.6rem; padding: 4px 14px; border-radius: 12px; background: #fff; color: #06c755;}
 @media (max-height: 700px) {
 .fa-sp .tiles3 .tile {height: 56px;}
@@ -560,5 +560,5 @@
 	.fa-sp .dock {gap: 8px; padding-left: 10px; padding-right: 10px;}
 	.fa-sp .sp-dots {width: 64px; gap: 6px;}
 	.fa-sp .dock .line-min {gap: 4px; padding: 0 3px;}
-	.fa-sp .dock .line-min b {font-size: 0.72rem;}
+	.fa-sp .dock .line-min b {font-size: 0.8rem;}
 }
