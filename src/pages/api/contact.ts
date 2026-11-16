@@ -1,9 +1,13 @@
 // お問い合わせフォームの受け口（/api/contact/）。
 // 入力の確認と迷惑送信よけ（見えない欄・Turnstile）までをここで行う。
-// メールを送る方法（宛先 kagino.anshin.taro@gmail.com、差出人 wordpress@kagino-anshin-taro.com のまま）は
-// 佐藤さんの確認待ち。決まるまでは送らずに「準備中」を返す。
+// 送信先は会社の Gmail（kagino.anshin.taro@gmail.com）。2026-11-15 佐藤さん決定（Slack #受付 へは流さない）。
+// 送信はその Gmail 自身から SMTP で行う。アプリパスワードは Cloudflare のシークレット GMAIL_APP_PASSWORD。
+// シークレットが無いあいだは送らずに「準備中」を返す。
 import type { APIRoute } from "astro";
 import { env } from "cloudflare:workers";
+import { sendGmail } from "../../utils/gmail-smtp";
+
+const COMPANY_GMAIL = "kagino.anshin.taro@gmail.com";
 
 export const prerender = false;
 
@@ -39,8 +43,41 @@ export const POST: APIRoute = async ({ request, cache }) => {
 		if (!ok) return reply(400, "確認が取れませんでした。ページを開き直してもう一度お試しください。");
 	}
 
-	// TODO: 送信方法が決まったらここでメールを送る（宛先・差出人は上のとおり）
-	return reply(503, "テスト用のページのため、まだ送信されません。お急ぎの方はお電話ください。");
+	if (!vars.GMAIL_APP_PASSWORD) {
+		return reply(503, "テスト用のページのため、まだ送信されません。お急ぎの方はお電話ください。");
+	}
+
+	const sentAt = new Date().toLocaleString("ja-JP", { timeZone: "Asia/Tokyo" });
+	const host = new URL(request.url).host;
+	try {
+		await sendGmail({
+			user: COMPANY_GMAIL,
+			password: vars.GMAIL_APP_PASSWORD.replace(/\s+/g, ""),
+			to: COMPANY_GMAIL,
+			fromName: "カギの安心太郎 ホームページ",
+			replyTo: data.email,
+			subject: `【HPお問い合わせ】${data.subject}`,
+			text: [
+				"ホームページのお問い合わせフォームから送信がありました。",
+				"このメールに返信すると、お客様のメールアドレスあてに送られます。",
+				"",
+				`お名前: ${data.name}`,
+				`メールアドレス: ${data.email}`,
+				`題名: ${data.subject}`,
+				"",
+				"メッセージ本文:",
+				data.message || "（なし）",
+				"",
+				"---",
+				`送信日時: ${sentAt}`,
+				`送信元: ${host}`,
+			].join("\n"),
+		});
+	} catch (err) {
+		console.error("contact mail failed", err);
+		return reply(502, NOT_SENT);
+	}
+	return reply(200, "送信しました。内容を確認のうえ、ご連絡いたします。");
 };
 
 async function verifyTurnstile(secret: string, token: string, ip: string | null) {
