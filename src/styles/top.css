@@ -564,9 +564,9 @@
 }
 
 /* 佐藤アイコンの小窓: Substack の紹介（2026-11-16 佐藤さん）。ボタンは Substack のオレンジ */
-.fa .prof-card .substack { margin: 6px 0 12px; padding-top: 12px; border-top: 1px solid var(--gray-300); }
+.fa .prof-card .substack { margin: 6px 0 4px; padding-top: 12px; border-top: 1px solid var(--gray-300); }
 .fa .prof-card .substack p { text-align: center; }
-.fa .prof-card .ss-lead { margin: 0 0 6px; font-size: 0.85rem; color: var(--color-brown); }
+.fa .prof-card .ss-lead { margin: 0 0 6px; font-size: 1rem; font-weight: 800; color: var(--color-brown); }
 .fa .prof-card .ss-name { margin: 0 0 8px; line-height: 1.4; }
 .fa .prof-card .ss-name b { display: block; font-size: 1.05rem; }
 .fa .prof-card .ss-name span { display: block; font-size: 0.78rem; color: var(--gray-500); }
