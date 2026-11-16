@@ -60,6 +60,11 @@ const pageCtx = createPublicPageContext({
 				document.head.appendChild(s);
 			}
 		</script>
+		<!-- ファビコン: 安心太郎ちゃんの顔（2026-11-16 佐藤さんが「A 背景なし」を選択）。ホーム画面用だけ白地 -->
+		<link rel="icon" href="/favicon.ico" sizes="48x48" />
+		<link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
+		<link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192" />
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 		<title>{fullTitle}</title>
 		<EmDashHead page={pageCtx} />
 		<slot name="head" />

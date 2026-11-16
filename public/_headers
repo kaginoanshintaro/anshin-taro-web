@@ -3,3 +3,6 @@
   Cache-Control: public, max-age=86400
 /fonts/*
   Cache-Control: public, max-age=86400
+# WordPress から移した記事画像（本番切り替え後も同じ URL で出す。2026-11-16）
+/wp-content/uploads/*
+  Cache-Control: public, max-age=604800

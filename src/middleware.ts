@@ -6,6 +6,17 @@ import { withPhraseBreaks } from "./utils/phrase-break";
 // 404 にするため使わず、ここで公開側だけリダイレクトする。
 export const onRequest = defineMiddleware(async (context, next) => {
 	const { pathname, search } = context.url;
+	// 今の WordPress と同じ動きに揃える転送（2026-11-16、本番切り替え前チェック）
+	//  - 投稿者ページは本番ではトップへ転送されている
+	//  - WordPress 標準のサイトマップを見に来る検索エンジン向けに新しいサイトマップへ
+	if (pathname === "/author/anshin-taro/" || pathname === "/author/anshin-taro") {
+		context.cache?.set(false);
+		return context.redirect("/", 301);
+	}
+	if (pathname === "/wp-sitemap.xml") {
+		context.cache?.set(false);
+		return context.redirect("/sitemap.xml", 301);
+	}
 	if (pathname.startsWith("/_") || pathname.startsWith("/api/") || /\.[a-z0-9]+$/i.test(pathname)) {
 		return next();
 	}
