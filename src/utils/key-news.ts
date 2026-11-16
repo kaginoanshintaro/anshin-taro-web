@@ -16,7 +16,7 @@ export function toKeyNewsHtml(body: string): string {
 	const closing = closeAt >= 0 ? parts.slice(closeAt).join("").replace(/^<h2[^>]*>[\s\S]*?<\/h2>/, "") : "";
 	const comment = /<p[^>]*>\s*佐藤のコメント\s*[：:]\s*([\s\S]*?)<\/p>/g;
 	const baby = '<img src="/images/top/baby-face.webp" width="200" height="200" alt="" loading="lazy" decoding="async" />';
-	const sato = '<img src="/images/top/sato.webp" width="320" height="320" alt="" loading="lazy" decoding="async" />';
+	const sato = '<img src="/images/news/sato-comment.webp" width="160" height="160" alt="" loading="lazy" decoding="async" />';
 	const bubble = (comments: string[]) => comments.length ? `<div class="kn-comment">${sato}<div class="kn-bubble"><p class="kn-label">佐藤のコメント</p>${comments.join("")}</div></div>` : "";
 	newsHtml += intro.trim() ? `<div class="kn-intro">${baby}<div class="kn-intro-text">${intro}</div></div>` : "";
 	items.forEach((item, i) => {
