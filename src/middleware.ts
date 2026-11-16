@@ -6,6 +6,11 @@ import { withPhraseBreaks } from "./utils/phrase-break";
 // 404 にするため使わず、ここで公開側だけリダイレクトする。
 export const onRequest = defineMiddleware(async (context, next) => {
 	const { pathname, search } = context.url;
+	// 本番切り替え（2026-11-16）: www 付きは今の WordPress と同じく www なしへ転送
+	if (context.url.hostname === "www.kagino-anshin-taro.com") {
+		context.cache?.set(false);
+		return context.redirect(`https://kagino-anshin-taro.com${pathname}${search}`, 301);
+	}
 	// 今の WordPress と同じ動きに揃える転送（2026-11-16、本番切り替え前チェック）
 	//  - 投稿者ページは本番ではトップへ転送されている
 	//  - WordPress 標準のサイトマップを見に来る検索エンジン向けに新しいサイトマップへ
