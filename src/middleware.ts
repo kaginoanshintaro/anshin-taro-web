@@ -4,7 +4,7 @@ import { withPhraseBreaks } from "./utils/phrase-break";
 // 公開ページは WordPress と同じく末尾スラッシュ付きに揃える。
 // astro.config の trailingSlash: "always" は EmDash の管理画面・API（/_emdash/...）まで
 // 404 にするため使わず、ここで公開側だけリダイレクトする。
-export const onRequest = defineMiddleware(async (context, next) => {
+const handle = defineMiddleware(async (context, next) => {
 	const { pathname, search } = context.url;
 	// 本番切り替え（2026-11-16）: www 付きは今の WordPress と同じく www なしへ転送
 	if (context.url.hostname === "www.kagino-anshin-taro.com") {
@@ -34,4 +34,16 @@ export const onRequest = defineMiddleware(async (context, next) => {
 	// リダイレクトはページのキャッシュに入れない（EmDash の Route Caching の注意）
 	context.cache?.set(false);
 	return context.redirect(`${pathname}/${search}`, 301);
+});
+
+// 本番切り替え後（2026-11-16）: テスト用URL（workers.dev）は管理画面とプレビュー用に残すが、
+// 本番と同じ中身が検索に二重で載らないよう、検索エンジンには登録しないよう伝える
+export const onRequest = defineMiddleware(async (context, next) => {
+	const res = await handle(context, next);
+	if (res && context.url.hostname.endsWith(".workers.dev")) {
+		const copy = new Response(res.body, res);
+		copy.headers.set("X-Robots-Tag", "noindex, nofollow");
+		return copy;
+	}
+	return res;
 });
