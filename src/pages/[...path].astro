@@ -70,7 +70,7 @@ const ptComponents = { type: { image: SizedImage, columns: PTColumns } };
 			<PortableText value={entry.data.content} components={ptComponents} />
 		</TipArticle>
 	) : collection === "posts" ? (
-		<PostArticle title={entry.data.title} edit={entry.edit.title} categories={categories} date={entry.data.publishedAt ?? null}>
+		<PostArticle title={entry.data.title} edit={entry.edit.title} categories={categories} date={entry.data.publishedAt ?? null} news={categories.some((c) => c.slug === "key-news")}>
 			{featuredSrc && <figure class="post-eyecatch" {...entry.edit.featured_image}><img src={featuredSrc} alt="" decoding="async" fetchpriority="high" /></figure>}
 			<PortableText value={entry.data.content} components={ptComponents} />
 		</PostArticle>

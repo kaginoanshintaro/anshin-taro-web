@@ -3,14 +3,18 @@
 // お役立ち記事（TipArticle）と同じ見た目: 上に細い帯（パンくず・カテゴリ・題名・日付）、見出しが2つ以上なら左に目次、右に白いカード。
 // スマホ: パンくずは出さない（Base の共通ルール）、目次は押すと開く箱。本文の文字はそのまま。
 import "../styles/tip-article.css";
+import "../styles/key-news.css";
+import { toKeyNewsHtml } from "../utils/key-news";
 
 interface Props {
 	title: string;
 	edit?: Record<string, unknown>;
 	categories: { slug: string; label: string }[];
 	date?: Date | null;
+	/** 鍵業界ニュース（ベビちゃんが調べて、佐藤がコメントする記事）の形で出す */
+	news?: boolean;
 }
-const { title, edit, categories, date } = Astro.props;
+const { title, edit, categories, date, news = false } = Astro.props;
 const cat = categories[0];
 
 // 本文の h2・h3 に順番の id を付けて目次を作る（TipArticle と同じ）
@@ -24,10 +28,12 @@ const body = bodyHtml.replace(/<h([23])([^>]*)>([\s\S]*?)<\/h\1>/g, (_m, lv: str
 	if (text.replace(/<wbr>/g, "")) toc.push({ id, level: Number(lv) as 2 | 3, text });
 	return `<h${lv}${attrs} id="${id}">${inner}</h${lv}>`;
 });
+// 鍵業界ニュース（2026-11-16 佐藤さん）は目次なし、本文を src/utils/key-news.ts で組み替える
+const newsHtml = news ? toKeyNewsHtml(body) : "";
 const dateText = date ? `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日` : "";
 ---
 
-<div class="tip-article post-article">
+<div class:list={["tip-article post-article", { "is-news": news }]}>
 	<header class="ta-head">
 		<div class="wrap">
 			<nav class="ta-crumb" aria-label="現在地"><a href="/">ホーム</a>{cat && <><span aria-hidden="true">›</span><a href={`/category/${cat.slug}/`}>{cat.label}</a></>}</nav>
@@ -37,8 +43,8 @@ const dateText = date ? `${date.getFullYear()}年${date.getMonth() + 1}月${date
 		</div>
 	</header>
 
-	<div class:list={["wrap ta-layout", { "no-toc": toc.length < 2 }]}>
-		{toc.length >= 2 && (
+	<div class:list={["wrap ta-layout", { "no-toc": news || toc.length < 2 }]}>
+		{!news && toc.length >= 2 && (
 			<aside class="ta-side">
 				<nav aria-label="目次">
 					<details class="ta-toc" open>
@@ -52,9 +58,13 @@ const dateText = date ? `${date.getFullYear()}年${date.getMonth() + 1}月${date
 		)}
 
 		<div class="ta-main">
-			<article class="ta-card" data-collection="posts">
-				<div class="ta-body" set:html={body} />
-			</article>
+			{news ? (
+				<article class="kn-body ta-body" data-collection="posts" set:html={newsHtml} />
+			) : (
+				<article class="ta-card" data-collection="posts">
+					<div class="ta-body" set:html={body} />
+				</article>
+			)}
 			{cat && (
 				<div class="ta-cta">
 					<a href={`/category/${cat.slug}/`}>「{cat.label}」の記事一覧へ</a>
