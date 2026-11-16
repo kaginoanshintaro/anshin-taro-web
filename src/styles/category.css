@@ -1,0 +1,40 @@
+/*
+ * カテゴリの記事一覧（src/pages/category/[slug].astro）。上の帯は記事ページ（tip-article.css）と同じ。
+ * 1本ずつ白いカードに日付・題名・書き出し。アイキャッチがあれば左に。
+ */
+.cat-title { display: flex; align-items: center; gap: 12px; }
+.cat-title img { width: 44px; height: 44px; border-radius: 50%; }
+.cat-wrap { max-width: 820px; margin-top: 32px; padding-bottom: 40px; }
+.cat-items { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; margin: 0; padding: 0; list-style: none; }
+.cat-card {
+	display: flex;
+	gap: 18px;
+	align-items: center;
+	padding: 18px 22px;
+	border: 1px solid transparent;
+	border-radius: var(--radius);
+	background: var(--white);
+	box-shadow: 0 2px 14px rgb(38 38 38 / 0.06);
+	color: var(--gray-900);
+	text-decoration: none;
+	transition: border-color 0.2s;
+}
+.cat-card:hover { border-color: var(--accent); }
+.cat-thumb { flex: none; width: 150px; height: 100px; object-fit: cover; border-radius: 10px; background: #f4f1ee; }
+.cat-text { display: grid; gap: 4px; min-width: 0; overflow-wrap: anywhere; }
+.cat-text time { color: var(--muted); font-size: 0.8rem; }
+.cat-name { font-family: var(--font-serif); font-weight: 700; font-size: 1.08rem; line-height: 1.55; color: var(--heading); letter-spacing: 0.04em; }
+.cat-lead { color: var(--gray-700); font-size: 0.86rem; line-height: 1.75; }
+.cat-empty { text-align: center; color: var(--muted); }
+.cat-pager { display: flex; justify-content: space-between; gap: 12px; margin-top: 24px; }
+.cat-pager a { padding: 10px 18px; border: 2px solid var(--color-brown-light); border-radius: 999px; background: var(--white); color: var(--color-brown); font-weight: bold; text-decoration: none; }
+
+@media (max-width: 767px) {
+	.cat-title img { width: 34px; height: 34px; }
+	.cat-wrap { margin-top: 16px; }
+	.cat-items { gap: 10px; }
+	.cat-card { gap: 12px; padding: 14px 16px; border-radius: 16px; }
+	.cat-thumb { width: 96px; height: 72px; }
+	.cat-name { font-size: 1rem; }
+	.cat-lead { font-size: 0.82rem; }
+}

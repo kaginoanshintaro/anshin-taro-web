@@ -4,8 +4,9 @@ import {
 	getEmDashCollection,
 	decodeSlug,
 } from "emdash";
-import { Image } from "emdash/ui";
 import Base from "../../layouts/Base.astro";
+import "../../styles/tip-article.css";
+import "../../styles/category.css";
 
 const slug = decodeSlug(Astro.params.slug);
 const termsResult = await getTaxonomyTermsWithCacheHint("category", {
@@ -32,40 +33,69 @@ if (Astro.cache?.enabled) {
 	Astro.cache.set(termsResult.cacheHint);
 	Astro.cache.set(cacheHint);
 }
+
+// 一覧の形（2026-11-16 佐藤さん: 記事ページと同じ雰囲気に）。1本ずつ白いカードに日付・題名・本文の書き出し。
+// アイキャッチがあれば左に小さく。鍵業界ニュースはベビちゃんの顔を添える
+const isNews = term.slug === "key-news";
+const dateFormat = new Intl.DateTimeFormat("ja-JP", { year: "numeric", month: "long", day: "numeric", timeZone: "Asia/Tokyo" });
+const textOf = (blocks: unknown): string => {
+	if (!Array.isArray(blocks)) return "";
+	for (const b of blocks as { _type?: string; children?: { text?: string }[] }[]) {
+		if (b?._type !== "block" || !Array.isArray(b.children)) continue;
+		const t = b.children.map((c) => c.text ?? "").join("").trim();
+		if (t) return t;
+	}
+	return "";
+};
+const items = posts.map((post) => {
+	const fi = post.data.featured_image as unknown;
+	const img = fi && typeof fi === "object" && "src" in fi && (fi as { src?: string }).src ? String((fi as { src: string }).src).replace(/^http:\/\//, "https://") : null;
+	const text = post.data.excerpt || textOf(post.data.content);
+	return {
+		href: `/${post.id}/`,
+		title: post.data.title,
+		date: post.data.publishedAt ? dateFormat.format(post.data.publishedAt) : "",
+		iso: post.data.publishedAt ? post.data.publishedAt.toISOString().slice(0, 10) : "",
+		img,
+		lead: text.length > 90 ? `${text.slice(0, 90)}…` : text,
+	};
+});
 ---
 
 <Base title={`${term.label}の記事`} description={`「${term.label}」の記事の一覧です。`}>
-	<h1>{term.label}</h1>
+	<div class="tip-article cat-list" class:list={{ "is-news": isNews }}>
+		<header class="ta-head">
+			<div class="wrap">
+				<nav class="ta-crumb" aria-label="現在地"><a href="/">ホーム</a><span aria-hidden="true">›</span><span>{term.label}</span></nav>
+				<h1 class="cat-title">{isNews && <img src="/images/top/baby-face.webp" width="200" height="200" alt="" decoding="async" />}{term.label}</h1>
+			</div>
+		</header>
 
-	{
-		posts.length === 0 ? (
-			<p>この分類の記事はまだありません。</p>
-		) : (
-			<ul>
-				{posts.map((post) => (
-					<li>
-						<a href={`/${post.id}/`}>
-							{post.data.featured_image && (
-								<div {...post.edit.featured_image}><Image image={post.data.featured_image} /></div>
-							)}
-							<h2 {...post.edit.title}>{post.data.title}</h2>
-						</a>
-						{post.data.excerpt && <p {...post.edit.excerpt}>{post.data.excerpt}</p>}
-					</li>
-				))}
-			</ul>
-		)
-	}
-	<nav aria-label="Pagination">
-		{cursor && <a href={`/category/${term.slug}`}>First page</a>}
-		{
-			nextCursor && (
-				<a
-					href={`/category/${term.slug}?cursor=${encodeURIComponent(nextCursor)}`}
-				>
-					Next page
-				</a>
-			)
-		}
-	</nav>
+		<div class="wrap cat-wrap">
+			{items.length === 0 ? (
+				<p class="cat-empty">この分類の記事はまだありません。</p>
+			) : (
+				<ul class="cat-items">
+					{items.map((it) => (
+						<li>
+							<a class:list={["cat-card", { "has-img": it.img }]} href={it.href}>
+								{it.img && <img class="cat-thumb" src={it.img} alt="" loading="lazy" decoding="async" />}
+								<span class="cat-text">
+									{it.date && <time datetime={it.iso}>{it.date}</time>}
+									<span class="cat-name">{it.title}</span>
+									{it.lead && <span class="cat-lead">{it.lead}</span>}
+								</span>
+							</a>
+						</li>
+					))}
+				</ul>
+			)}
+			{(cursor || nextCursor) && (
+				<nav class="cat-pager" aria-label="ページ送り">
+					{cursor ? <a href={`/category/${term.slug}/`}>‹ 最初のページへ</a> : <span />}
+					{nextCursor ? <a href={`/category/${term.slug}/?cursor=${encodeURIComponent(nextCursor)}`}>次のページへ ›</a> : <span />}
+				</nav>
+			)}
+		</div>
+	</div>
 </Base>
