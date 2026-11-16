@@ -4,7 +4,8 @@
  */
 .cat-title { display: flex; align-items: center; gap: 12px; }
 .cat-title img { width: 44px; height: 44px; border-radius: 50%; }
-.cat-wrap { max-width: 820px; margin-top: 32px; padding-bottom: 40px; }
+/* .wrap（Base.astro）の margin: 0 auto に負けないよう、ページ名を付けて指定 */
+.cat-list .cat-wrap { max-width: 820px; margin-top: 32px; padding-bottom: 40px; }
 .cat-items { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; margin: 0; padding: 0; list-style: none; }
 .cat-card {
 	display: flex;
@@ -31,7 +32,7 @@
 
 @media (max-width: 767px) {
 	.cat-title img { width: 34px; height: 34px; }
-	.cat-wrap { margin-top: 16px; }
+	.cat-list .cat-wrap { margin-top: 16px; }
 	.cat-items { gap: 10px; }
 	.cat-card { gap: 12px; padding: 14px 16px; border-radius: 16px; }
 	.cat-thumb { width: 96px; height: 72px; }
