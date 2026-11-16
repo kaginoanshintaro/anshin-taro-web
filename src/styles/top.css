@@ -244,7 +244,11 @@
 .fa-sp .coupon2 b {font-size: 1.3rem; color: var(--color-orange-dark);}
 .fa-sp .warn2 {display: block; height: 44px; border-radius: 14px; background: #f5ff93; overflow: hidden; text-align: center;}
 .fa-sp .warn2 img {height: 100%; width: auto; display: inline-block;}
-.fa-sp .dock .line-min {display: grid; place-items: center; background: #06c755;}
+/* 下の帯のLINEボタン（2026-11-16）: LINE公式のブランドアイコンを加工せずに置き、横に「友だち追加」。
+   アイコンは緑の上に置くと見えにくいので、ボタンは白地＋LINEの緑の枠。アイコンはスマホの最小40px以上 */
+.fa-sp .dock .line-min {display: flex; align-items: center; justify-content: center; gap: 6px; padding: 0 4px; background: #fff; border: 2px solid #06c755; color: #06c755; text-decoration: none;}
+.fa-sp .dock .line-min img {flex: none; width: 40px; height: 40px;}
+.fa-sp .dock .line-min b {font-family: system-ui, sans-serif; font-size: 0.9rem; font-weight: 800; letter-spacing: 0; white-space: nowrap;}
 .fa-sp .line-mark.big {font-size: 1.6rem; padding: 4px 14px; border-radius: 12px; background: #fff; color: #06c755;}
 @media (max-height: 700px) {
 .fa-sp .tiles3 .tile {height: 56px;}
@@ -550,3 +554,11 @@
 @keyframes edge-l { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(-3px); } }
 @keyframes edge-r { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(3px); } }
 @media (prefers-reduced-motion: reduce) { .fa-sp .edge .arw { animation: none !important; } }
+
+/* 幅の狭いスマホ（374px以下）: 下の帯のLINEボタンにアイコン40pxと「友だち追加」が収まるよう、点の幅と余白を詰める */
+@media (max-width: 374px) {
+	.fa-sp .dock {gap: 8px; padding-left: 10px; padding-right: 10px;}
+	.fa-sp .sp-dots {width: 64px; gap: 6px;}
+	.fa-sp .dock .line-min {gap: 4px; padding: 0 3px;}
+	.fa-sp .dock .line-min b {font-size: 0.72rem;}
+}
