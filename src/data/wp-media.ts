@@ -153,6 +153,13 @@ export const wpMedia: Record<string, { src: string; width: number; height: numbe
 	"2153": { src: "/images/tips/articles/wp-2153.webp", width: 800, height: 335, url: "https://kagino-anshin-taro.com/wp-content/uploads/2026/04/Gemini_Generated_Image_xpkornxpkornxpko-1024x429.jpg" },
 	"2154": { src: "/images/tips/articles/wp-2154.webp", width: 800, height: 481, url: "https://kagino-anshin-taro.com/wp-content/uploads/2026/04/Gemini_Generated_Image_kyn5t1kyn5t1kyn5-1024x616.jpg" },
 	"2155": { src: "/images/tips/articles/wp-2155.webp", width: 800, height: 437, url: "https://kagino-anshin-taro.com/wp-content/uploads/2026/04/Gemini_Generated_Image_9lkwfl9lkwfl9lkw-1024x559.jpg" },
+	// ドアレバーのガタガタ（/howtofix-door-lever/、ブログの投稿）。2026-11-16
+	"door-lever-la": { src: "/images/tips/articles/door-lever-la.webp", width: 631, height: 640, url: "https://kagino-anshin-taro.com/wp-content/uploads/2026/09/Miwaレバーハンドル錠LA-1010x1024.jpg" },
+	"door-lever-check": { src: "/images/tips/articles/door-lever-check.webp", width: 800, height: 741, url: "https://kagino-anshin-taro.com/wp-content/uploads/2026/09/Gemini_Generated_Image_o9tngko9tngko9tn-1024x948.jpeg" },
+	"door-lever-plate": { src: "/images/tips/articles/door-lever-plate.webp", width: 640, height: 640, url: "https://kagino-anshin-taro.com/wp-content/uploads/2026/09/IMG_7692-300x300.jpg" },
+	"door-lever-zaguri": { src: "/images/tips/articles/door-lever-zaguri.webp", width: 640, height: 640, url: "https://kagino-anshin-taro.com/wp-content/uploads/2026/10/IMG_5749.png" },
+	"door-lever-resin": { src: "/images/tips/articles/door-lever-resin.webp", width: 640, height: 640, url: "https://kagino-anshin-taro.com/wp-content/uploads/2026/10/IMG_5859-1024x1024.jpg" },
+	"door-lever-parts": { src: "/images/tips/articles/door-lever-parts.webp", width: 640, height: 640, url: "https://kagino-anshin-taro.com/wp-content/uploads/2026/09/IMG_7649-1024x1024.jpg" },
 };
 
 const byUrl = new Map(Object.values(wpMedia).map((m) => [m.url, m]));

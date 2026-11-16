@@ -7,13 +7,19 @@
 import { findTip, tipStars } from "../data/tips";
 import "../styles/tip-article.css";
 
+type TipRef = { group: { id: string; title: string }; flat: { path: string; title: string }[]; index: number };
 interface Props {
 	path: string;
 	title: string;
 	edit?: Record<string, unknown>;
+	/** ブログの投稿（「現場からのヒント」）のときは、呼び出し側で並びを渡す */
+	tip?: TipRef;
+	/** 投稿の日付（表示用） */
+	date?: Date | null;
 }
-const { path, title, edit } = Astro.props;
-const tip = findTip(path)!;
+const { path, title, edit, date } = Astro.props;
+const tip: TipRef = Astro.props.tip ?? findTip(path)!;
+const isPost = !!Astro.props.tip;
 
 // 本文（呼び出し側が PortableText で描いたもの）を先に HTML にして、h2・h3 に順番の id を付ける（目次のリンク先）
 const bodyHtml = await Astro.slots.render("default");
@@ -48,18 +54,48 @@ if (stars) {
 	});
 }
 
+// ブログの投稿（WordPress のクラシックエディタで書いたもの）は、段落の中の改行（<br>）の重ねすぎで間が空きすぎるので詰め、
+// 「①」「②」…で始まる太字は手順の見出しの見た目にする（文字はそのまま。見た目だけ）
+if (isPost) {
+	tidyBody = tidyBody
+		// ①が「<strong>①</strong> <strong>まず…」と2つに分かれているのを1つに
+		.replace(/<strong>([①-⑳])<\/strong>[\s　]*<strong>/g, "<strong>$1")
+		// 段落・太字の頭と終わりの改行は消す
+		.replace(/(<p[^>]*>)(?:\s*<br\s*\/?>)+/g, "$1")
+		.replace(/(?:<br\s*\/?>\s*)+(<\/p>)/g, "$1")
+		// 太字の終わりに入っている改行は、太字の外に出す
+		.replace(/((?:<br\s*\/?>\s*)+)(<\/strong>)/g, "$2$1")
+		// 3つ以上続く改行は、段落の区切り1つ分に
+		.replace(/(?:<br\s*\/?>\s*){3,}/g, '<span class="ta-gap"></span>')
+		.replace(/(?:<br\s*\/?>\s*){2}/g, '<span class="ta-gap"></span>')
+		// 手順（①〜）の太字を見出しの見た目に
+		// （太字の中に区切りがあれば、区切りまでを見出しに、残りはふつうの太字に）
+		.replace(/(?:<span class="ta-gap"><\/span>)?<strong>([①-⑳])([\s\S]*?)<\/strong>(?:<span class="ta-gap"><\/span>)?/g, (_m, no: string, text: string) => {
+			const [head, ...rest] = text.split('<span class="ta-gap"></span>');
+			const tail = rest.join('<span class="ta-gap"></span>').trim();
+			return `<strong class="ta-step"><span class="ta-step-no">${no}</span><span class="ta-step-text">${head.trim()}</span></strong>${tail ? `<strong>${tail}</strong><span class="ta-gap"></span>` : ""}`;
+		})
+		// 中身が空になった段落は消す
+		.replace(/<p[^>]*>\s*(?:<span class="ta-gap"><\/span>\s*)*<\/p>/g, "")
+		// 段落の頭・終わりの区切りも消す
+		.replace(/(<p[^>]*>)(?:\s*<span class="ta-gap"><\/span>)+/g, "$1")
+		.replace(/(?:<span class="ta-gap"><\/span>\s*)+(<\/p>)/g, "$1");
+}
+const dateText = date ? `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日` : "";
+
 const enc = (p: string) => p.split("/").map((s) => encodeURIComponent(s)).join("/");
 const others = tip.flat.filter((_, i) => i !== tip.index);
 const prev = tip.flat[tip.index - 1];
 const next = tip.flat[tip.index + 1];
 ---
 
-<div class="tip-article">
+<div class:list={["tip-article", { "is-post": isPost }]}>
 	<header class="ta-head">
 		<div class="wrap">
 			<nav class="ta-crumb" aria-label="現在地"><a href="/">ホーム</a><span aria-hidden="true">›</span><a href="/tipshints/">お役立ち情報</a><span aria-hidden="true">›</span><a href={`/tipshints/#${tip.group.id}`}>{tip.group.title}</a></nav>
 			<p class="ta-cat"><a href={`/tipshints/#${tip.group.id}`}>{tip.group.title}</a></p>
 			<h1 {...edit}>{title}</h1>
+			{dateText && <p class="ta-date"><time datetime={date!.toISOString().slice(0, 10)}>{dateText}</time></p>}
 		</div>
 	</header>
 

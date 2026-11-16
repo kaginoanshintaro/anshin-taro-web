@@ -2,13 +2,13 @@
 // WordPress と同じ URL を出す受け口。
 //   /<slug>/          固定ページ（親なし）→ なければ投稿
 //   /<親>/<slug>/     親ページを持つ固定ページ（parent_slug で照合）
-import { getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
+import { getEmDashCollection, getEmDashEntry, getSeoMeta, getSiteSettings } from "emdash";
 import { PortableText } from "emdash/ui";
 import Base from "../layouts/Base.astro";
 import SizedImage from "../components/SizedImage.astro";
 import PTColumns from "../components/PTColumns.astro";
 import TipArticle from "../components/TipArticle.astro";
-import { findTip } from "../data/tips";
+import { findTip, hintGroup } from "../data/tips";
 import { resolveStarterSiteIdentity } from "../utils/site-identity";
 
 let segments: string[] = [];
@@ -42,12 +42,25 @@ const categories = entry.data.terms?.category ?? [];
 // お役立ち情報の一覧（src/data/tips.ts）に載っている固定ページは、記事用の形で出す
 const tipPath = `/${segments.join("/")}/`;
 const isTip = collection === "pages" && findTip(tipPath) !== null;
+// ブログの「ヒント」カテゴリの投稿（お役立ち情報の「現場からのヒント」）も、同じ記事の形で出す。並びは一覧と同じ新しい順
+let hintTip: { group: { id: string; title: string }; flat: { path: string; title: string }[]; index: number } | undefined;
+if (collection === "posts" && categories.some((c) => c.slug === hintGroup.category)) {
+	const { entries: hints, cacheHint: hintsHint } = await getEmDashCollection("posts", { where: { category: hintGroup.category }, orderBy: { published_at: "desc" }, limit: 100 });
+	if (Astro.cache?.enabled) Astro.cache.set(hintsHint);
+	const flat = hints.map((h) => ({ path: `/${h.id}/`, title: h.data.title }));
+	const index = flat.findIndex((h) => h.path === tipPath);
+	if (index >= 0) hintTip = { group: hintGroup, flat, index };
+}
 // カラム（左に画像・右に文など）の中の画像も出るよう、カラムの部品を置き換える
 const ptComponents = { type: { image: SizedImage, columns: PTColumns } };
 ---
 
 <Base title={seo.title} pageTitle={seo.ogTitle} description={seo.description} canonical={seo.canonical} content={{ collection, id: entry.data.id, slug }}>
-	{isTip ? (
+	{hintTip ? (
+		<TipArticle path={tipPath} title={entry.data.title} edit={entry.edit.title} tip={hintTip} date={entry.data.publishedAt ?? null}>
+			<PortableText value={entry.data.content} components={ptComponents} />
+		</TipArticle>
+	) : isTip ? (
 		<TipArticle path={tipPath} title={entry.data.title} edit={entry.edit.title}>
 			<PortableText value={entry.data.content} components={ptComponents} />
 		</TipArticle>
