@@ -6,21 +6,25 @@ import TaroChat from "../components/TaroChat.astro";
 import { fetchBusyWeek, BUSY_START_HOUR, BUSY_END_HOUR } from "../utils/busy-calendar";
 import "../styles/top.css";
 
-const { entries: latest, cacheHint } = await getEmDashCollection("posts", {
-	orderBy: { published_at: "desc" },
-	limit: 3,
-});
-if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
-
 // ベビちゃんの鍵業界ニュース: 記事のカテゴリー「鍵業界ニュース」（key-news）の新しい3本（2026-11-15 佐藤さん）。
 // 1本も無いうちは欄ごと出さない
 const NEWS_CATEGORY = "key-news";
-const { entries: news, cacheHint: newsHint } = await getEmDashCollection("posts", {
+const { entries: allNews, cacheHint: newsHint } = await getEmDashCollection("posts", {
 	where: { category: NEWS_CATEGORY },
 	orderBy: { published_at: "desc" },
-	limit: 3,
+	limit: 100,
 });
 if (Astro.cache?.enabled) Astro.cache.set(newsHint);
+const news = allNews.slice(0, 3);
+
+// 最新の記事: 新しい3本。鍵業界ニュースは専用の欄があるので、ここには出さない（2026-11-16 佐藤さん）
+const newsIds = new Set(allNews.map((n) => n.id));
+const { entries: recent, cacheHint } = await getEmDashCollection("posts", {
+	orderBy: { published_at: "desc" },
+	limit: 3 + newsIds.size,
+});
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+const latest = recent.filter((post) => !newsIds.has(post.id)).slice(0, 3);
 
 // 佐藤の予定: いつものGoogleカレンダー（一般公開・予定の有無のみ）から7日分の「予定あり」だけを出す（2026-11-15 佐藤さん）。
 // 読めなかったときは欄ごと出さない（空いているように見せないため）
