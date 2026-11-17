@@ -30,6 +30,8 @@ const qaJson = JSON.stringify(taroQA.map(({ id, q, next, words, face }) => ({ id
 		<div class="chat-head-label">
 			<p class="chat-name">安心太郎ちゃん</p>
 			<p class="chat-sub">サイトの案内と、よくある質問に答えるよ</p>
+			<!-- スマホ・タブレットは3画面の横スワイプなので、その案内（佐藤さんの依頼 2026-11-17）。PCでは出さない -->
+			<p class="swipe-hint"><span class="sh-arrow sh-l" aria-hidden="true">‹</span>左右にスワイプできます<span class="sh-arrow sh-r" aria-hidden="true">›</span></p>
 		</div>
 	) : (
 		<div>

@@ -54,3 +54,16 @@
 /* 質問の選択肢はフキダシの形にする（セリフが「下のフキダシからえらんでね」なので。2026-11-16 佐藤さん）。
    押すと自分の発言になるので、右下だけ角を立てた「自分の吹き出し」と同じ形 */
 .fa .taro-chat .chip { border-radius: 14px 14px 4px 14px; }
+
+/* 「左右にスワイプできます」（佐藤さんの依頼 2026-11-17）。スマホ・タブレット（3画面の横スワイプ）だけ、名前の帯の一番下に出す。
+   矢印は端のつまみ（top.css の .edge）と同じようにゆっくり左右に揺れる */
+.fa .taro-chat .swipe-hint { display: none; }
+@media (max-width: 1199px) {
+	.fa .taro-chat .swipe-hint {
+		display: flex; align-items: center; gap: 6px; margin: 2px 0 0;
+		font-size: 0.78rem; font-weight: 700; color: var(--color-orange-dark); white-space: nowrap;
+	}
+	.fa .taro-chat .sh-arrow { font-size: 1.1rem; line-height: 1; animation: edge-r 1.6s ease-in-out infinite; }
+	.fa .taro-chat .sh-l { animation-name: edge-l; }
+}
+@media (prefers-reduced-motion: reduce) { .fa .taro-chat .sh-arrow { animation: none; } }
