@@ -46,6 +46,8 @@ const turnstileSiteKey = TURNSTILE_SITE_KEY;
 						<label>会社のURL<input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
 					</div>
 					{turnstileSiteKey && <div class="cf-turnstile" data-sitekey={turnstileSiteKey} data-language="ja"></div>}
+					{/* 幅の狭いスマホ（フォーム幅300px未満）では確認欄を縦長の小さい形に。はみ出して横に揺れないように */}
+					{turnstileSiteKey && <script is:inline>(() => { const t = document.currentScript.previousElementSibling; if (t && t.offsetWidth < 300) t.dataset.size = "compact"; })();</script>}
 					<button class="ct-submit" type="submit">送信</button>
 					<p class="ct-status" role="status" aria-live="polite"></p>
 				</form>
