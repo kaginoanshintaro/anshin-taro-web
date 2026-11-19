@@ -2,6 +2,13 @@
  * 店の基本情報。今の WordPress（2026-10-19 のエクスポート）の
  * トップページ・会社概要・メニューから写したもの。
  */
+/**
+ * Cloudflare Turnstile（問い合わせフォームの迷惑送信よけ、2026-11-19 佐藤さん決定）のサイトキー。
+ * 公開してよい値。空のあいだは確認欄を出さず、受け口も確認しない。
+ * 対になる秘密の鍵は Worker シークレット TURNSTILE_SECRET_KEY。
+ */
+export const TURNSTILE_SITE_KEY = "";
+
 export const site = {
 	name: "カギの安心太郎株式会社",
 	shortName: "カギの安心太郎",

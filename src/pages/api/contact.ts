@@ -6,6 +6,7 @@
 import type { APIRoute } from "astro";
 import { env } from "cloudflare:workers";
 import { sendGmail } from "../../utils/gmail-smtp";
+import { TURNSTILE_SITE_KEY } from "../../site";
 
 const COMPANY_GMAIL = "kagino.anshin.taro@gmail.com";
 
@@ -38,7 +39,8 @@ export const POST: APIRoute = async ({ request, cache }) => {
 	}
 
 	const vars = env as unknown as Record<string, string | undefined>;
-	if (vars.TURNSTILE_SECRET_KEY) {
+	// ページに確認欄が出ているとき（サイトキーあり）だけ確認する。片方だけだと正しい送信まで止まるため
+	if (TURNSTILE_SITE_KEY && vars.TURNSTILE_SECRET_KEY) {
 		const ok = await verifyTurnstile(vars.TURNSTILE_SECRET_KEY, String(form.get("cf-turnstile-response") ?? ""), request.headers.get("CF-Connecting-IP"));
 		if (!ok) return reply(400, "確認が取れませんでした。ページを開き直してもう一度お試しください。");
 	}

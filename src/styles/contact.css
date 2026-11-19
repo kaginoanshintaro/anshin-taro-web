@@ -37,6 +37,8 @@
 .ct-field input:focus, .ct-field textarea:focus { outline: none; border-color: var(--accent); background: var(--white); box-shadow: 0 0 0 3px var(--accent-soft); }
 .was-checked .ct-field :invalid { border-color: var(--accent-dark); background: var(--white); }
 .ct-hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+/* Turnstile の確認欄（300×65px）。読み込み前から高さを取ってずれないように */
+.cf-turnstile { justify-self: center; min-height: 65px; }
 /* 白文字×オレンジはボタン文字を太字19.2px以上（color-palette.md） */
 .ct-submit {
 	justify-self: center; min-width: 240px; margin-top: 6px; padding: 12px 32px; border: 0; border-radius: 999px;

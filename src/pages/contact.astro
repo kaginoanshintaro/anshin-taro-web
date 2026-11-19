@@ -4,12 +4,12 @@
 // パソコン版: 左にメールフォーム、右にメール・電話・LINE・所在地。
 // フォームは Contact Form 7 の代わりに /api/contact/ へ送る（佐藤さん: 問い合わせができれば何でもよい）。
 import Base from "../layouts/Base.astro";
-import { site } from "../site";
+import { site, TURNSTILE_SITE_KEY } from "../site";
 import "../styles/contact.css";
 
 const mapUrl = "https://maps.app.goo.gl/2g73uk2teCsFsxuE8";
 // Cloudflare Turnstile（迷惑送信よけ）。サイトキーを入れたときだけ出す。
-const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY as string | undefined;
+const turnstileSiteKey = TURNSTILE_SITE_KEY;
 ---
 
 <Base title="お問い合わせ">
