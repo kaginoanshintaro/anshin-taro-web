@@ -7,7 +7,7 @@
  * 公開してよい値。空のあいだは確認欄を出さず、受け口も確認しない。
  * 対になる秘密の鍵は Worker シークレット TURNSTILE_SECRET_KEY。
  */
-export const TURNSTILE_SITE_KEY = "";
+export const TURNSTILE_SITE_KEY = "0x4AAAAAAGIpvcu9U3E7gjKZ";
 
 export const site = {
 	name: "カギの安心太郎株式会社",
