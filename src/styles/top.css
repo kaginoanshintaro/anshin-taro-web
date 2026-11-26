@@ -564,12 +564,11 @@
 }
 
 /* 佐藤アイコンの小窓: Substack の紹介（2026-11-16 佐藤さん）。ボタンは Substack のオレンジ */
-.fa .prof-card .substack { margin: 6px 0 4px; padding-top: 12px; border-top: 1px solid var(--gray-300); }
-.fa .prof-card .substack p { text-align: center; }
-.fa .prof-card .ss-lead { margin: 0 0 6px; font-size: 1rem; font-weight: 800; color: var(--color-brown); }
-.fa .prof-card .ss-name { margin: 0 0 8px; line-height: 1.4; }
-.fa .prof-card .ss-name b { display: block; font-size: 1.05rem; }
-.fa .prof-card .ss-name span { display: block; font-size: 0.78rem; color: var(--gray-500); }
-.fa .prof-card p.ss-text { margin: 0 0 14px; font-size: 0.85rem; text-align: left; }
-.fa .prof-card .ss-btn { display: block; padding: 12px 16px; border-radius: 999px; background: #ff6719; color: #fff; font-weight: 800; text-decoration: none; }
-.fa .prof-card .ss-btn:hover { background: #e95a10; }
+/* 佐藤ボタンの小窓 = 旧サイトの「ご挨拶」（2026-11-26 佐藤さん）。長いので小窓の中だけ縦スクロール。固定背景エリアの中（clip-path）にあるのでヘッダーの下に収める */
+.fa .prof-card.aisatsu { max-width: 420px; width: 100%; margin-top: var(--header-h); max-height: calc(100dvh - var(--header-h) - 40px); overflow-y: auto; overscroll-behavior: contain; padding-top: 18px; }
+.fa .prof-card.aisatsu h2 { margin: 0 44px 12px; }
+.fa .prof-card.aisatsu img.store { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 12px; margin: 0 0 14px; }
+.fa .prof-card.aisatsu .greet-text p { margin: 0 0 10px; line-height: 1.8; text-align: left; }
+.fa .prof-card.aisatsu .greet-text p.sign { margin: 14px 0 12px; text-align: right; font-weight: 700; color: var(--color-brown); }
+.fa .prof-card.aisatsu .ss-link { display: block; padding-top: 10px; border-top: 1px solid var(--gray-300); font-size: 0.8rem; color: var(--gray-500); text-decoration: underline; }
+@media (min-width: 1200px) { .fa .prof-card.aisatsu { max-width: 480px; } }

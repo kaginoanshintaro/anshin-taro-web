@@ -144,7 +144,7 @@ const dateFormat = new Intl.DateTimeFormat("ja-JP", {
 					<a class="bank-banner" href={site.line} target="_blank" rel="noopener"><img loading="lazy" decoding="async" src="/images/top/line-v3-600.webp" srcset="/images/top/line-v3-600.webp 600w, /images/top/line-v3-1200.webp 1200w" sizes="600px" width="1200" height="379" alt="LINE 公式アカウント 友だち追加で10%オフクーポン" /></a>
 					<div class="small-row">
 						<a class="kagiya-check" href="/check-points/"><img loading="lazy" decoding="async" src="/images/top/kagiya-check-600.webp" srcset="/images/top/kagiya-check-600.webp 600w, /images/top/kagiya-check-1200.webp 1200w" sizes="(min-width: 1200px) 300px, 100vw" width="1200" height="333" alt="鍵屋さんを呼ぶ前にチェックしたい5つのポイント" /></a>
-						<button class="panel prof-btn-pc" type="button" aria-label="佐藤のプロフィールを見る"><span aria-hidden="true">佐</span></button>
+						<button class="panel prof-btn-pc" type="button" aria-label="代表のご挨拶を見る"><span aria-hidden="true">佐</span></button>
 						<a class="panel insta" href={site.instagram} target="_blank" rel="noopener" aria-label="佐藤の Instagram"><svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="ig" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#f9a23b"/><stop offset=".45" stop-color="#e1306c"/><stop offset="1" stop-color="#7a3cc4"/></linearGradient></defs><rect x="2" y="2" width="60" height="60" rx="16" fill="url(#ig)"/><rect x="14" y="14" width="36" height="36" rx="11" fill="none" stroke="#fff" stroke-width="4"/><circle cx="32" cy="32" r="8.5" fill="none" stroke="#fff" stroke-width="4"/><circle cx="43" cy="21" r="2.6" fill="#fff"/></svg></a>
 					</div>
 					<a class="bank-banner" href="/tipshints/"><img loading="lazy" decoding="async" src="/images/top/otasuke-v2-600.webp" srcset="/images/top/otasuke-v2-600.webp 600w, /images/top/otasuke-v2-1200.webp 1200w" sizes="600px" width="1200" height="442" alt="お役立ち情報 鍵の技術・防犯・コラムの一覧" /></a>
@@ -226,19 +226,22 @@ const dateFormat = new Intl.DateTimeFormat("ja-JP", {
 				<a class="line-min" href={site.line} target="_blank" rel="noopener" aria-label="LINEで友だち追加（メッセージで相談できます）"><img src="/images/line/line-brand-icon-120.webp" width="40" height="40" alt="" decoding="async" /><b>公式LINE<br />友達追加</b></a>
 			</nav>
 		</div>
-		<div class="prof" role="dialog" aria-label="佐藤のプロフィール">
-			<div class="prof-card">
+		<div class="prof" role="dialog" aria-label="代表のご挨拶">
+			<div class="prof-card aisatsu">
 				<button class="close" type="button" aria-label="閉じる">×</button>
-				<img decoding="async" src="/images/top/sato.webp" alt="代表の佐藤" />
-				<h2>代表　佐藤 翔平</h2>
-				<p class="kana">さとう しょうへい</p>
-				<!-- 佐藤の Substack の紹介（2026-11-16 佐藤さん。紹介文は佐藤さんの言葉から） -->
-				<div class="substack">
-					<p class="ss-lead">Substack始めました</p>
-					<p class="ss-name"><b>佐藤翔平</b><span>justalocksmith.substack.com</span></p>
-					<p class="ss-text">技術的なことを見たり聞いたり調べたりして書きとめる、見聞録です。佐藤自身の勉強とメモのためのノートなので、かなり専門的な内容になります。</p>
-					<a class="ss-btn" href={site.substack} target="_blank" rel="noopener">Substack で読む →</a>
+				<!-- 旧サイトのトップ最下部「ご挨拶」の文章と写真（原文のまま。2026-11-26 佐藤さん。出典: WordPress エクスポート 2026-10-19） -->
+				<h2>ご挨拶</h2>
+				<img class="store" decoding="async" loading="lazy" src="/images/top/greeting-store-800.webp" srcset="/images/top/greeting-store-480.webp 480w, /images/top/greeting-store-800.webp 800w" sizes="(min-width: 1200px) 420px, 88vw" width="800" height="450" alt="カギの安心太郎の店舗" />
+				<div class="greet-text">
+					<p>カギの安心太郎株式会社代表、<span class="nobr">佐藤　翔平</span>と申します。</p>
+					<p>大手鍵屋での経験を活かし、2024年1月1日独立開業いたしました。 鍵交換・修理と鍵開けサービスで個人様、法人様問わず多くのお客様にご利用いただいております。</p>
+					<p>安心安全な暮らしを支えるカギに関わるお仕事ですから、お客様には安心してご依頼していただきたい。その想いから設立いたしました。</p>
+					<p>様々なニーズに応じて丁寧な仕事を心掛け、お客さまに満足いただけるサービスを提供することが我が社の使命でございます。</p>
+					<p>まだスタートしたばかりですが、地元大分に根付き、愛され信頼していただける会社になります。 皆様、どうぞ応援よろしくお願いいたします。</p>
+					<p class="sign">カギの安心太郎株式会社 <span class="nobr">代表取締役　佐藤翔平</span></p>
 				</div>
+				<!-- Substack は小さなリンクだけ残す（佐藤さんに要否を確認中） -->
+				<a class="ss-link" href={site.substack} target="_blank" rel="noopener">佐藤の Substack（技術の見聞録）→</a>
 			</div>
 		</div>
 	</section>
@@ -280,7 +283,7 @@ const dateFormat = new Intl.DateTimeFormat("ja-JP", {
 		setEdges();
 		track.addEventListener("scroll", () => requestAnimationFrame(setEdges), { passive: true });
 		edges.forEach((e) => e.addEventListener("click", () => go(cur + Number(e.dataset.dir), !matchMedia("(prefers-reduced-motion: reduce)").matches)));
-		// 佐藤のプロフィールの小窓
+		// 佐藤ボタンの小窓（代表のご挨拶）
 		// （パソコンの丸い「佐」ボタンも同じ小窓を開く。外側を押しても閉じる）
 		const prof = document.querySelector(".fa .prof");
 		document.querySelectorAll(".prof-btn, .prof-btn-pc").forEach((b) => b.addEventListener("click", () => document.body.classList.add("prof-open")));
