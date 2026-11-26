@@ -570,5 +570,4 @@
 .fa .prof-card.aisatsu img.store { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 12px; margin: 0 0 14px; }
 .fa .prof-card.aisatsu .greet-text p { margin: 0 0 10px; line-height: 1.8; text-align: left; }
 .fa .prof-card.aisatsu .greet-text p.sign { margin: 14px 0 12px; text-align: right; font-weight: 700; color: var(--color-brown); }
-.fa .prof-card.aisatsu .ss-link { display: block; padding-top: 10px; border-top: 1px solid var(--gray-300); font-size: 0.8rem; color: var(--gray-500); text-decoration: underline; }
 @media (min-width: 1200px) { .fa .prof-card.aisatsu { max-width: 480px; } }
